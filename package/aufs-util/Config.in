@@ -1,0 +1,34 @@
+config BR2_PACKAGE_AUFS_UTIL
+	bool "aufs-util"
+	depends on BR2_USE_MMU
+	depends on BR2_TOOLCHAIN_HAS_THREADS
+	depends on BR2_LINUX_KERNEL
+	help
+	  Aufs command line utilities.
+	  Needs a kernel with aufs support. A kernel
+	  extension package is available.
+
+	  http://sourceforge.net/p/aufs/aufs-util/
+
+# While we don't build from the kernel headers
+# we can get a default value here
+config BR2_PACKAGE_AUFS_UTIL_VERSION
+	string "aufs-util branch"
+	depends on BR2_PACKAGE_AUFS_UTIL
+	help
+	  Aufs-util repository branch to use. Must match kernel version.
+	default "3.0"  if BR2_KERNEL_HEADERS_3_0
+	default "3.2"  if BR2_KERNEL_HEADERS_3_2
+	default "3.2"  if BR2_KERNEL_HEADERS_3_4
+	default "3.9"  if BR2_KERNEL_HEADERS_3_10 || BR2_KERNEL_HEADERS_3_11 || BR2_KERNEL_HEADERS_3_12 || BR2_KERNEL_HEADERS_3_13
+	default "3.14" if BR2_KERNEL_HEADERS_3_14 || BR2_KERNEL_HEADERS_3_15 || BR2_KERNEL_HEADERS_3_16 || BR2_KERNEL_HEADERS_3_17 || BR2_KERNEL_HEADERS_3_18 || BR2_KERNEL_HEADERS_3_19
+	default "4.0"  if BR2_KERNEL_HEADERS_4_0 || BR2_KERNEL_HEADERS_4_1
+
+comment "aufs-util needs a linux kernel"
+	depends on BR2_USE_MMU
+	depends on !BR2_LINUX_KERNEL
+
+comment "aufs-util needs a toolchain w/ threads"
+	depends on BR2_USE_MMU
+	depends on BR2_LINUX_KERNEL
+	depends on !BR2_TOOLCHAIN_HAS_THREADS
