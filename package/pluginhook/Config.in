@@ -1,0 +1,6 @@
+config BR2_PACKAGE_PLUGINHOOK
+	bool "pluginhook"
+	help
+		Smart solution to bash script plugin hooks.
+
+		https://github.com/progrium/pluginhook
