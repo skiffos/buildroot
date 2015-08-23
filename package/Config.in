@@ -1654,6 +1654,7 @@ endif
 	source "package/numactl/Config.in"
 	source "package/nut/Config.in"
 	source "package/openvmtools/Config.in"
+	source "package/pluginhook/Config.in"
 	source "package/polkit/Config.in"
 	source "package/powerpc-utils/Config.in"
 if BR2_PACKAGE_BUSYBOX_SHOW_OTHERS
