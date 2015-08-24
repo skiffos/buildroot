@@ -1,0 +1,9 @@
+config BR2_PACKAGE_CREW
+	bool "crew"
+	select BR2_PACKAGE_DOCKER_ENGINE
+	select BR2_PACKAGE_PERL
+	select BR2_PACKAGE_CURL
+	help
+	  Container manager for docker.
+
+	  https://github.com/paralin/crew
