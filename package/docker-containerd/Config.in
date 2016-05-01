@@ -1,0 +1,8 @@
+config BR2_PACKAGE_DOCKER_CONTAINERD
+	bool "docker-containerd"
+	depends on BR2_PACKAGE_HOST_GO_ARCH_SUPPORTS
+	select BR2_PACKAGE_RUNC
+	help
+    containerd is a daemon to control runC.
+
+	  https://github.com/docker/containerd
