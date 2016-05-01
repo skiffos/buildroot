@@ -1,0 +1,20 @@
+config BR2_PACKAGE_DOCKER_CONTAINERD
+	bool "docker-containerd"
+	depends on BR2_PACKAGE_HOST_GO_ARCH_SUPPORTS
+	depends on BR2_TOOLCHAIN_HAS_THREADS
+	depends on BR2_USE_MMU # util-linux
+	depends on BR2_USE_WCHAR # util-linux
+	select BR2_PACKAGE_RUNC # runc: runtime dependency
+	select BR2_PACKAGE_UTIL_LINUX # util-linux: runtime dependency
+	select BR2_PACKAGE_UTIL_LINUX_BINARIES # util-linux: runtime dependency
+	select BR2_PACKAGE_UTIL_LINUX_PIVOT_ROOT # util-linux: runtime dependency
+	select BR2_PACKAGE_UTIL_LINUX_MOUNTPOINT # util-linux: runtime dependency
+	select BR2_PACKAGE_UTIL_LINUX_MOUNT # util-linux: runtime dependency
+	help
+	  containerd is a daemon to control runC.
+
+	  https://github.com/docker/containerd
+
+comment "docker-containerd needs a toolchain w/ threads"
+	depends on BR2_PACKAGE_HOST_GO_ARCH_SUPPORTS
+	depends on !BR2_TOOLCHAIN_HAS_THREADS
