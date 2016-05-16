@@ -4,9 +4,12 @@
 #
 ################################################################################
 
-DOCKER_CONTAINERD_VERSION = v0.2.1
-DOCKER_CONTAINERD_VERSION_COMMIT = ca47f7e76a93e9b3768ed084d62318e85bd9f4b2
-DOCKER_CONTAINERD_SITE = $(call github,docker,containerd,$(DOCKER_CONTAINERD_VERSION))
+# Temporary bump until next release (v0.3.0) to fix amd64
+# temporary fixup repo
+# DOCKER_CONTAINERD_SITE = https://github.com/docker/containerd/archive
+DOCKER_CONTAINERD_VERSION = fb41d9c33bd7df79e15bb5b3af92de475b5f4ada
+DOCKER_CONTAINERD_VERSION_COMMIT = fb41d9c33bd7df79e15bb5b3af92de475b5f4ada
+DOCKER_CONTAINERD_SITE = $(call github,paralin,containerd,$(DOCKER_CONTAINERD_VERSION))
 
 DOCKER_CONTAINERD_LICENSE = Apache-2.0
 DOCKER_CONTAINERD_LICENSE_FILES = LICENSE.code
