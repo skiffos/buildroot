@@ -1,2 +1,2 @@
-# Computed locally
-sha256 f9dfeaba17064f279a7dfe89f0ef6763ee45b0a57c03aa423da2af340fba198d  docker-containerd-v0.2.1.tar.gz
+# Locally computed
+sha256 586bd3a7b3de2b6a17ecdafc737ca71d737d241a3f0c6c64363d34af6db75177  docker-containerd-fb41d9c33bd7df79e15bb5b3af92de475b5f4ada.tar.gz
