@@ -1,0 +1,7 @@
+config BR2_PACKAGE_DUMB_INIT
+	bool "dumb-init"
+	help
+    dumb-init is a tiny init binary to make PID 0 safe
+    inside Docker containers.
+
+	  https://github.com/Yelp/dumb-init
