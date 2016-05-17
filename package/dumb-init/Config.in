@@ -1,0 +1,16 @@
+config BR2_PACKAGE_DUMB_INIT
+	bool "dumb-init"
+	help
+	  dumb-init is a simple but valid init binary to act as PID 1 for
+	  containers.
+
+	  https://github.com/Yelp/dumb-init
+
+if BR2_PACKAGE_DUMB_INIT
+
+config BR2_PACKAGE_DUMB_INIT_STATIC
+	bool "build static"
+	help
+	  Enables static compilation for dumb-init.
+
+endif
