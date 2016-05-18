@@ -4,22 +4,16 @@
 #
 ################################################################################
 
-RTL8821AU_VERSION = 116a3abe7783b023655e9917afe2d1eabe178028
-RTL8821AU_SITE = $(call github,ulli-kroll,rtl8821au,$(RTL8821AU_VERSION))
-RTL8821AU_LICENSE = GPLv2, proprietary (rtl8821au.bin firmware)
+# RTL8821AU_VERSION = driver-4.3.22-beta
+RTL8821AU_VERSION = c52dd5a538b61a4d77a47c164eb8e77395116263
+RTL8821AU_SITE = $(call github,diederikdehaas,rtl8812AU,$(RTL8821AU_VERSION))
+RTL8821AU_LICENSE = GPLv2
 RTL8821AU_LICENSE_FILES = COPYING
 
 RTL8821AU_MODULE_MAKE_OPTS = \
 	CONFIG_RTL8812AU_8821AU=m \
 	KVER=$(LINUX_VERSION_PROBED) \
 	USER_EXTRA_CFLAGS=-DCONFIG_$(call qstrip,$(BR2_ENDIAN))_ENDIAN
-
-define RTL8821AU_FIRMWARE_INSTALL
-	mkdir -p $(TARGET_DIR)/lib/firmware/rtlwifi/
-	$(INSTALL) -D -m 0644 $(@D)/firmware/* $(TARGET_DIR)/lib/firmware/rtlwifi/
-endef
-
-RTL8821AU_POST_INSTALL_TARGET_HOOKS += RTL8821AU_FIRMWARE_INSTALL
 
 $(eval $(kernel-module))
 $(eval $(generic-package))
