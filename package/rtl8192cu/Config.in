@@ -1,0 +1,11 @@
+config BR2_PACKAGE_RTL8192CU
+	bool "rtl8192cu"
+	depends on BR2_LINUX_KERNEL
+	help
+	  A repackaging of the 8192CU USB WiFi driver
+	  with various stability fixes applied.
+
+	  https://github.com/pvaret/rtl8192cu-fixes
+
+comment "rtl8192cu needs a Linux kernel to be built"
+	depends on !BR2_LINUX_KERNEL
