@@ -1,0 +1,6 @@
+config BR2_PACKAGE_GENERATE_IPV6_ADDRESS
+	bool "generate-ipv6-address"
+	help
+	  A simple tool to generate an ipv6 address.
+
+	  https://www.irif.univ-paris-diderot.fr/~jch/software/
