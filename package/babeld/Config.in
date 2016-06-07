@@ -1,0 +1,6 @@
+config BR2_PACKAGE_BABELD
+	bool "babeld"
+	help
+	  Babel routing daemon.
+
+	  https://github.com/jech/babeld
