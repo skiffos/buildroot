@@ -4,7 +4,8 @@
 #
 ################################################################################
 
-RTL8821AU_VERSION = driver-4.3.22-beta
+# RTL8821AU_VERSION = driver-4.3.22-beta
+RTL8821AU_VERSION = c52dd5a538b61a4d77a47c164eb8e77395116263
 RTL8821AU_SITE = $(call github,diederikdehaas,rtl8812AU,$(RTL8821AU_VERSION))
 RTL8821AU_LICENSE = GPLv2
 RTL8821AU_LICENSE_FILES = COPYING
