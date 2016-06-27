@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-DOCKER_ENGINE_VERSION = v1.11.1
+DOCKER_ENGINE_VERSION = 1c06ebeeee1a600c0e4fc73d3c7485e5d15abfda
 DOCKER_ENGINE_SITE = $(call github,docker,docker,$(DOCKER_ENGINE_VERSION))
 
 DOCKER_ENGINE_LICENSE = Apache-2.0
@@ -58,8 +58,6 @@ DOCKER_ENGINE_BUILD_TAGS += exclude_graphdriver_vfs
 endif
 
 define DOCKER_ENGINE_CONFIGURE_CMDS
-	$(SED) '/^clean$$/d' $(@D)/hack/vendor.sh
-	cd $(@D) && bash ./hack/vendor.sh
 	mkdir -p $(DOCKER_ENGINE_GOPATH)/src/github.com/docker
 	ln -fs $(@D) $(DOCKER_ENGINE_GOPATH)/src/github.com/docker/docker
 	ln -fs $(DOCKER_CONTAINERD_SRCDIR) $(DOCKER_ENGINE_GOPATH)/src/github.com/docker/containerd
@@ -67,12 +65,28 @@ define DOCKER_ENGINE_CONFIGURE_CMDS
 	ln -fs $(RUNC_SRCDIR) $(DOCKER_ENGINE_GOPATH)/src/github.com/opencontainers/runc
 endef
 
-define DOCKER_ENGINE_BUILD_CMDS
-	cd $(@D); $(DOCKER_ENGINE_MAKE_ENV) $(HOST_DIR)/usr/bin/go build -v -o $(@D)/bin/docker -tags "$(DOCKER_ENGINE_BUILD_TAGS)" -ldflags "$(DOCKER_ENGINE_GLDFLAGS)" ./docker
+define DOCKER_ENGINE_BUILD_CLIENT_CMDS
+	cd $(@D); $(DOCKER_ENGINE_MAKE_ENV) $(HOST_DIR)/usr/bin/go build -v -o $(@D)/bin/docker -tags "$(DOCKER_ENGINE_BUILD_TAGS)" -ldflags "$(DOCKER_ENGINE_GLDFLAGS)" ./cmd/docker
 endef
+
+define DOCKER_ENGINE_BUILD_DAEMON_CMDS
+	cd $(@D); $(DOCKER_ENGINE_MAKE_ENV) $(HOST_DIR)/usr/bin/go build -v -o $(@D)/bin/dockerd -tags "$(DOCKER_ENGINE_BUILD_TAGS)" -ldflags "$(DOCKER_ENGINE_GLDFLAGS)" ./cmd/dockerd
+endef
+
+ifeq ($(BR2_PACKAGE_DOCKER_ENGINE_DAEMON),y)
+define DOCKER_ENGINE_BUILD_CMDS
+	$(DOCKER_ENGINE_BUILD_CLIENT_CMDS)
+	$(DOCKER_ENGINE_BUILD_DAEMON_CMDS)
+endef
+else
+define DOCKER_ENGINE_BUILD_CMDS
+	$(DOCKER_ENGINE_BUILD_CLIENT_CMDS)
+endef
+endif
 
 define DOCKER_ENGINE_INSTALL_TARGET_CMDS
 	$(INSTALL) -D -m 0755 $(@D)/bin/docker $(TARGET_DIR)/usr/bin/docker
+	$(INSTALL) -D -m 0755 $(@D)/bin/dockerd $(TARGET_DIR)/usr/bin/dockerd
 endef
 
 define DOCKER_ENGINE_INSTALL_INIT_SYSTEMD
