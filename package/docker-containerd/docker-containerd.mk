@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-DOCKER_CONTAINERD_VERSION = v0.2.2
+DOCKER_CONTAINERD_VERSION = b93a33be39bc4ef0fb00bfcb79147a28c33d9d43
 DOCKER_CONTAINERD_SITE = $(call github,docker,containerd,$(DOCKER_CONTAINERD_VERSION))
 
 DOCKER_CONTAINERD_LICENSE = Apache-2.0
