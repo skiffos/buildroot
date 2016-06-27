@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-RUNC_VERSION = v0.1.1
+RUNC_VERSION = 629e35666d31f743090452416c8df207d9fdbd34
 RUNC_SITE = $(call github,opencontainers,runc,$(RUNC_VERSION))
 
 RUNC_LICENSE = Apache-2.0
