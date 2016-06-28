@@ -24,7 +24,7 @@ DOCKER_ENGINE_GLDFLAGS = \
 	-X main.Version=$(DOCKER_ENGINE_VERSION) \
 	-extldflags '-static'
 
-DOCKER_ENGINE_BUILD_TAGS = cgo exclude_graphdriver_zfs
+DOCKER_ENGINE_BUILD_TAGS = cgo exclude_graphdriver_zfs autogen
 
 ifeq ($(BR2_PACKAGE_LIBSECCOMP),y)
 DOCKER_ENGINE_BUILD_TAGS += seccomp
@@ -63,6 +63,9 @@ define DOCKER_ENGINE_CONFIGURE_CMDS
 	ln -fs $(DOCKER_CONTAINERD_SRCDIR) $(DOCKER_ENGINE_GOPATH)/src/github.com/docker/containerd
 	mkdir -p $(DOCKER_ENGINE_GOPATH)/src/github.com/opencontainers
 	ln -fs $(RUNC_SRCDIR) $(DOCKER_ENGINE_GOPATH)/src/github.com/opencontainers/runc
+	cd $(@D) && \
+		GITCOMMIT="unknown" BUILDTIME="$$(date)" VERSION="$(DOCKER_ENGINE_VERSION)" \
+		bash ./hack/make/.go-autogen
 endef
 
 define DOCKER_ENGINE_BUILD_CLIENT_CMDS
