@@ -20,7 +20,13 @@ endef
 
 define AUFS_UTIL_BUILD_CMDS
 	$(MAKE) -C $(LINUX_BUILDDIR) headers_install
-	$(MAKE) -C $(@D) CPPFLAGS="-I $(LINUX_BUILDDIR)/usr/include/" HOSTCC="$(CC)" HOSTLD="$(LD)" INSTALL="$(INSTALL)" all
+	$(HOSTCC_NOCCACHE) -I $(LINUX_BUILDDIR)/usr/include/ $(@D)/ver.c -o $(@D)/ver
+	$(HOSTCC_NOCCACHE) -I $(LINUX_BUILDDIR)/usr/include/ \
+		-I $(@D)/libau \
+		$(@D)/c2tmac.c -o $(@D)/c2tmac
+	$(HOSTCC_NOCCACHE) -I $(LINUX_BUILDDIR)/usr/include/ \
+		$(@D)/c2sh.c -o $(@D)/c2sh
+	$(MAKE) -C $(@D) CPPFLAGS="-I $(LINUX_BUILDDIR)/usr/include/" HOSTCC="$(HOSTCC_NOCCACHE)" CC="$(TARGET_CC)" INSTALL="$(INSTALL)" all
 endef
 
 define AUFS_UTIL_INSTALL_TARGET_CMDS
