@@ -103,10 +103,10 @@ define DOCKER_ENGINE_INSTALL_INIT_SYSTEMD
 endef
 
 define DOCKER_ENGINE_INSTALL_INIT_SYSV
-	$(INSTALL) -D -m 755 $(@D)/contrib/init/sysvinit-redhat/docker \
+	$(INSTALL) -D -m 755 package/docker-engine/docker.init \
 		$(TARGET_DIR)/etc/init.d/S61docker
-	$(INSTALL) -D -m 644 $(@D)/contrib/init/sysvinit-redhat/docker.sysconfig \
-		$(TARGET_DIR)/etc/sysconfig/docker.sysconfig
+	$(INSTALL) -D -m 644 $(@D)/contrib/init/sysvinit-debian/docker.default \
+		$(TARGET_DIR)/etc/default/docker
 endef
 
 define DOCKER_ENGINE_USERS
