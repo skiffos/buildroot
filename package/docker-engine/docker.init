@@ -96,8 +96,9 @@ case "$1" in
        restart)
                docker_pid=`cat "$DOCKER_SSD_PIDFILE" 2>/dev/null`
                [ -n "$docker_pid" ] \
-                       && ps -p $docker_pid > /dev/null 2>&1 \
-                       && $0 stop
+                       && [ -d /proc/$docker_pid ] \
+                       && $0 stop \
+                       && sleep 1
                $0 start
                ;;
 
