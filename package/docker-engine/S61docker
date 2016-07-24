@@ -1,0 +1,89 @@
+#!/bin/sh
+
+BASE=docker
+
+# modify these in /etc/default/$BASE (/etc/default/docker)
+DOCKERD=/usr/bin/dockerd
+# This is the pid file managed by docker itself
+DOCKER_PIDFILE=/var/run/$BASE.pid
+# This is the pid file created/managed by start-stop-daemon
+DOCKER_SSD_PIDFILE=/var/run/$BASE-ssd.pid
+DOCKER_LOGFILE=/var/log/$BASE.log
+DOCKER_DESC="Docker"
+
+if [ -f /etc/default/$BASE ]; then
+       . /etc/default/$BASE
+fi
+
+# Check docker is present
+if [ ! -x $DOCKERD ]; then
+       echo "$DOCKERD not present or not executable"
+       exit 1
+fi
+
+cgroupfs_mount() {
+       # see also https://github.com/tianon/cgroupfs-mount/blob/951c38ee8d802330454bdede20d85ec1c0f8d312/cgroupfs-mount
+       if grep -v '^#' /etc/fstab | grep -q cgroup \
+               || [ ! -e /proc/cgroups ] \
+               || [ ! -d /sys/fs/cgroup ]; then
+               return
+       fi
+       if ! mountpoint -q /sys/fs/cgroup; then
+               mount -t tmpfs -o uid=0,gid=0,mode=0755 cgroup /sys/fs/cgroup
+       fi
+       (
+               cd /sys/fs/cgroup
+               for sys in $(awk '!/^#/ { if ($4 == 1) print $1 }' /proc/cgroups); do
+                       mkdir -p $sys
+                       if ! mountpoint -q $sys; then
+                               if ! mount -n -t cgroup -o $sys cgroup $sys; then
+                                       rmdir $sys || true
+                               fi
+                       fi
+               done
+       )
+}
+
+case "$1" in
+       start)
+               cgroupfs_mount
+
+               ulimit -n 1048576
+               ulimit -p 1048576
+
+               echo "Starting $DOCKER_DESC: $BASE"
+               start-stop-daemon --start --background \
+                       --exec "$DOCKERD" \
+                       --pidfile "$DOCKER_SSD_PIDFILE" \
+                       --make-pidfile \
+                       -- \
+                               -p "$DOCKER_PIDFILE" \
+                               $DOCKER_OPTS \
+                                       >> "$DOCKER_LOGFILE" 2>&1
+               echo $?
+               ;;
+
+       stop)
+               echo "Stopping $DOCKER_DESC: $BASE"
+               start-stop-daemon --stop --pidfile "$DOCKER_SSD_PIDFILE" --retry 10
+               echo $?
+               ;;
+
+       restart)
+               docker_pid=`cat "$DOCKER_SSD_PIDFILE" 2>/dev/null`
+               [ -n "$docker_pid" ] \
+                       && [ -d /proc/$docker_pid ] \
+                       && $0 stop \
+                       && sleep 1
+               $0 start
+               ;;
+
+       force-reload)
+               $0 restart
+               ;;
+
+       *)
+               echo "Usage: service docker {start|stop|restart}"
+               exit 1
+               ;;
+esac
