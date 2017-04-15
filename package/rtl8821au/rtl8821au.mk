@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-RTL8821AU_VERSION = b018b446fb0729fa659e7eead475d6c13f192642
+RTL8821AU_VERSION = 0292aa694d85e8f9120479604e98693f20d5da02
 RTL8821AU_SITE = $(call github,abperiasamy,rtl8812AU_8821AU_linux,$(RTL8821AU_VERSION))
 RTL8821AU_LICENSE = GPL-2.0
 RTL8821AU_LICENSE_FILES = LICENSE
