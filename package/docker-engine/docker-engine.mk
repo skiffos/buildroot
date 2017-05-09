@@ -50,6 +50,13 @@ endif
 ifeq ($(BR2_PACKAGE_DOCKER_ENGINE_DAEMON),y)
 DOCKER_ENGINE_BUILD_TAGS += daemon
 DOCKER_ENGINE_BUILD_TARGETS += dockerd
+
+ifeq ($(BR2_PACKAGE_DOCKER_ENGINE_INIT_DUMB_INIT),y)
+DOCKER_ENGINE_INIT = dumb-init
+else
+DOCKER_ENGINE_INIT = tini
+endif
+
 endif
 
 ifeq ($(BR2_PACKAGE_DOCKER_ENGINE_EXPERIMENTAL),y)
@@ -118,6 +125,10 @@ endef
 define DOCKER_ENGINE_INSTALL_TARGET_CMDS
 	$(foreach target,$(DOCKER_ENGINE_BUILD_TARGETS), \
 		$(INSTALL) -D -m 0755 $(@D)/bin/$(target) $(TARGET_DIR)/usr/bin/$(target)
+	)
+
+	$(if $(filter $(BR2_PACKAGE_DOCKER_ENGINE_DAEMON),y), \
+		ln -fs $(DOCKER_ENGINE_INIT) $(TARGET_DIR)/usr/bin/docker-init
 	)
 endef
 
