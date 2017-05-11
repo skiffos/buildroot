@@ -15,6 +15,10 @@ ifeq ($(BR2_PACKAGE_TINI_MINIMAL),y)
 TINI_CFLAGS += -DTINI_MINIMAL
 endif
 
+ifeq ($(BR2_PACKAGE_TINI_STATIC),y)
+TINI_CFLAGS += -static
+endif
+
 ifeq ($(BR2_TOOLCHAIN_HAS_SSP),y)
 TINI_CFLAGS += -fstack-protector --param=ssp-buffer-size=4
 endif
