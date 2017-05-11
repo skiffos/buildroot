@@ -44,6 +44,7 @@ choice
 config BR2_PACKAGE_DOCKER_ENGINE_INIT_TINI
 	bool "tini"
 	select BR2_PACKAGE_TINI
+	select BR2_PACKAGE_TINI_STATIC
 	help
 	  Use Tini as the container init process.
 
@@ -52,6 +53,7 @@ config BR2_PACKAGE_DOCKER_ENGINE_INIT_TINI
 config BR2_PACKAGE_DOCKER_ENGINE_INIT_DUMB_INIT
 	bool "dumb-init"
 	select BR2_PACKAGE_DUMB_INIT
+	select BR2_PACKAGE_DUMB_INIT_STATIC
 	help
 	  Use dumb-init as the container init process.
 
