@@ -5,3 +5,12 @@ config BR2_PACKAGE_DUMB_INIT
 	  act as PID 1 for containers.
 
 	  https://github.com/Yelp/dumb-init
+
+if BR2_PACKAGE_DUMB_INIT
+
+config BR2_PACKAGE_DUMB_INIT_STATIC
+	bool "build static"
+	help
+	  Enables static compilation for dumb-init.
+
+endif
