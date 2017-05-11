@@ -13,4 +13,9 @@ config BR2_PACKAGE_TINI_MINIMAL
 	help
 	  Disables argument parsing and verbose output.
 
+config BR2_PACKAGE_TINI_STATIC
+	bool "build static"
+	help
+	  Enables static compilation for tini.
+
 endif
