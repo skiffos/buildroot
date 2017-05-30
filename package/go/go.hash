@@ -1,2 +1,2 @@
-# Locally computed:
-sha256 4c189111e9ba651a2bb3ee868aa881fab36b2f2da3409e80885ca758a6b614cc  go1.7.4.src.tar.gz
+# From https://golang.org/dl/
+sha256	665f184bf8ac89986cfd5a4460736976f60b57df6b320ad71ad4cef53bb143dc	go1.9.2.src.tar.gz
