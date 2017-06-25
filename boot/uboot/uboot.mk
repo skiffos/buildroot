@@ -115,7 +115,8 @@ endif
 
 # The kernel calls AArch64 'arm64', but U-Boot calls it just 'arm', so
 # we have to special case it. Similar for i386/x86_64 -> x86
-ifeq ($(KERNEL_ARCH),arm64)
+# This is not always true, so add an option.
+ifeq ($(KERNEL_ARCH)$(BR2_TARGET_UBOOT_FORCE_ARM),arm64y)
 UBOOT_ARCH = arm
 else ifneq ($(filter $(KERNEL_ARCH),i386 x86_64),)
 UBOOT_ARCH = x86
