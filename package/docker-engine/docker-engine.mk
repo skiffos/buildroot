@@ -4,9 +4,9 @@
 #
 ################################################################################
 
-DOCKER_ENGINE_VERSION = v1.12.6
-DOCKER_ENGINE_COMMIT = 78d18021ecba00c00730dec9d56de6896f9e708d
-DOCKER_ENGINE_SITE = $(call github,docker,docker,$(DOCKER_ENGINE_VERSION))
+DOCKER_ENGINE_VERSION = v17.07.0-ce
+DOCKER_ENGINE_COMMIT = 87847530f7176a48348d196f7c23bbd058052af1
+DOCKER_ENGINE_SITE = $(call github,docker,docker-ce,$(DOCKER_ENGINE_VERSION))
 
 DOCKER_ENGINE_LICENSE = Apache-2.0
 DOCKER_ENGINE_LICENSE_FILES = LICENSE
@@ -19,19 +19,25 @@ DOCKER_ENGINE_MAKE_ENV = $(HOST_GO_TARGET_ENV) \
 	CGO_NO_EMULATION=1 \
 	GOBIN="$(@D)/bin" \
 	GOPATH="$(DOCKER_ENGINE_GOPATH)" \
-	PKG_CONFIG="$(PKG_CONFIG_HOST_BINARY)" \
+	PKG_CONFIG="$(PKG_CONFIG)" \
 	$(TARGET_MAKE_ENV)
 
 DOCKER_ENGINE_GLDFLAGS = \
 	-X main.GitCommit=$(DOCKER_ENGINE_VERSION) \
-	-X main.Version=$(DOCKER_ENGINE_VERSION)
+	-X main.Version=$(DOCKER_ENGINE_VERSION) \
+	-X github.com/docker/cli/cli.GitCommit=$(DOCKER_ENGINE_VERSION) \
+	-X github.com/docker/cli/cli.Version=$(DOCKER_ENGINE_VERSION)
+
+DOCKER_ENGINE_BUILD_TAGS = cgo exclude_graphdriver_zfs autogen
+DOCKER_ENGINE_BUILD_TARGETS = cli:docker
+DOCKER_ENGINE_BUILD_TARGET_PARSE = \
+		export targetpkg=$$(echo $(target) | cut -d: -f1); \
+		export targetbin=$$(echo $(target) | cut -d: -f2)
 
 ifeq ($(BR2_STATIC_LIBS),y)
 DOCKER_ENGINE_GLDFLAGS += -extldflags '-static'
+DOCKER_ENGINE_BUILD_TAGS += static_build
 endif
-
-DOCKER_ENGINE_BUILD_TAGS = cgo exclude_graphdriver_zfs autogen
-DOCKER_ENGINE_BUILD_TARGETS = docker
 
 ifeq ($(BR2_PACKAGE_LIBSECCOMP),y)
 DOCKER_ENGINE_BUILD_TAGS += seccomp
@@ -39,13 +45,13 @@ DOCKER_ENGINE_DEPENDENCIES += libseccomp
 endif
 
 ifeq ($(BR2_INIT_SYSTEMD),y)
-DOCKER_ENGINE_BUILD_TAGS += journald
 DOCKER_ENGINE_DEPENDENCIES += systemd
+DOCKER_ENGINE_BUILD_TAGS += systemd journald
 endif
 
 ifeq ($(BR2_PACKAGE_DOCKER_ENGINE_DAEMON),y)
 DOCKER_ENGINE_BUILD_TAGS += daemon
-DOCKER_ENGINE_BUILD_TARGETS += dockerd
+DOCKER_ENGINE_BUILD_TARGETS += docker:dockerd
 
 ifeq ($(BR2_PACKAGE_DOCKER_ENGINE_INIT_DUMB_INIT),y)
 DOCKER_ENGINE_INIT = dumb-init
@@ -79,10 +85,12 @@ endif
 
 define DOCKER_ENGINE_CONFIGURE_CMDS
 	mkdir -p $(DOCKER_ENGINE_GOPATH)/src/github.com/docker
-	ln -fs $(@D) $(DOCKER_ENGINE_GOPATH)/src/github.com/docker/docker
-	cd $(@D) && \
+	ln -fs $(@D)/components/engine $(DOCKER_ENGINE_GOPATH)/src/github.com/docker/docker
+	ln -fs $(@D)/components/cli $(DOCKER_ENGINE_GOPATH)/src/github.com/docker/cli
+	cd $(@D)/components/engine && \
 		GITCOMMIT="$$(echo $(DOCKER_ENGINE_COMMIT) | head -c7)" \
 		BUILDTIME="$$(date)" \
+		IAMSTATIC="true" \
 		VERSION="$(patsubst v%,%,$(DOCKER_ENGINE_VERSION))" \
 		PKG_CONFIG="$(PKG_CONFIG_HOST_BINARY)" $(TARGET_MAKE_ENV) \
 		bash ./hack/make/.go-autogen
@@ -91,9 +99,9 @@ endef
 ifeq ($(BR2_PACKAGE_DOCKER_ENGINE_DAEMON),y)
 
 define DOCKER_ENGINE_INSTALL_INIT_SYSTEMD
-	$(INSTALL) -D -m 0644 $(@D)/contrib/init/systemd/docker.service \
+	$(INSTALL) -D -m 0644 $(@D)/components/engine/contrib/init/systemd/docker.service \
 		$(TARGET_DIR)/usr/lib/systemd/system/docker.service
-	$(INSTALL) -D -m 0644 $(@D)/contrib/init/systemd/docker.socket \
+	$(INSTALL) -D -m 0644 $(@D)/components/engine/contrib/init/systemd/docker.socket \
 		$(TARGET_DIR)/usr/lib/systemd/system/docker.socket
 	mkdir -p $(TARGET_DIR)/etc/systemd/system/multi-user.target.wants/
 	ln -fs ../../../../usr/lib/systemd/system/docker.service \
@@ -108,19 +116,21 @@ endif
 
 define DOCKER_ENGINE_BUILD_CMDS
 	$(foreach target,$(DOCKER_ENGINE_BUILD_TARGETS), \
-		cd $(@D)/gopath/src/github.com/docker/docker; \
+		$(DOCKER_ENGINE_BUILD_TARGET_PARSE); \
+		cd $(@D)/gopath/src/github.com/docker/$${targetpkg}; \
 		$(DOCKER_ENGINE_MAKE_ENV) \
 		$(HOST_DIR)/usr/bin/go build -v \
-			-o $(@D)/bin/$(target) \
+			-o $(@D)/bin/$${targetbin} \
 			-tags "$(DOCKER_ENGINE_BUILD_TAGS)" \
 			-ldflags "$(DOCKER_ENGINE_GLDFLAGS)" \
-			./cmd/$(target)
+			./cmd/$${targetbin}
 	)
 endef
 
 define DOCKER_ENGINE_INSTALL_TARGET_CMDS
 	$(foreach target,$(DOCKER_ENGINE_BUILD_TARGETS), \
-		$(INSTALL) -D -m 0755 $(@D)/bin/$(target) $(TARGET_DIR)/usr/bin/$(target)
+		$(DOCKER_ENGINE_BUILD_TARGET_PARSE); \
+		$(INSTALL) -D -m 0755 $(@D)/bin/$${targetbin} $(TARGET_DIR)/usr/bin/$${targetbin}
 	)
 
 	$(if $(filter $(BR2_PACKAGE_DOCKER_ENGINE_DAEMON),y), \
