@@ -1,2 +1,3 @@
 # Locally calculated
-sha256 0413f3513c2a6842ed9cf837154c8a722e9b34cb36b33430348489baa183707e  docker-engine-v1.12.6.tar.gz
+sha256	e3193118306e0d4dc4b9ad329870633d3a78d80c5f00ca6185e14185e717ca7e	docker-engine-v17.07.0-ce.tar.gz
+
