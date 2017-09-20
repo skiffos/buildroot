@@ -176,6 +176,15 @@ config BR2_PACKAGE_BOOTUTILS
 	help
 	  The bootutils package was removed.
 
+config BR2_PACKAGE_DOCKER_ENGINE_STATIC_CLIENT
+	bool "docker-engine static client option renamed"
+	select BR2_LEGACY
+	select BR2_PACKAGE_DOCKER_CLI_STATIC
+	help
+	  BR2_PACKAGE_DOCKER_ENGINE_STATIC_CLIENT has been renamed to
+	  BR2_PACKAGE_DOCKER_CLI_STATIC, following the package split of
+	  docker-engine and docker-cli.
+
 config BR2_PACKAGE_EXPEDITE
 	bool "expedite package has been removed"
 	select BR2_LEGACY
