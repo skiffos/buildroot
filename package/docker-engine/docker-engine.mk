@@ -4,9 +4,8 @@
 #
 ################################################################################
 
-DOCKER_ENGINE_VERSION = v17.05.0-ce
-DOCKER_ENGINE_COMMIT = 89658bed64c2a8fe05a978e5b87dbec409d57a0f
-DOCKER_ENGINE_SITE = $(call github,docker,docker,$(DOCKER_ENGINE_VERSION))
+DOCKER_ENGINE_VERSION = v18.03.0-ce-rc1
+DOCKER_ENGINE_SITE = $(call github,docker,docker-ce,$(DOCKER_ENGINE_VERSION))
 
 DOCKER_ENGINE_LICENSE = Apache-2.0
 DOCKER_ENGINE_LICENSE_FILES = LICENSE
@@ -15,7 +14,15 @@ DOCKER_ENGINE_DEPENDENCIES = host-go host-pkgconf
 
 DOCKER_ENGINE_LDFLAGS = \
 	-X main.GitCommit=$(DOCKER_ENGINE_VERSION) \
-	-X main.Version=$(DOCKER_ENGINE_VERSION)
+	-X main.Version=$(DOCKER_ENGINE_VERSION) \
+	-X github.com/docker/cli/cli.GitCommit=$(DOCKER_ENGINE_VERSION) \
+	-X github.com/docker/cli/cli.Version=$(DOCKER_ENGINE_VERSION)
+
+DOCKER_ENGINE_BUILD_TAGS = cgo exclude_graphdriver_zfs autogen
+DOCKER_ENGINE_BUILD_TARGETS = cli:docker
+DOCKER_ENGINE_BUILD_TARGET_PARSE = \
+		export targetpkg=$$(echo $(target) | cut -d: -f1); \
+		export targetbin=$$(echo $(target) | cut -d: -f2)
 
 ifeq ($(BR2_PACKAGE_DOCKER_ENGINE_STATIC_CLIENT),y)
 DOCKER_ENGINE_LDFLAGS += -extldflags '-static'
@@ -32,6 +39,7 @@ endif
 ifeq ($(BR2_INIT_SYSTEMD),y)
 DOCKER_ENGINE_TAGS += journald
 DOCKER_ENGINE_DEPENDENCIES += systemd
+DOCKER_ENGINE_BUILD_TAGS += systemd journald
 endif
 
 ifeq ($(BR2_PACKAGE_DOCKER_ENGINE_DAEMON),y)
@@ -73,6 +81,7 @@ define DOCKER_ENGINE_RUN_AUTOGEN
 	cd $(@D) && \
 		GITCOMMIT="$$(echo $(DOCKER_ENGINE_COMMIT) | head -c7)" \
 		BUILDTIME="$$(date)" \
+		IAMSTATIC="true" \
 		VERSION="$(patsubst v%,%,$(DOCKER_ENGINE_VERSION))" \
 		PKG_CONFIG="$(PKG_CONFIG_HOST_BINARY)" $(TARGET_MAKE_ENV) \
 		bash ./hack/make/.go-autogen
@@ -83,9 +92,9 @@ DOCKER_ENGINE_POST_CONFIGURE_HOOKS += DOCKER_ENGINE_RUN_AUTOGEN
 ifeq ($(BR2_PACKAGE_DOCKER_ENGINE_DAEMON),y)
 
 define DOCKER_ENGINE_INSTALL_INIT_SYSTEMD
-	$(INSTALL) -D -m 0644 $(@D)/contrib/init/systemd/docker.service \
+	$(INSTALL) -D -m 0644 $(@D)/components/engine/contrib/init/systemd/docker.service \
 		$(TARGET_DIR)/usr/lib/systemd/system/docker.service
-	$(INSTALL) -D -m 0644 $(@D)/contrib/init/systemd/docker.socket \
+	$(INSTALL) -D -m 0644 $(@D)/components/engine/contrib/init/systemd/docker.socket \
 		$(TARGET_DIR)/usr/lib/systemd/system/docker.socket
 	mkdir -p $(TARGET_DIR)/etc/systemd/system/multi-user.target.wants/
 	ln -fs ../../../../usr/lib/systemd/system/docker.service \
