@@ -41,8 +41,10 @@ F:	package/libsepol/
 F:	package/nginx-naxsi/
 F:	package/policycoreutils/
 F:	package/python-mutagen/
+F:	package/restorecond/
 F:	package/refpolicy/
-F:	package/sepolgen/
+F:	package/selinux-python/
+F:	package/semodule-utils/
 F:	package/setools/
 F:	package/sngrep/
 
@@ -197,6 +199,7 @@ F:	package/alsa-utils/
 F:	package/apache/
 F:	package/apr/
 F:	package/apr-util/
+F:	package/bcg729/
 F:	package/bluez-tools/
 F:	package/clamav/
 F:	package/dovecot/
@@ -206,6 +209,7 @@ F:	package/eudev/
 F:	package/exim/
 F:	package/fetchmail/
 F:	package/freeswitch/
+F:	package/freeswitch-mod-bcg729/
 F:	package/ffmpeg/
 F:	package/ghostscript/
 F:	package/giflib/
@@ -495,6 +499,9 @@ F:	package/nss-pam-ldapd/
 F:	package/sp-oops-extract/
 F:	package/unscd/
 
+N:	Dushara Jayasinghe <nidujay@gmail.com>
+F:	package/prosody/
+
 N:	Ed Swierk <eswierk@skyportsystems.com>
 F:	package/xxhash/
 
@@ -553,7 +560,7 @@ F:	package/supertuxkart/
 N:	Fabio Estevam <festevam@gmail.com>
 F:	board/warp7/
 F:	configs/freescale_imx*
-F:	configs/imx6q-sabresd*
+F:	configs/imx6-sabresd*
 F:	configs/imx6ulpico_defconfig
 F:	configs/mx6cubox_defconfig
 F:	configs/mx6sx_udoo_neo_defconfig
@@ -643,6 +650,7 @@ F:	package/zxing-cpp/
 
 N:	Gaël Portay <gael.portay@savoirfairelinux.com>
 F:	package/qt5/qt5virtualkeyboard/
+F:	package/qt5/qt5webengine/
 
 N:	Gary Bisson <gary.bisson@boundarydevices.com>
 F:	board/boundarydevices/
@@ -692,157 +700,6 @@ F:	arch/Config.in.csky
 F:	board/csky/
 F:	configs/csky_*
 
-N:	Gustavo Zacarias <gustavo@zacarias.com.ar>
-F:	arch/Config.in.powerpc
-F:	board/qemu/
-F:	configs/qemu_*
-F:	package/argp-standalone/
-F:	package/arptables/
-F:	package/audiofile/
-F:	package/autossh/
-F:	package/bitstream-vera/
-F:	package/blktrace/
-F:	package/bmon/
-F:	package/btrfs-progs/
-F:	package/c-ares/
-F:	package/cantarell/
-F:	package/check/
-F:	package/collectd/
-F:	package/comix-cursors/
-F:	package/connman-gtk/
-F:	package/conntrack-tools/
-F:	package/cppdb/
-F:	package/crda/
-F:	package/cryptodev-linux/
-F:	package/dbus-cpp/
-F:	package/debianutils/
-F:	package/dt/
-F:	package/exfat/
-F:	package/exfat-utils/
-F:	package/f2fs-tools/
-F:	package/faad2/
-F:	package/fping/
-F:	package/ftop/
-F:	package/gcr/
-F:	package/geoip/
-F:	package/gpsd/
-F:	package/granite/
-F:	package/graphite2/
-F:	package/gsettings-desktop-schemas/
-F:	package/gstreamer1/
-F:	package/hans/
-F:	package/haveged/
-F:	package/heimdal/
-F:	package/hostapd/
-F:	package/ifupdown/
-F:	package/inconsolata/
-F:	package/iodine/
-F:	package/iperf3/
-F:	package/ipset/
-F:	package/iw/
-F:	package/jhead/
-F:	package/jquery-keyboard/
-F:	package/kompexsqlite/
-F:	package/kvmtool/
-F:	package/lame/
-F:	package/lft/
-F:	package/libao/
-F:	package/libcroco/
-F:	package/libcue/
-F:	package/libcuefile/
-F:	package/libepoxy/
-F:	package/libgee/
-F:	package/libglib2/
-F:	package/libgtk2/
-F:	package/libgtk3/
-F:	package/libmcrypt/
-F:	package/libmemcached/
-F:	package/libmhash/
-F:	package/libmnl/
-F:	package/libmng/
-F:	package/libmpdclient/
-F:	package/libnetfilter_acct/
-F:	package/libnetfilter_conntrack/
-F:	package/libnetfilter_cthelper/
-F:	package/libnetfilter_cttimeout/
-F:	package/libnetfilter_log/
-F:	package/libnetfilter_queue/
-F:	package/libnfnetlink/
-F:	package/libnl/
-F:	package/liboping/
-F:	package/libreplaygain/
-F:	package/libsamplerate/
-F:	package/libtorrent/
-F:	package/libuv/
-F:	package/lksctp-tools/
-F:	package/lshw/
-F:	package/lz4/
-F:	package/lzip/
-F:	package/mbedtls/
-F:	package/mcrypt/
-F:	package/memcached/
-F:	package/minizip/
-F:	package/mpd/
-F:	package/mpv/
-F:	package/mtr/
-F:	package/musepack/
-F:	package/ncmpc/
-F:	package/net-tools/
-F:	package/netstat-nat/
-F:	package/nettle/
-F:	package/nfacct/
-F:	package/nftables/
-F:	package/nload/
-F:	package/nmap/
-F:	package/noip/
-F:	package/norm/
-F:	package/obsidian-cursors/
-F:	package/ocf-linux/
-F:	package/opencore-amr/
-F:	package/openswan/
-F:	package/openvpn/
-F:	package/opusfile/
-F:	package/p11-kit/
-F:	package/p910nd/
-F:	package/pax-utils/
-F:	package/procrank_linux/
-F:	package/php-*
-F:	package/pkgconf/
-F:	package/privoxy/
-F:	package/protobuf-c/
-F:	package/ptpd/
-F:	package/ptpd2/
-F:	package/pwgen/
-F:	package/ramspeed/
-F:	package/rng-tools/
-F:	package/rtorrent/
-F:	package/samba4/
-F:	package/sbc/
-F:	package/snmppp/
-F:	package/sox/
-F:	package/spidev_test/
-F:	package/squid/
-F:	package/start-stop-daemon/
-F:	package/swig/
-F:	package/thrift/
-F:	package/twolame/
-F:	package/ulogd/
-F:	package/unionfs/
-F:	package/unrar/
-F:	package/ushare/
-F:	package/vala/
-F:	package/vorbis-tools/
-F:	package/wavpack/
-F:	package/wayland-protocols/
-F:	package/webkitgtk/
-F:	package/whois/
-F:	package/wireshark/
-F:	package/wpa_supplicant/
-F:	package/wpan-tools/
-F:	package/x11r7/xdriver_xf86-video-qxl/
-F:	package/xtables-addons/
-F:	package/zd1211-firmware/
-
 N:	Gwenhael Goavec-Merou <gwenhael.goavec-merou@trabucayre.com>
 F:	package/gnuradio/
 F:	package/gqrx/
@@ -873,6 +730,7 @@ F:	package/keepalived/
 N:	Jagan Teki <jagan@amarulasolutions.com>
 F:	board/engicam/
 F:	configs/engicam_imx6qdl_icore_defconfig
+F:	configs/engicam_imx6qdl_icore_qt5_defconfig
 F:	configs/engicam_imx6qdl_icore_rqs_defconfig
 F:	configs/engicam_imx6ul_geam_defconfig
 F:	configs/engicam_imx6ul_isiot_defconfig
@@ -913,6 +771,8 @@ F:	package/fxload/
 
 N:	Joel Stanley <joel@jms.id.au>
 F:	package/pdbg/
+F:	board/qemu/ppc64le-pseries/
+F:	configs/qemu_ppc64le_pseries_defconfig
 
 N:	Johan Derycke <johanderycke@gmail.com>
 F:	package/python-libconfig/
@@ -1262,6 +1122,10 @@ N:	Murat Demirten <mdemirten@yh.com.tr>
 F:	package/jpeg-turbo/
 F:	package/libgeotiff/
 
+N:	Mike Harmony <mike.harmony@snapav.com>
+F:	board/sinovoip/m2-plus/
+F:	configs/bananapi_m2_plus_defconfig
+
 N:	Nathan Lynch <ntl@pobox.com>
 F:	package/chrony/
 
@@ -1325,10 +1189,13 @@ F:	package/libunistring/
 N:	Peter Korsgaard <peter@korsgaard.com>
 F:	board/orangepi/
 F:	configs/orangepi_pc_defconfig
+F:	package/dump1090/
 F:	package/flickcurl/
 F:	package/fscryptctl/
 F:	package/jo/
+F:	package/jose/
 F:	package/libfastjson/
+F:	package/luksmeta/
 F:	package/lzop/
 F:	package/memtool/
 F:	package/mosquitto/
