@@ -1005,6 +1005,9 @@ F:	package/turbolua/
 N:	Marcin Nowakowski <marcin.nowakowski@imgtec.com>
 F:	package/libkcapi/
 
+N:	Marcus Folkesson <marcus.folkesson@gmail.com>
+F:	package/libostree/
+
 N:	Marek Belisko <marek.belisko@open-nandra.com>
 F:	package/libatasmart/
 F:	package/polkit/
@@ -1660,7 +1663,7 @@ F:	package/pkg-autotools.mk
 F:	package/pkg-generic.mk
 F:	package/python/
 F:	package/python3/
-F:	package/python-mad/
+F:	package/pthon-mad/
 F:	package/python-serial/
 F:	package/qextserialport/
 F:	package/rpcbind/
