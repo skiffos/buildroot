@@ -42,7 +42,9 @@ define SKELETON_INIT_SYSTEMD_PRE_ROOTFS_VAR
 	mkdir $(TARGET_DIR)/var
 	for i in $(TARGET_DIR)/usr/share/factory/var/*; do \
 		j="$${i#$(TARGET_DIR)/usr/share/factory}"; \
-		if [ -L "$${i}" ]; then \
+		if [ "$${j}" = "/var/run" ]; then \
+			echo "# $${j} is being handled by systemd"
+		elif [ -L "$${i}" ]; then \
 			printf "L+! %s - - - - %s\n" \
 				"$${j}" "../usr/share/factory/$${j}" \
 			|| exit 1; \
