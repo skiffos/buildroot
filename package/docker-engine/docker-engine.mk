@@ -4,9 +4,9 @@
 #
 ################################################################################
 
-DOCKER_ENGINE_VERSION = v17.05.0-ce
-DOCKER_ENGINE_COMMIT = 89658bed64c2a8fe05a978e5b87dbec409d57a0f
-DOCKER_ENGINE_SITE = $(call github,docker,docker,$(DOCKER_ENGINE_VERSION))
+DOCKER_ENGINE_VERSION = v18.02.0-ce
+DOCKER_ENGINE_COMMIT = fc4de447b563498eb4da89f56fb858bbe761d91b
+DOCKER_ENGINE_SITE = $(call github,docker,docker-ce,$(DOCKER_ENGINE_VERSION))
 
 DOCKER_ENGINE_LICENSE = Apache-2.0
 DOCKER_ENGINE_LICENSE_FILES = LICENSE
@@ -114,11 +114,11 @@ define DOCKER_ENGINE_BUILD_CMDS
 	$(foreach target,$(DOCKER_ENGINE_BUILD_TARGETS), \
 		cd $(@D)/gopath/src/github.com/docker/docker; \
 		$(DOCKER_ENGINE_MAKE_ENV) \
-		$(HOST_DIR)/bin/go build -v \
-			-o $(@D)/bin/$(target) \
+		$(HOST_DIR)/bin/go build -v -i \
+			-o $(@D)/bin/$${targetbin} \
 			-tags "$(DOCKER_ENGINE_BUILD_TAGS)" \
 			-ldflags "$(DOCKER_ENGINE_GLDFLAGS) $(DOCKER_ENGINE_GLDFLAGS_$(call UPPERCASE,$(target)))" \
-			github.com/docker/docker/cmd/$(target)
+			./cmd/$${targetbin}
 	)
 endef
 

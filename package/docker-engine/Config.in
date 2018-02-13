@@ -67,6 +67,7 @@ config BR2_PACKAGE_DOCKER_ENGINE_DRIVER_BTRFS
 	depends on BR2_USE_MMU # btrfs-progs
 	depends on BR2_TOOLCHAIN_HAS_THREADS # btrfs-progs
 	select BR2_PACKAGE_BTRFS_PROGS
+	select BR2_PACKAGE_DOCKER_CONTAINERD_DRIVER_BTRFS
 	help
 	  Build the btrfs filesystem driver for Docker.
 
