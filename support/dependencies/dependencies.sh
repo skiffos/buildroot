@@ -214,9 +214,11 @@ if grep -q ^BR2_NEEDS_HOST_C_UTF8_LOCALE=y $BR2_CONFIG; then
 		exit 1 ;
 	fi
 	if ! LC_ALL=C.UTF-8 locale -c charmap | grep -q '^UTF-8$'; then
-		echo
-		echo "You need C.UTF-8 locale suppport on the host system"
-		exit 1 ;
+	  if ! LC_ALL=en_US.UTF-8 locale -c charmap | grep -q '^UTF-8$'; then
+	     echo
+	     echo "You need C.UTF-8 locale suppport on the host system"
+	     exit 1 ;
+	  fi
 	fi
 fi
 
