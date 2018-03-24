@@ -1,0 +1,8 @@
+config BR2_PACKAGE_HOST_MESON_TOOLS
+	bool "host meson-tools"
+	help
+	  Tools for Amlogic Meson family of ARM based devices.
+	  This includes amlbootsig which can be used to produce signed
+	  u-boot images for use with Hardkernel boards.
+
+	  https://github.com/afaerber/meson-tools

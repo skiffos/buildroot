@@ -1,0 +1,25 @@
+From 6db25796c386241c1f7a8042f7895d748ab42e29 Mon Sep 17 00:00:00 2001
+From: Christian Stewart <christian@paral.in>
+Date: Sat, 24 Mar 2018 12:55:43 -0700
+Subject: [PATCH] remove pre-defined cflags
+
+---
+ Makefile | 3 ---
+ 1 file changed, 3 deletions(-)
+
+diff --git a/Makefile b/Makefile
+index 260c596..67acb8b 100644
+--- a/Makefile
++++ b/Makefile
+@@ -1,8 +1,5 @@
+ all: amlbootsig unamlbootsig amlinfo
+ 
+-CFLAGS = -g
+-LDFLAGS = -lcrypto
+-
+ amlbootsig.o unamlbootsig.o amlinfo.o: meson.h fip.h
+ 
+ %.o: %.c
+-- 
+2.13.6
+
