@@ -1,0 +1,71 @@
+import("//build/toolchain/gcc_toolchain.gni")
+import("//build/config/sysroot.gni")
+
+gcc_toolchain("host") {
+  cc = getenv("HOST_CC")
+  cxx = getenv("HOST_CXX")
+  ar = getenv("HOST_AR")
+  nm = getenv("HOST_NM")
+  ld = cxx
+
+  extra_cflags = getenv("HOST_CFLAGS")
+  extra_cppflags = getenv("HOST_CPPFLAGS")
+  extra_cxxflags = getenv("HOST_CXXFLAGS")
+  extra_ldflags = getenv("HOST_LDFLAGS")
+
+  toolchain_args = {
+    cc_wrapper = ""
+    current_cpu = host_cpu
+    current_os = host_os
+    is_clang = false
+    use_sysroot = false
+    use_lld = false
+  }
+}
+
+gcc_toolchain("target") {
+  cc = getenv("TARGET_CC")
+  cxx = getenv("TARGET_CXX")
+  ar = getenv("TARGET_AR")
+  nm = getenv("TARGET_NM")
+  ld = cxx
+
+  extra_cflags = getenv("TARGET_CFLAGS")
+  extra_cppflags = getenv("TARGET_CPPFLAGS")
+  extra_cxxflags = getenv("TARGET_CXXFLAGS")
+  extra_ldflags = getenv("TARGET_LDFLAGS")
+
+  toolchain_args = {
+    cc_wrapper = ""
+    current_cpu = target_cpu
+    current_os = target_os
+    is_clang = is_clang
+    use_sysroot = use_sysroot
+  }
+}
+
+gcc_toolchain("v8_snapshot") {
+  cc = getenv("V8_CC")
+  cxx = getenv("V8_CXX")
+  ar = getenv("V8_AR")
+  nm = getenv("V8_NM")
+  ld = cxx
+
+  extra_cflags = getenv("V8_CFLAGS")
+  extra_cppflags = getenv("V8_CPPFLAGS")
+  extra_cxxflags = getenv("V8_CXXFLAGS")
+  extra_ldflags = getenv("V8_LDFLAGS")
+
+  toolchain_args = {
+    cc_wrapper = ""
+    if (target_cpu == "x86" || target_cpu == "arm" || target_cpu == "mipsel") {
+      current_cpu = "x86"
+    } else {
+      current_cpu = "x64"
+    }
+    current_os = host_os
+    is_clang = is_clang
+    use_sysroot = false
+  }
+}
+

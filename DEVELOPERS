@@ -1382,6 +1382,7 @@ F:	package/rabbitmq-c/
 N:	Joseph Kogut <joseph.kogut@gmail.com>
 F:	package/at-spi2-atk/
 F:	package/at-spi2-core/
+F:	package/chromium/
 F:	package/clang/
 F:	package/earlyoom/
 F:	package/gconf/
