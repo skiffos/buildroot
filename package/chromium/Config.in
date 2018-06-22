@@ -1,0 +1,90 @@
+config BR2_PACKAGE_CHROMIUM_ARCH_SUPPORTS
+	bool
+	default y if BR2_arm
+	default y if BR2_aarch64
+	default y if BR2_i386
+	default y if BR2_x86_64
+
+config BR2_PACKAGE_CHROMIUM_TARGET_ARCH
+	string
+	default "arm" if BR2_arm
+	default "arm64" if BR2_aarch64
+	default "x86" if BR2_i386
+	default "x64" if BR2_x86_64
+
+menuconfig BR2_PACKAGE_CHROMIUM
+	bool "chromium"
+	depends on BR2_HOST_GCC_AT_LEAST_4_9 # gn requires -std=c++14
+	depends on BR2_INSTALL_LIBSTDCPP # icu
+	depends on BR2_USE_WCHAR # icu
+	depends on BR2_PACKAGE_HAS_LIBGL
+	depends on BR2_PACKAGE_XORG7
+	depends on BR2_TOOLCHAIN_GCC_AT_LEAST_4_8 # icu
+	depends on BR2_TOOLCHAIN_USES_GLIBC
+	depends on BR2_TOOLCHAIN_HAS_THREADS # icu
+	depends on !BR2_BINFMT_FLAT # icu
+	select BR2_PACKAGE_AT_SPI2_ATK
+	select BR2_PACKAGE_ALSA_LIB
+	select BR2_PACKAGE_COMPILER_RT
+	select BR2_PACKAGE_FFMPEG
+	select BR2_PACKAGE_FLAC
+	select BR2_PACKAGE_FREETYPE
+	select BR2_PACKAGE_FONTCONFIG
+	select BR2_PACKAGE_HARFBUZZ
+	select BR2_PACKAGE_HOST_CLANG
+	select BR2_PACKAGE_HOST_ICU
+	select BR2_PACKAGE_HOST_LLD
+	select BR2_PACKAGE_HOST_NINJA
+	select BR2_PACKAGE_HOST_NODEJS
+	select BR2_PACKAGE_HOST_PKGCONF
+	select BR2_PACKAGE_HOST_PYTHON
+	select BR2_PACKAGE_ICU
+	select BR2_PACKAGE_JPEG_TURBO
+	select BR2_PACKAGE_LIBDRM
+	select BR2_PACKAGE_LIBERATION # runtime
+	select BR2_PACKAGE_LIBGLIB2
+	select BR2_PACKAGE_LIBKRB5
+	select BR2_PACKAGE_LIBNSS
+	select BR2_PACKAGE_LIBPNG
+	select BR2_PACKAGE_LIBXML2
+	select BR2_PACKAGE_LIBXSLT
+	select BR2_PACKAGE_MINIZIP
+	select BR2_PACKAGE_NCURSES
+	select BR2_PACKAGE_NCURSES_WCHAR
+	select BR2_PACKAGE_OPUS
+	select BR2_PACKAGE_PANGO
+	select BR2_PACKAGE_SNAPPY
+	select BR2_PACKAGE_WEBP
+	select BR2_PACKAGE_WEBP_MUX
+	select BR2_PACKAGE_WEBP_DEMUX
+	select BR2_PACKAGE_XLIB_LIBXCOMPOSITE
+	select BR2_PACKAGE_XLIB_LIBXCURSOR
+	select BR2_PACKAGE_XLIB_LIBXI if !BR2_PACKAGE_LIBGTK3_X11
+	select BR2_PACKAGE_XLIB_LIBXRANDR
+	select BR2_PACKAGE_XLIB_LIBXSCRNSAVER
+	select BR2_PACKAGE_XLIB_LIBXTST if !BR2_PACKAGE_LIBGTK3_X11
+	select BR2_PACKAGE_LIBGTK3
+	help
+	  Chromium is an open-source Web browser project started by
+	  Google, to provide the source code for the proprietary
+	  Google Chrome browser.
+
+if BR2_PACKAGE_CHROMIUM
+
+config BR2_PACKAGE_CHROMIUM_PROPRIETARY_CODECS
+	bool "Enable proprietary codecs"
+	help
+	  Enables proprietary codecs with additional licensing
+	  restrictions, such as MP3 and H264
+
+endif # BR2_PACKAGE_CHROMIUM
+
+comment "chromium needs toolchain w/ Glibc, host gcc >= 4.9.0, dynamic library"
+	depends on BR2_PACKAGE_CHROMIUM_ARCH_SUPPORTS \
+		&& !BR2_TOOLCHAIN_USES_GLIBC \
+		|| !BR2_HOST_GCC_AT_LEAST_4_9
+
+comment "chromium needs X.org and an OpenGL backend"
+	depends on BR2_PACKAGE_CHROMIUM_ARCH_SUPPORTS \
+		&& !BR2_PACKAGE_XORG7 \
+		|| !BR2_PACKAGE_HAS_LIBGL
