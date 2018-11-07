@@ -78,9 +78,11 @@ HOST_GO_MAKE_ENV = \
 	CXX=$(HOSTCXX_NOCCACHE) \
 	GO_ASSUME_CROSSCOMPILING=1
 
+# See https://golang.org/cmd/cgo/
+# Set CC_FOR_${GOOS}_${GOARCH}
 HOST_GO_TARGET_CC = \
-	CC_FOR_TARGET="$(TARGET_CC)" \
-	CXX_FOR_TARGET="$(TARGET_CXX)"
+	CC_FOR_linux_$(GO_GOARCH)="$(TARGET_CC)" \
+	CXX_FOR_linux_$(GO_GOARCH)="$(TARGET_CXX)"
 
 define HOST_GO_BUILD_CMDS
 	cd $(@D)/src && \
