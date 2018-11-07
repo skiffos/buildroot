@@ -68,6 +68,14 @@ $(2)_BUILD_OPTS += \
 	-tags "$$($(2)_TAGS)" \
 	-p $(PARALLEL_JOBS)
 
+$(2)_ASMFLAGS += -trimpath=$(BUILD_DIR)
+$(2)_GCFLAGS  += -trimpath=$(BUILD_DIR)
+
+$(2)_BUILD_OPTS += -asmflags "$$($(2)_ASMFLAGS)"
+$(2)_BUILD_OPTS += -gcflags "$$($(2)_GCFLAGS)"
+$(2)_BUILD_OPTS += -ldflags "$$($(2)_LDFLAGS)"
+$(2)_BUILD_OPTS += -tags "$$($(2)_TAGS)"
+
 # Target packages need the Go compiler on the host.
 $(2)_DEPENDENCIES += host-go
 
