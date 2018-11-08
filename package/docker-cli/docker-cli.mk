@@ -13,12 +13,18 @@ DOCKER_CLI_LICENSE_FILES = LICENSE
 
 DOCKER_CLI_DEPENDENCIES = host-go host-pkgconf
 
+DOCKER_CLI_TAGS = cgo autogen
+DOCKER_CLI_BUILD_TARGETS = cmd/docker
+
 DOCKER_CLI_LDFLAGS = \
 	-X github.com/docker/cli/cli.GitCommit=$(DOCKER_CLI_VERSION) \
 	-X github.com/docker/cli/cli.Version=$(DOCKER_CLI_VERSION)
 
-DOCKER_CLI_TAGS = cgo autogen
-DOCKER_CLI_BUILD_TARGETS = cmd/docker
+ifeq ($(BR2_PACKAGE_DOCKER_CLI_STATIC),y)
+DOCKER_CLI_LDFLAGS += -extldflags '-static'
+DOCKER_CLI_TAGS += osusergo netgo
+DOCKER_CLI_GO_ENV = CGO_ENABLED=no
+endif
 
 DOCKER_CLI_INSTALL_BINS = $(notdir $(DOCKER_CLI_BUILD_TARGETS))
 
