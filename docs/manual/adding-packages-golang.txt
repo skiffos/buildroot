@@ -76,11 +76,6 @@ optionally be defined, depending on the package's needs. Many of them
 are only useful in very specific cases, typical packages will
 therefore only use a few of them, or none.
 
-* If your package need a custom +GOPATH+ to be compiled in, you can
-  use the +FOO_WORKSPACE+ variable. The +GOPATH+ being used will be
-  +<package-srcdir>/<FOO_WORKSPACE>+. If +FOO_WORKSPACE+ is not
-  specified, it defaults to +_gopath+.
-
 * +FOO_SRC_SUBDIR+ is the sub-directory where your source will be
   compiled relatively to the +GOPATH+. An example value is
   +github.com/bar/foo+. If +FOO_SRC_SUBDIR+ is not specified, it

@@ -80,18 +80,17 @@ $(2)_INSTALL_BINS ?= $(1)
 $(2)_SRC_DOMAIN = $$(call domain,$$($(2)_SITE))
 $(2)_SRC_VENDOR = $$(word 1,$$(subst /, ,$$(call notdomain,$$($(2)_SITE))))
 $(2)_SRC_SOFTWARE = $$(word 2,$$(subst /, ,$$(call notdomain,$$($(2)_SITE))))
-
 $(2)_SRC_SUBDIR ?= $$($(2)_SRC_DOMAIN)/$$($(2)_SRC_VENDOR)/$$($(2)_SRC_SOFTWARE)
-$(2)_SRC_PATH = $$(@D)/$$($(2)_WORKSPACE)/src/$$($(2)_SRC_SUBDIR)
+$(2)_GOMOD ?= $$($(2)_SRC_SUBDIR)
 
-# Configure step. Only define it if not already defined by the package .mk
-# file.
-ifndef $(2)_CONFIGURE_CMDS
-define $(2)_CONFIGURE_CMDS
-	mkdir -p $$(dir $$($(2)_SRC_PATH))
-	ln -sf $$(@D) $$($(2)_SRC_PATH)
+# Correctly configure the go.mod and go.sum files for the module system.
+define $(2)_INIT_GOMOD
+	if [ ! -f $$(@D)/go.mod ] && [ -n "$$($(2)_GOMOD)" ]; then \
+		printf "module $$($(2)_GOMOD)\n" > $$(@D)/go.mod; \
+	fi
 endef
-endif
+
+$(2)_POST_EXTRACT_HOOKS += $(2)_INIT_GOMOD
 
 # Build step. Only define it if not already defined by the package .mk
 # file.
@@ -112,19 +111,19 @@ $(2)_BUILD_OPTS += \
 	-asmflags "$$($(2)_ASMFLAGS)" \
 	-gcflags "$$($(2)_GCFLAGS)" \
 	-ldflags "$$($(2)_LDFLAGS)" \
+	-mod=vendor \
 	-tags "$$($(2)_TAGS)" \
 	-p $(PARALLEL_JOBS)
 
 # Build package for target
 define $(2)_BUILD_CMDS
 	$$(foreach d,$$($(2)_BUILD_TARGETS),\
-		cd $$($(2)_SRC_PATH); \
+		cd $$(@D); \
 		$$(GO_TARGET_ENV) \
-			GOPATH="$$(@D)/$$($(2)_WORKSPACE)" \
 			$$($(2)_GO_ENV) \
 			$$(GO_BIN) build -v $$($(2)_BUILD_OPTS) \
 			-o $$(@D)/bin/$$(or $$($(2)_BIN_NAME),$$(notdir $$(d))) \
-			./$$(d)
+			$$(d)
 	)
 endef
 else
