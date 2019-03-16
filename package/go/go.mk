@@ -12,6 +12,7 @@ GO_LICENSE = BSD-3-Clause
 GO_LICENSE_FILES = LICENSE
 
 HOST_GO_DEPENDENCIES = host-go-bootstrap
+HOST_GO_GOPATH = $(HOST_DIR)/usr/share/go-path
 HOST_GO_HOST_CACHE = $(HOST_DIR)/usr/share/host-go-cache
 HOST_GO_ROOT = $(HOST_DIR)/lib/go
 HOST_GO_TARGET_CACHE = $(HOST_DIR)/usr/share/go-cache
@@ -43,16 +44,51 @@ else ifeq ($(BR2_mips64el),y)
 GO_GOARCH = mips64le
 endif
 
-# For the convienience of target packages.
 HOST_GO_TOOLDIR = $(HOST_GO_ROOT)/pkg/tool/linux_$(GO_GOARCH)
-HOST_GO_TARGET_ENV = \
-	GO111MODULE=off \
-	GOARCH=$(GO_GOARCH) \
-	GOCACHE="$(HOST_GO_TARGET_CACHE)" \
+HOST_GO_COMMON_ENV = \
+	CC=$(HOSTCC_NOCCACHE) \
+	CGO_ENABLED=$(HOST_GO_CGO_ENABLED) \
+	CXX=$(HOSTCXX_NOCCACHE) \
+	GO111MODULE=on \
+	GOBIN= \
+	GOFLAGS=-mod=vendor \
+	GOPATH="$(HOST_GO_GOPATH)" \
+	GOPROXY=off \
 	GOROOT="$(HOST_GO_ROOT)" \
+	GOTOOLDIR="$(HOST_GO_TOOLDIR)" \
+	PATH=$(BR_PATH)
+
+# Used for compiling host packages.
+HOST_GO_HOST_ENV = \
+	$(HOST_GO_COMMON_ENV) \
+	CGO_CFLAGS="$(HOST_CFLAGS)" \
+	CGO_CXXFLAGS="$(HOST_CXXFLAGS)" \
+	CGO_FFLAGS="$(HOST_FCFLAGS)" \
+	CGO_LDFLAGS="$(HOST_LDFLAGS)" \
+	GOARCH="" \
+	GOCACHE="$(HOST_GO_HOST_CACHE)"
+
+# Used for compiling the host-go compiler and target packages.
+HOST_GO_CROSS_ENV = \
+	$(if $(GO_GOARM),GOARM=$(GO_GOARM)) \
+	CC_FOR_TARGET="$(TARGET_CC)" \
+	CXX_FOR_TARGET="$(TARGET_CXX)" \
+	GOARCH=$(GO_GOARCH) \
+	GO_ASSUME_CROSSCOMPILING=1
+
+# Used for compiling target packages.
+#
+# Note: CC and CXX must be set as well as TARGET_ variants.
+HOST_GO_TARGET_ENV = \
+	$(HOST_GO_COMMON_ENV) \
+	$(HOST_GO_CROSS_ENV) \
 	CC="$(TARGET_CC)" \
 	CXX="$(TARGET_CXX)" \
-	GOTOOLDIR="$(HOST_GO_TOOLDIR)"
+	CGO_CFLAGS="$(TARGET_CFLAGS)" \
+	CGO_CXXFLAGS="$(TARGET_CXXFLAGS)" \
+	CGO_FFLAGS="$(TARGET_FCFLAGS)" \
+	CGO_LDFLAGS="$(TARGET_LDFLAGS)" \
+	GOCACHE="$(HOST_GO_TARGET_CACHE)"
 
 # The go compiler's cgo support uses threads.  If BR2_TOOLCHAIN_HAS_THREADS is
 # set, build in cgo support for any go programs that may need it.  Note that
@@ -63,13 +99,6 @@ HOST_GO_CGO_ENABLED = 1
 else
 HOST_GO_CGO_ENABLED = 0
 endif
-
-HOST_GO_CROSS_ENV = \
-	CC_FOR_TARGET="$(TARGET_CC)" \
-	CXX_FOR_TARGET="$(TARGET_CXX)" \
-	GOARCH=$(GO_GOARCH) \
-	$(if $(GO_GOARM),GOARM=$(GO_GOARM)) \
-	GO_ASSUME_CROSSCOMPILING=1
 
 else # !BR2_PACKAGE_HOST_GO_TARGET_ARCH_SUPPORTS
 # host-go can still be used to build packages for the host. No need to set all
