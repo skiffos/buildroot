@@ -23,21 +23,11 @@
 
 GO_BIN = $(HOST_DIR)/bin/go
 
-# We pass an empty GOBIN, otherwise "go install: cannot install
-# cross-compiled binaries when GOBIN is set"
-GO_COMMON_ENV = \
-	PATH=$(BR_PATH) \
-	GOBIN= \
-	CGO_ENABLED=$(HOST_GO_CGO_ENABLED)
+# Used when compiling host packages.
+GO_HOST_ENV = $(HOST_GO_HOST_ENV)
 
-GO_TARGET_ENV = \
-	$(HOST_GO_TARGET_ENV) \
-	$(GO_COMMON_ENV)
-
-GO_HOST_ENV = \
-	CGO_CFLAGS="$(HOST_CFLAGS)" \
-	CGO_LDFLAGS="$(HOST_LDFLAGS)" \
-	$(GO_COMMON_ENV)
+# Used when compiling target packages.
+GO_TARGET_ENV =	$(HOST_GO_TARGET_ENV)
 
 ################################################################################
 # inner-golang-package -- defines how the configuration, compilation and
@@ -56,11 +46,8 @@ GO_HOST_ENV = \
 
 define inner-golang-package
 
-$(2)_WORKSPACE ?= _gopath
-
 $(2)_BUILD_OPTS += \
 	-ldflags "$$($(2)_LDFLAGS)" \
-	-mod=vendor \
 	-tags "$$($(2)_TAGS)" \
 	-trimpath \
 	-p $(PARALLEL_JOBS)
@@ -82,16 +69,18 @@ $(2)_INSTALL_BINS ?= $(1)
 
 # Source files in Go usually use an import path resolved around
 # domain/vendor/software. We infer domain/vendor/software from the upstream URL
-# of the project. $(2)_GOMOD can be overridden.
+# of the project.
 $(2)_SRC_DOMAIN = $$(call domain,$$($(2)_SITE))
 $(2)_SRC_VENDOR = $$(word 1,$$(subst /, ,$$(call notdomain,$$($(2)_SITE))))
 $(2)_SRC_SOFTWARE = $$(word 2,$$(subst /, ,$$(call notdomain,$$($(2)_SITE))))
 
+# $(2)_GOMOD is the root Go module path for the project, inferred if not set.
+# If the go.mod file does not exist, one is written with this root path.
+# Replaces the old GOPATH/symlink mechanism for setting the root import path.
 $(2)_GOMOD ?= $$($(2)_SRC_DOMAIN)/$$($(2)_SRC_VENDOR)/$$($(2)_SRC_SOFTWARE)
 
 # Correctly configure the go.mod and go.sum files for the module system.
-# TODO: GOPROXY: use fallback mechanism and Buildroot proxy
-# TODO: Perform the downloading / vendoring such that "make source" is correct
+# Note: Go is configured to use the "vendor" dir and not make network calls.
 define $(2)_APPLY_EXTRACT_GOMOD
 	if [ -f $$($(2)_PKGDIR)/go.mod ]; then \
 		cp $$($(2)_PKGDIR)/go.mod $$(@D)/go.mod; \
@@ -104,13 +93,6 @@ define $(2)_APPLY_EXTRACT_GOMOD
 	fi
 	if [ ! -f $$(@D)/go.mod ] && [ -n "$$($(2)_GOMOD)" ]; then \
 		printf "module $$($(2)_GOMOD)\n" > $$(@D)/go.mod; \
-	fi
-	if [ ! -d $$(@D)/vendor ]; then \
-		cd $$(@D); \
-		$$(GO_TARGET_ENV) \
-			$$($(2)_GO_ENV) \
-			GOPROXY="direct" \
-			$$(GO_BIN) mod vendor -v; \
 	fi
 endef
 
@@ -140,13 +122,12 @@ else
 # Build package for host
 define $(2)_BUILD_CMDS
 	$$(foreach d,$$($(2)_BUILD_TARGETS),\
-		cd $$($(2)_SRC_PATH); \
+		cd $$(@D); \
 		$$(GO_HOST_ENV) \
-			GOPATH="$$(@D)/$$($(2)_WORKSPACE)" \
 			$$($(2)_GO_ENV) \
 			$$(GO_BIN) build -v $$($(2)_BUILD_OPTS) \
 			-o $$(@D)/bin/$$(or $$($(2)_BIN_NAME),$$(notdir $$(d))) \
-			./$$(d)
+			$$(d)
 	)
 endef
 endif
