@@ -6,7 +6,6 @@
 
 DOCKER_CLI_VERSION = v18.09.2
 DOCKER_CLI_SITE = $(call github,docker,cli,$(DOCKER_CLI_VERSION))
-DOCKER_CLI_WORKSPACE = gopath
 
 DOCKER_CLI_LICENSE = Apache-2.0
 DOCKER_CLI_LICENSE_FILES = LICENSE
@@ -14,7 +13,7 @@ DOCKER_CLI_LICENSE_FILES = LICENSE
 DOCKER_CLI_DEPENDENCIES = host-pkgconf
 
 DOCKER_CLI_TAGS = autogen
-DOCKER_CLI_BUILD_TARGETS = cmd/docker
+DOCKER_CLI_BUILD_TARGETS = github.com/docker/cli/cmd/docker
 
 DOCKER_CLI_LDFLAGS = \
 	-X github.com/docker/cli/cli.GitCommit=$(DOCKER_CLI_VERSION) \
