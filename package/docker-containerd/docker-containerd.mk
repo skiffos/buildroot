@@ -9,12 +9,13 @@ DOCKER_CONTAINERD_SITE = $(call github,containerd,containerd,$(DOCKER_CONTAINERD
 DOCKER_CONTAINERD_LICENSE = Apache-2.0
 DOCKER_CONTAINERD_LICENSE_FILES = LICENSE
 
-DOCKER_CONTAINERD_WORKSPACE = vendor
-
 DOCKER_CONTAINERD_LDFLAGS = \
-	-X github.com/docker/containerd.GitCommit=$(DOCKER_CONTAINERD_VERSION)
+	-X github.com/containerd/containerd.GitCommit=$(DOCKER_CONTAINERD_VERSION)
 
-DOCKER_CONTAINERD_BUILD_TARGETS = cmd/ctr cmd/containerd cmd/containerd-shim
+DOCKER_CONTAINERD_BUILD_TARGETS = \
+	github.com/containerd/containerd/cmd/ctr \
+	github.com/containerd/containerd/cmd/containerd \
+	github.com/containerd/containerd/cmd/containerd-shim
 
 DOCKER_CONTAINERD_INSTALL_BINS = containerd containerd-shim
 
