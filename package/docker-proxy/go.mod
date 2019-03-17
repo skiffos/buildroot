@@ -1,0 +1,46 @@
+module github.com/docker/libnetwork
+
+// Derived from vendor.conf @ libnetwork
+// 7b2b1feb1de4817d522cc372af149ff48d25028e
+require (
+	github.com/Azure/go-ansiterm v0.0.0-20160425224146-04b7f292a41f
+	github.com/BurntSushi/toml v0.0.0-20150127021243-f706d00e3de6
+	github.com/Microsoft/go-winio v0.0.0-20160621211438-ce2922f643c8
+	github.com/Microsoft/hcsshim v0.5.7
+	github.com/Sirupsen/logrus v0.10.0
+	github.com/armon/go-metrics v0.0.0-20150106224455-eb0af217e5e9
+	github.com/armon/go-radix v0.0.0-20150105235045-e39d623f12e8
+	github.com/boltdb/bolt v1.2.0
+	github.com/codegangsta/cli v1.9.0
+	github.com/coreos/etcd v0.0.0-20170111022503-925d1d74cec8
+	github.com/coreos/go-systemd v0.0.0-20151104194251-b4a58d95188d
+	github.com/deckarep/golang-set v0.0.0-20141123011944-ef32fa3046d9
+	github.com/docker/docker v0.0.0-20170110083519-9c96768eae4b
+	github.com/docker/go-connections v0.2.0
+	github.com/docker/go-events v0.0.0-20160323060050-2e7d35281612
+	github.com/docker/go-units v0.0.0-20151222191443-8e2d4523730c
+	github.com/docker/libkv v0.0.0-20161109010621-1d8431073ae0
+	github.com/godbus/dbus v4.0.0+incompatible
+	github.com/gogo/protobuf v0.0.0-20160728085359-e33835a643a9
+	github.com/golang/protobuf v0.0.0-20150316215550-f7137ae6b19a
+	github.com/gorilla/context v0.0.0-20141217160251-215affda49ad
+	github.com/gorilla/mux v0.0.0-20150311031735-8096f4750345
+	github.com/hashicorp/consul v0.0.0-20150202214222-954aec66231b
+	github.com/hashicorp/go-msgpack v0.0.0-20140221154404-71c2886f5a67
+	github.com/hashicorp/go-multierror v0.0.0-20150107203116-2167c8ec4077
+	github.com/hashicorp/memberlist v0.0.0-20160329060508-88ac4de0d1a0
+	github.com/hashicorp/serf v0.0.0-20160317193612-598c54895cc5
+	github.com/mattn/go-shellwords v0.0.0-20160315040826-525bedee691b
+	github.com/miekg/dns v0.0.0-20151102115150-d27455715200
+	github.com/opencontainers/runc v0.0.0-20151215222150-ba1568de3993
+	github.com/pkg/errors v0.0.0-20161002052512-839d9e913e06
+	github.com/samuel/go-zookeeper v0.0.0-20150415181332-d0e0d8e11f31
+	github.com/seccomp/libseccomp-golang v0.0.0-20150813023252-1b506fc7c24e
+	github.com/stretchr/testify v0.0.0-20150512124233-dab07ac62d49
+	github.com/syndtr/gocapability v0.0.0-20150716010906-2c00daeb6c3b
+	github.com/ugorji/go v0.0.0-20151028022000-f1f1a805ed36
+	github.com/vishvananda/netlink v0.0.0-20161115190107-17ea11b5a11c
+	github.com/vishvananda/netns v0.0.0-20150710222425-604eaf189ee8
+	golang.org/x/net v0.0.0-20150130075918-9dd48c277bcb
+	golang.org/x/sys v0.0.0-20160916181909-8f0908ab3b24
+)
