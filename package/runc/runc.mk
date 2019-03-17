@@ -9,8 +9,6 @@ RUNC_SITE = $(call github,opencontainers,runc,$(RUNC_VERSION))
 RUNC_LICENSE = Apache-2.0
 RUNC_LICENSE_FILES = LICENSE
 
-RUNC_WORKSPACE = Godeps/_workspace
-
 RUNC_LDFLAGS = -X main.gitCommit=$(RUNC_VERSION)
 
 RUNC_TAGS = cgo static_build
