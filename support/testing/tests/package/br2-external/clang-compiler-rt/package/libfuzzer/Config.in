@@ -1,0 +1,7 @@
+config BR2_PACKAGE_LIBFUZZER
+	bool "libfuzzer"
+	help
+	  This is a set of tests (benchmarks) for fuzzing
+	  engines (fuzzers).
+
+	  https://github.com/google/fuzzer-test-suite
