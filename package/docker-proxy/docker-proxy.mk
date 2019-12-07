@@ -12,9 +12,7 @@ DOCKER_PROXY_LICENSE_FILES = LICENSE
 
 DOCKER_PROXY_DEPENDENCIES = host-pkgconf
 
-DOCKER_PROXY_WORKSPACE = gopath
-
-DOCKER_PROXY_BUILD_TARGETS = cmd/proxy
+DOCKER_PROXY_BUILD_TARGETS = github.com/docker/libnetwork/cmd/proxy
 
 define DOCKER_PROXY_INSTALL_TARGET_CMDS
 	$(INSTALL) -D -m 0755 $(@D)/bin/proxy $(TARGET_DIR)/usr/bin/docker-proxy
