@@ -4,8 +4,8 @@
 #
 ################################################################################
 
-DOCKER_CLI_VERSION = 18.09.9
-DOCKER_CLI_SITE = $(call github,docker,cli,v$(DOCKER_CLI_VERSION))
+DOCKER_CLI_VERSION = 18.09.11
+DOCKER_CLI_SITE = $(call github,docker,cli,c2ae869f6fc46733561f30c1907340dbfdcdf2e8)
 DOCKER_CLI_WORKSPACE = gopath
 
 DOCKER_CLI_LICENSE = Apache-2.0
