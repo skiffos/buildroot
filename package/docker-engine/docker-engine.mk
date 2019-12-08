@@ -4,8 +4,8 @@
 #
 ################################################################################
 
-DOCKER_ENGINE_VERSION = 18.09.9
-DOCKER_ENGINE_SITE = $(call github,docker,engine,v$(DOCKER_ENGINE_VERSION))
+DOCKER_ENGINE_VERSION = 18.09.11
+DOCKER_ENGINE_SITE = $(call github,docker,engine,2c9fee21596c376a224646ddf86e2437fd10b560)
 
 DOCKER_ENGINE_LICENSE = Apache-2.0
 DOCKER_ENGINE_LICENSE_FILES = LICENSE
