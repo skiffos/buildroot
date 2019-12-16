@@ -1,0 +1,18 @@
+config BR2_PACKAGE_DELVE
+	bool "delve"
+	depends on BR2_PACKAGE_HOST_GO_TARGET_ARCH_SUPPORTS
+	depends on BR2_PACKAGE_HOST_GO_TARGET_CGO_LINKING_SUPPORTS
+	depends on BR2_TOOLCHAIN_HAS_THREADS
+	depends on BR2_TOOLCHAIN_USES_GLIBC # go, cgo
+	depends on !BR2_TOOLCHAIN_USES_UCLIBC # go
+	depends on BR2_USE_MMU # go
+	help
+	  Delve is a debugger for the Go programming language.
+
+	  https://github.com/go-delve/delve
+
+comment "delve needs a glibc toolchain w/ threads"
+	depends on BR2_PACKAGE_HOST_GO_TARGET_ARCH_SUPPORTS
+	depends on BR2_PACKAGE_HOST_GO_TARGET_CGO_LINKING_SUPPORTS
+	depends on !BR2_TOOLCHAIN_HAS_THREADS || !BR2_TOOLCHAIN_USES_GLIBC
+	depends on BR2_USE_MMU
