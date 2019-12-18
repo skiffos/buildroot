@@ -1,0 +1,8 @@
+config BR2_PACKAGE_HOST_GIT_LFS
+	bool "host git-lfs"
+	depends on BR2_PACKAGE_HOST_GO_HOST_ARCH_SUPPORTS
+	help
+	  Git LFS is a command line extension and specification for
+	  managing large files with Git.
+
+	  https://github.com/git-lfs/git-lfs
