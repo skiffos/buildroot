@@ -1,0 +1,35 @@
+sha256 77358e12545415a6716b1e0228540f0e90619f1738dfe114cd3e5c30d43ffffd  v2.9.2.tar.gz
+
+# BSD 2 Clause licenses
+sha256 8d427fd87bc9579ea368fde3d49f9ca22eac857f91a9dec7e3004bdfab7dee86  vendor/github.com/pkg/errors/LICENSE
+#
+# BSD 3 Clause licenses
+sha256 2d36597f7117c38b006835ae7f537487207d8ec407aa9d9980794b2030cbc067  vendor/github.com/git-lfs/go-ntlm/ntlm/md4/LICENSE
+sha256 2d36597f7117c38b006835ae7f537487207d8ec407aa9d9980794b2030cbc067  vendor/golang.org/x/net/LICENSE
+sha256 2d36597f7117c38b006835ae7f537487207d8ec407aa9d9980794b2030cbc067  vendor/golang.org/x/sync/LICENSE
+sha256 2d36597f7117c38b006835ae7f537487207d8ec407aa9d9980794b2030cbc067  vendor/golang.org/x/sys/LICENSE
+sha256 2d36597f7117c38b006835ae7f537487207d8ec407aa9d9980794b2030cbc067  vendor/golang.org/x/text/LICENSE
+sha256 2eb550be6801c1ea434feba53bf6d12e7c71c90253e0a9de4a4f46cf88b56477  vendor/github.com/pmezard/go-difflib/LICENSE
+sha256 b8514c577c1c4b46cee454d5a882b15fa411e72c5bd7f801f241591789fce61a  vendor/github.com/spf13/pflag/LICENSE
+sha256 dd26a7abddd02e2d0aba97805b31f248ef7835d9e10da289b22e3b8ab78b324d  vendor/github.com/alexbrainman/sspi/LICENSE
+#
+# Apache 2.0 licenses
+sha256 745f8f53e61ad2f8463a27b77aac1636dc3a121ed8bd841e82397226fdcb4bae  vendor/github.com/xeipuuv/gojsonpointer/LICENSE-APACHE-2.0.txt
+sha256 745f8f53e61ad2f8463a27b77aac1636dc3a121ed8bd841e82397226fdcb4bae  vendor/github.com/xeipuuv/gojsonreference/LICENSE-APACHE-2.0.txt
+sha256 745f8f53e61ad2f8463a27b77aac1636dc3a121ed8bd841e82397226fdcb4bae  vendor/github.com/xeipuuv/gojsonschema/LICENSE-APACHE-2.0.txt
+sha256 5e3400b93bbb099e83e52bab885e7441750673c21f97988ca3f1240639b63283  vendor/github.com/spf13/cobra/LICENSE.txt
+sha256 f42d670262f9aed37a33c97d93fa2c1324f439ee03d7690710c5fe002561b0b5  vendor/github.com/inconshreveable/mousetrap/LICENSE
+#
+# ISC licenses
+sha256 1b93a317849ee09d3d7e4f1d20c2b78ddb230b4becb12d7c224c927b9d470251  vendor/github.com/davecgh/go-spew/LICENSE
+#
+# MIT licenses
+sha256 402f39eed8a1851385d0703999aa9f23d067c2ea3e15c63c074e389cbf8f8f8f  vendor/github.com/stretchr/testify/LICENSE
+sha256 08eab1118c80885fa1fa6a6dd7303f65a379fcb3733e063d20d1bbc2c76e6fa1  vendor/github.com/mattn/go-isatty/LICENSE
+sha256 34ece938f52ea9d3b706a780db52c14ba4544c2e0fdbccaa2701283000182c23  vendor/github.com/git-lfs/wildmatch/LICENSE.md
+sha256 49e9a8cbb772da6682b4613a36aa17934fa949e5e30e58b3f0f24d6ea3265c69  vendor/github.com/git-lfs/gitobj/LICENSE.md
+sha256 5438a5672aec3e69f928ce05bdec56d887e023297129c17340f08d5d2572cfc7  vendor/github.com/ssgelm/cookiejarparser/LICENSE.md
+sha256 82f0d2a1029154f3184c82cc146f39ae8fd3f357b76832b58190c759cbb9105a  vendor/github.com/rubyist/tracerx/LICENSE
+sha256 c3880f30146c2ad11c85a243858027e8a1d61e241e53284d7cef3aa9452f16df  vendor/github.com/git-lfs/go-netrc/LICENSE
+sha256 eb472e25a1963b3078249c9bbcff5e7ed81e5f0e1ceb8fc8ecc4b43f45e87867  vendor/github.com/olekukonko/ts/LICENCE
+sha256 0b9ca369b0137bb68398f0670eb1e22663d13240e941587b888fef03933b8ea7  LICENSE.md
