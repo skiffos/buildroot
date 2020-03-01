@@ -108,6 +108,21 @@ define $(2)_CONFIGURE_CMDS
 endef
 endif
 
+# Download the go module files if they do not already exist.
+# TODO: This is not intended for Buildroot mainline, and is a test.
+# TODO: Perform the downloading / vendoring such that "make source" is correct
+define $(2)_DOWNLOAD_GOMOD
+	if [ ! -d $$(@D)/vendor ]; then \
+		cd $$(@D); \
+		$$(GO_TARGET_ENV) \
+			$$($(2)_GO_ENV) \
+			GOPROXY="direct" \
+			$$(GO_BIN) mod vendor -v; \
+	fi
+endef
+
+$(2)_POST_CONFIGURE_HOOKS += $(2)_DOWNLOAD_GOMOD
+
 # Build step. Only define it if not already defined by the package .mk
 # file.
 ifndef $(2)_BUILD_CMDS
