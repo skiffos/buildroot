@@ -29,6 +29,11 @@ config BR2_PACKAGE_LINUX_FIRMWARE_I915
 	help
 	  Firmware files for the Intel i915 video cards.
 
+config BR2_PACKAGE_LINUX_FIRMWARE_NVIDIA
+	bool "Nvidia video card firmware"
+	help
+	  Firmware files for the Nvidia video cards.
+
 config BR2_PACKAGE_LINUX_FIRMWARE_RADEON
 	bool "AMD Radeon video card firmware"
 	help
@@ -43,6 +48,11 @@ config BR2_PACKAGE_LINUX_FIRMWARE_QCOM_ADRENO
 	bool "Qualcomm Adreno GPU firmware"
 	help
 	  Firmware files for Qualcomm Adreno GPU firmware
+
+config BR2_PACKAGE_LINUX_FIRMWARE_S5P_MFC
+	bool "Samsung S5P MFC"
+	help
+	  Firmware files for Samsung S5P-MFC.
 
 endmenu # Video
 
@@ -118,11 +128,6 @@ config BR2_PACKAGE_LINUX_FIRMWARE_ATHEROS_10K_QCA998X
 	help
 	  Firmware files for the Atheros QCA988X module
 
-config BR2_PACKAGE_LINUX_FIRMWARE_ATHEROS_10K_QCA6174
-	bool "Atheros 10k (QCA6174)"
-	help
-	  Firmware files for the Atheros QCA6174 module
-
 config BR2_PACKAGE_LINUX_FIRMWARE_BRCM_BCM43XX
 	bool "Broadcom BRCM bcm43xx"
 	help
@@ -132,6 +137,12 @@ config BR2_PACKAGE_LINUX_FIRMWARE_BRCM_BCM43XXX
 	bool "Broadcom BRCM bcm43xxx"
 	help
 	  Firmware files for the Broadcom bcm43xxx, SoftMAC and FullMAC.
+
+config BR2_PACKAGE_LINUX_FIRMWARE_IWLWIFI_22260
+	bool "Intel iwlwifi 22260"
+	help
+	  Firmware files for the Intel Wifi 22260 devices supported by
+	  the iwlwifi kernel driver.
 
 config BR2_PACKAGE_LINUX_FIRMWARE_IWLWIFI_3160
 	bool "Intel iwlwifi 3160"
@@ -318,6 +329,12 @@ config BR2_PACKAGE_LINUX_FIRMWARE_RTL_88XX
 	help
 	  Realtek rtl8821ae
 
+config BR2_PACKAGE_LINUX_FIRMWARE_RTL_RTW88
+	bool "Realtek rtw88"
+	help
+	  Firmware images supported by Realtek's wireless
+	  driver rtw88.
+
 config BR2_PACKAGE_LINUX_FIRMWARE_REDPINE_RS9113
 	bool "Redpine rs9113"
 	help
@@ -338,6 +355,11 @@ config BR2_PACKAGE_LINUX_FIRMWARE_TI_WL18XX
 	bool "TI wl18xx"
 	help
 	  Firmware files for WLAN and Bluetooth modules wl18xx
+
+config BR2_PACKAGE_LINUX_FIRMWARE_QUALCOMM_WIL6210
+	bool "Qualcomm Atheros wil6210"
+	help
+	  Firmware files for Qualcomm Atheros 11ad family of chips
 
 endmenu
 
@@ -366,6 +388,13 @@ config BR2_PACKAGE_LINUX_FIRMWARE_INTEL_E100
 	help
 	  Firmware files for Intel 825xx handled by driver e100
 	  (e100)
+
+config BR2_PACKAGE_LINUX_FIRMWARE_MICROCHIP_VSC85XX_PHY
+	bool "Microchip VSC85xx PHYs"
+	help
+	  Firmware files for Microchip/Microsemi VSC85xx networking
+	  PHYs (VSC8504, VSC8552, VSC8572, VSC8574, VSC856X, VSC8575,
+	  VSC8582 and VSC8584)
 
 config BR2_PACKAGE_LINUX_FIRMWARE_QLOGIC_4X
 	bool "QLogic FastLinQ 4xxxx"
