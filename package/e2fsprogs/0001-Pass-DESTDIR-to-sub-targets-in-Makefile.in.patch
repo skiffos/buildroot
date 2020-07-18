@@ -1,0 +1,30 @@
+From ea8ce2016c3c6b5fc029b0c0426192731ab4aa59 Mon Sep 17 00:00:00 2001
+From: Christian Stewart <christian@paral.in>
+Date: Fri, 17 Jul 2020 19:56:44 -0700
+Subject: [PATCH] Pass DESTDIR to sub-targets in Makefile.in
+
+Fixes bug with leak of host-install to parent system:
+
+https://bugs.busybox.net/show_bug.cgi?id=13081
+
+Signed-off-by: Christian Stewart <christian@paral.in>
+---
+ Makefile.in | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/Makefile.in b/Makefile.in
+index b951c01..71b9e83 100644
+--- a/Makefile.in
++++ b/Makefile.in
+@@ -103,7 +103,7 @@ all-progs-recursive install-progs-recursive install-strip-progs-recursive \
+ @ALL_CMT@	  if test -d $$subdir ; then \
+ @ALL_CMT@	    target=`echo $@|$(SED) 's/-progs-recursive//'`; \
+ @ALL_CMT@	    echo making $$target in $$subdir; \
+-@ALL_CMT@	    (cd $$subdir && $(MAKE) $$target) || exit 1; \
++@ALL_CMT@	    (cd $$subdir && $(MAKE) $$target DESTDIR=$(DESTDIR)) || exit 1; \
+ @ALL_CMT@	  fi ; \
+ @ALL_CMT@	done
+ 
+-- 
+2.27.0
+
