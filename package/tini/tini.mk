@@ -30,6 +30,9 @@ endef
 
 define TINI_INSTALL_TARGET_CMDS
 	$(INSTALL) -D -m 0755 $(@D)/bin/tini $(TARGET_DIR)/usr/bin/tini
+	if [ ! -f $(TARGET_DIR)/usr/bin/docker-init ]; then \
+		ln -sf /usr/bin/tini $(TARGET_DIR)/usr/bin/docker-init; \
+	fi
 endef
 
 # Tini's CMakeLists.txt is not suitable for Buildroot.
