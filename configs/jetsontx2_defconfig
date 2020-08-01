@@ -1,0 +1,53 @@
+BR2_aarch64=y
+BR2_cortex_a57=y
+BR2_ARM_FPU_FP_ARMV8=y
+
+# enable specific optimizations
+BR2_TARGET_OPTIMIZATION="-march=armv8-a+crypto -mcpu=cortex-a57+crypto"
+
+# Toolchain reference: docs.nvidia.com: "Jetson Linux Driver Package Toolchain"
+# https://developer.nvidia.com/gcc-linaro-731-201805-sources
+BR2_TOOLCHAIN_EXTERNAL_LINARO_AARCH64=y
+
+BR2_SYSTEM_DHCP="eth0"
+
+BR2_LINUX_KERNEL=y
+BR2_LINUX_KERNEL_CUSTOM_TARBALL=y
+# patches-l4t-r32.4
+BR2_LINUX_KERNEL_CUSTOM_TARBALL_LOCATION="$(call github,madisongh,linux-tegra-4.9,0be1a57448010ae60505acf4e2153638455cee7c)/linux-tegra-4.9.140-r1.tar.gz"
+BR2_LINUX_KERNEL_DEFCONFIG="tegra"
+
+# Build the DTB from the kernel sources
+BR2_LINUX_KERNEL_DTS_SUPPORT=y
+BR2_LINUX_KERNEL_INTREE_DTS_NAME="_ddot_/_ddot_/_ddot_/_ddot_/nvidia/platform/t18x/quill/kernel-dts/tegra186-quill-p3310-1000-c03-00-base"
+
+BR2_LINUX_KERNEL_NEEDS_HOST_OPENSSL=y
+
+BR2_PACKAGE_LINUX4TEGRA=y
+BR2_PACKAGE_LINUX4TEGRA_PLATFORM_T186REF=y
+
+# TODO: NVIDIA_CONTAINER_TOOLKIT requires a go-module integration.
+# BR2_PACKAGE_NVIDIA_CONTAINER_TOOLKIT=y
+
+BR2_PACKAGE_LINUX_FIRMWARE=y
+BR2_PACKAGE_LINUX_FIRMWARE_RTL_88XX=y
+
+# Required tools to create the image
+BR2_PACKAGE_HOST_DOSFSTOOLS=y
+BR2_PACKAGE_HOST_JQ=y
+BR2_PACKAGE_HOST_PARTED=y
+
+# Filesystem / image
+BR2_TARGET_ROOTFS_EXT2=y
+BR2_TARGET_ROOTFS_EXT2_4=y
+BR2_TARGET_ROOTFS_EXT2_SIZE="512M"
+# BR2_TARGET_ROOTFS_TAR is not set
+
+# Uboot
+BR2_TARGET_UBOOT=y
+BR2_TARGET_UBOOT_BOARD_DEFCONFIG="p2771-0000-500"
+BR2_TARGET_UBOOT_BUILD_SYSTEM_KCONFIG=y
+BR2_TARGET_UBOOT_CUSTOM_TARBALL=y
+BR2_TARGET_UBOOT_CUSTOM_TARBALL_LOCATION="$(call github,paralin,u-boot-tegra,e6da093be3cc593ef4294e1922b3391ede9c94da)/u-boot-tegra-l4t-r32.4-v2016.7.tar.gz"
+BR2_TARGET_UBOOT_FORMAT_DTB_BIN=y
+BR2_TARGET_UBOOT_NEEDS_DTC=y
