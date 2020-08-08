@@ -14,3 +14,4 @@
 *~
 *.pyc
 /br.log
+*.swp
