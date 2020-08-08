@@ -1,0 +1,65 @@
+name: CI
+
+# Controls when the action will run.
+on:
+  push:
+    branches: [master, skiff, skiff-next]
+  pull_request:
+    branches: [skiff, skiff-next, upstream-master]
+
+# A workflow run is made up of one or more jobs that can run sequentially or in parallel
+jobs:
+  # This workflow contains a single job called "build"
+  build:
+    # The type of runner that the job will run on
+    runs-on: ubuntu-latest
+
+    env:
+      # for add-env below
+      ACTIONS_ALLOW_UNSECURE_COMMANDS: 'true'
+
+    # Steps represent a sequence of tasks
+    steps:
+      # Checks-out the repo under $GITHUB_WORKSPACE
+      - uses: actions/checkout@v2
+
+      - name: Cache build cache and downloads
+        uses: actions/cache@v2
+        env:
+          cache-name: cache-buildroot
+        with:
+          path: ~/br-cache/
+          key: ${{ runner.os }}-build-${{ env.cache-name }}-${{ hashFiles('Makefile') }}
+          restore-keys: |
+            ${{ runner.os }}-build-${{ env.cache-name }}-
+            ${{ runner.os }}-build-
+            ${{ runner.os }}-
+
+      # Detect changes vs upstream-master
+      - name: Detect changes vs upstream
+        run: |
+          cd $GITHUB_WORKSPACE
+          git fetch
+          git remote add upstream https://github.com/buildroot/buildroot.git
+          git fetch upstream
+          export BUILDROOT_UPSTREAM=$(cat .github/buildroot-upstream)
+          echo "::set-env name=CHANGED_VS_UPSTREAM::$(git diff --diff-filter=ACM --name-only $BUILDROOT_UPSTREAM | xargs)"
+
+      # Run check-package on changed files
+      - name: Run check-package on all changed files and setup env
+        run: |
+          cd $GITHUB_WORKSPACE
+          ./utils/check-package $CHANGED_VS_UPSTREAM
+
+      # Installing buildroot deps
+      - name: Install buildroot apt deps
+        run: |
+          sudo apt-get install -y libelf-dev
+
+      # Test a build
+      - name: Run a generic build
+        run: |
+          cd $GITHUB_WORKSPACE
+          make defconfig BR2_DEFCONFIG=$(pwd)/.github/workflows/buildroot-e2e_defconfig
+          make -s all legal-info BR2_CCACHE_DIR=${HOME}/br-cache/ccache BR2_DL_DIR=${HOME}/br-cache/dl
+
