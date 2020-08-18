@@ -54,5 +54,5 @@ jobs:
         run: |
           cd $GITHUB_WORKSPACE
           make defconfig BR2_DEFCONFIG=$(pwd)/.github/workflows/buildroot-e2e_defconfig
-          make -s all BR2_CCACHE_DIR=${HOME}/br-cache/ccache BR2_DL_DIR=${HOME}/br-cache/dl
+          make -s all legal-info BR2_CCACHE_DIR=${HOME}/br-cache/ccache BR2_DL_DIR=${HOME}/br-cache/dl
 
