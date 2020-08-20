@@ -32,11 +32,14 @@ jobs:
             ${{ runner.os }}-
 
       # Detect changes vs upstream-master
-      - name: Detect changes vs upstream-master
+      - name: Detect changes vs upstream
         run: |
           cd $GITHUB_WORKSPACE
           git fetch
-          echo "::set-env name=CHANGED_VS_UPSTREAM::$(git diff --diff-filter=ACM --name-only origin/upstream-master | xargs)"
+          git remote add upstream https://github.com/buildroot/buildroot.git
+          git fetch upstream
+          export BUILDROOT_UPSTREAM=$(cat .github/buildroot-upstream)
+          echo "::set-env name=CHANGED_VS_UPSTREAM::$(git diff --diff-filter=ACM --name-only $BUILDROOT_UPSTREAM | xargs)"
 
       # Run check-package on changed files
       - name: Run check-package on all changed files and setup env
