@@ -1,0 +1,25 @@
+From c4233ad92256006f7db42efe7cdaf08079d74977 Mon Sep 17 00:00:00 2001
+From: Christian Stewart <christian@paral.in>
+Date: Sat, 22 Aug 2020 23:58:51 -0700
+Subject: [PATCH] Add ignore CC mismatch unconditonally to conftest
+
+Signed-off-by: Christian Stewart <christian@paral.in>
+---
+ kernel/conftest.sh | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/kernel/conftest.sh b/kernel/conftest.sh
+index a4ebf81..4ad452e 100755
+--- a/kernel/conftest.sh
++++ b/kernel/conftest.sh
+@@ -3882,6 +3882,7 @@ case "$5" in
+             IGNORE_CC_MISMATCH=1
+         fi
+ 
++        IGNORE_CC_MISMATCH=1
+         if [ -n "$IGNORE_CC_MISMATCH" ]; then
+             exit 0
+         fi
+-- 
+2.28.0
+
