@@ -99,6 +99,16 @@ define $(2)_CONFIGURE_CMDS
 endef
 endif
 
+# WIP - download dependencies with the Go tool if vendor does not exist.
+define $(2)_DOWNLOAD_GOMOD
+	if [ ! -d $$(@D)/vendor ]; then \
+		cd $$(@D); \
+		go mod vendor; \
+	fi
+endef
+
+$(2)_POST_PATCH_HOOKS += $(2)_DOWNLOAD_GOMOD
+
 # Build step. Only define it if not already defined by the package .mk
 # file.
 ifndef $(2)_BUILD_CMDS
