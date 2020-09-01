@@ -51,6 +51,13 @@ LINUX_FIRMWARE_FILES += intel/ibt-*
 LINUX_FIRMWARE_ALL_LICENSE_FILES += LICENCE.ibt_firmware
 endif
 
+# Samsung
+ifeq ($(BR2_PACKAGE_LINUX_FIRMWARE_S5P_MFC),y)
+LINUX_FIRMWARE_FILES += s5p-mfc*
+# TODO: license file for s5p-mfc firmware ?
+# LINUX_FIRMWARE_ALL_LICENSE_FILES += LICENCE.samsung_firmware
+endif
+
 # Qualcomm Atheros Rome 6174A Bluetooth
 ifeq ($(BR2_PACKAGE_LINUX_FIRMWARE_QUALCOMM_6174A_BT),y)
 LINUX_FIRMWARE_FILES += qca/rampatch_usb_00000302.bin qca/nvm_usb_00000302.bin
