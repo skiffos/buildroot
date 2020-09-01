@@ -49,6 +49,11 @@ config BR2_PACKAGE_LINUX_FIRMWARE_QCOM_ADRENO
 	help
 	  Firmware files for Qualcomm Adreno GPU firmware
 
+config BR2_PACKAGE_LINUX_FIRMWARE_S5P_MFC
+	bool "Samsung S5P MFC"
+	help
+	  Firmware files for Samsung S5P-MFC.
+
 endmenu # Video
 
 menu "Bluetooth firmware"
