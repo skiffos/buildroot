@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-DOCKER_PROXY_VERSION = 55685ba49593e67f5e1c8180539379b16736c25e
+DOCKER_PROXY_VERSION = 6d6f28a1b61b6dd0ad562277d19592125428ed4e
 DOCKER_PROXY_SITE = $(call github,docker,libnetwork,$(DOCKER_PROXY_VERSION))
 
 DOCKER_PROXY_LICENSE = Apache-2.0
