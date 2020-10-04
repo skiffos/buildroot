@@ -14,6 +14,9 @@ config BR2_PACKAGE_NVIDIA_DRIVER
 
 if BR2_PACKAGE_NVIDIA_DRIVER
 
+config BR2_PACKAGE_NVIDIA_DRIVER_ALPHA
+	bool "Use latest alpha version"
+
 comment "nvidia-driver X.org drivers needs a modular Xorg server"
 	depends on !BR2_PACKAGE_XSERVER_XORG_SERVER_MODULAR
 
