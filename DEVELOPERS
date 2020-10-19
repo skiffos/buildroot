@@ -1365,6 +1365,7 @@ F:	package/rabbitmq-c/
 N:	Joseph Kogut <joseph.kogut@gmail.com>
 F:	package/at-spi2-atk/
 F:	package/at-spi2-core/
+F:	package/chromium/
 F:	package/clang/
 F:	package/gconf/
 F:	package/libnss/
@@ -1656,6 +1657,7 @@ F:	package/bridge-utils/
 F:	package/checkpolicy/
 F:	package/checksec/
 F:	package/cgroupfs-mount/
+F:	package/compiler-rt/
 F:	package/crda/
 F:	package/cunit/
 F:	package/dacapo/
