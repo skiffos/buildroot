@@ -54,6 +54,11 @@ config BR2_PACKAGE_LINUX_FIRMWARE_MFC_V8
 	help
 	  Firmware files for Samsung MFC video encoder/decoder driver v8
 
+config BR2_PACKAGE_LINUX_FIRMWARE_ROCKCHIP_DPTX
+	bool "Rockchip dptx"
+	help
+	  Firmware files for RockChip dptx (DisplayPort).
+
 endmenu # Video
 
 menu "Bluetooth firmware"
