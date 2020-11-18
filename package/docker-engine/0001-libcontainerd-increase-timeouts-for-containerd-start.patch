@@ -1,0 +1,35 @@
+From 5cb345e7ccb53290681c060cdf0d75a244a4ccb3 Mon Sep 17 00:00:00 2001
+From: Christian Stewart <christian@paral.in>
+Date: Tue, 17 Nov 2020 22:21:33 -0800
+Subject: [PATCH] libcontainerd: increase timeouts for containerd startup
+
+Fixes startup error "timeout waiting for containerd to start" on some systems
+with slow I/O.
+
+Signed-off-by: Christian Stewart <christian@paral.in>
+---
+ libcontainerd/supervisor/remote_daemon.go | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
+
+diff --git a/libcontainerd/supervisor/remote_daemon.go b/libcontainerd/supervisor/remote_daemon.go
+index 3538612246..7dfdbdbe0e 100644
+--- a/libcontainerd/supervisor/remote_daemon.go
++++ b/libcontainerd/supervisor/remote_daemon.go
+@@ -22,10 +22,10 @@ import (
+ )
+ 
+ const (
+-	maxConnectionRetryCount = 3
+-	healthCheckTimeout      = 3 * time.Second
+-	shutdownTimeout         = 15 * time.Second
+-	startupTimeout          = 15 * time.Second
++	maxConnectionRetryCount = 4
++	healthCheckTimeout      = 6 * time.Second
++	shutdownTimeout         = 30 * time.Second
++	startupTimeout          = 120 * time.Second
+ 	configFile              = "containerd.toml"
+ 	binaryName              = "containerd"
+ 	pidFile                 = "containerd.pid"
+-- 
+2.29.2
+
