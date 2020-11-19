@@ -3,6 +3,10 @@ From: Richard Sandiford <richard.sandiford@arm.com>
 Date: Mon, 3 Aug 2020 09:48:36 +0100
 Subject: [PATCH] c: Fix bogus vector initialisation error [PR96377]
 
+Cherry-picked from mailing list.
+
+Signed-off-by: Christian Stewart <christian@paral.in>
+
 One of the problems in this PR was that if we had:
 
   vector_type1 array[] = { vector_value1 };
