@@ -1,0 +1,30 @@
+
+unpack() {
+        dest="$1"
+        tarball="$2"
+
+        mkdir ${dest}
+        tar -C ${dest} --strip-components=1 -xf ${tarball}
+}
+
+repack() {
+        src="$1"
+        tarball="$2"
+
+        # Generate the archive, sort with the C locale so that it is reproducible.
+        find "$(basename ${src})" -not -type d -print0 >files.list
+        LC_ALL=C sort -z <files.list >files.list.sorted
+
+        # let's use a fixed hardcoded date to be reproducible
+        date="2020-02-06 01:02:03 +0000"
+
+        # Create GNU-format tarballs, since that's the format of the tarballs on
+        # sources.buildroot.org and used in the *.hash files
+        tar cf new.tar --null --verbatim-files-from --numeric-owner --format=gnu \
+            --owner=0 --group=0 --mtime="${date}" -T files.list.sorted
+        gzip -6 -n <new.tar >new.tar.gz
+        mv "${tarball}" "${tarball}".old
+        mv new.tar.gz "${tarball}"
+        rm "${tarball}".old
+        rm -rf ${src}
+}
