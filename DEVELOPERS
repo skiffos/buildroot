@@ -2407,6 +2407,7 @@ F:	package/rtc-tools/
 F:	package/sam-ba/
 F:	package/scons/
 F:	package/squashfs/
+F:	package/tinifier/
 F:	package/wayland/
 F:	package/weston/
 F:	toolchain/
