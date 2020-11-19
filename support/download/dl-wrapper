@@ -17,7 +17,7 @@
 # We want to catch any unexpected failure, and exit immediately.
 set -e
 
-export BR_BACKEND_DL_GETOPTS=":hc:d:o:n:N:H:ru:qf:e"
+export BR_BACKEND_DL_GETOPTS=":hc:d:g:o:n:N:H:ru:qf:e"
 
 main() {
     local OPT OPTARG
@@ -25,11 +25,12 @@ main() {
     local -a uris
 
     # Parse our options; anything after '--' is for the backend
-    while getopts ":c:d:D:o:n:N:H:rf:u:qp:" OPT; do
+    while getopts ":c:d:D:g:o:n:N:H:rf:u:qp:" OPT; do
         case "${OPT}" in
         c)  cset="${OPTARG}";;
         d)  dl_dir="${OPTARG}";;
         D)  old_dl_dir="${OPTARG}";;
+        g)  gomod_init="${OPTARG}";;
         o)  output="${OPTARG}";;
         n)  raw_base_name="${OPTARG}";;
         N)  base_name="${OPTARG}";;
@@ -138,6 +139,7 @@ main() {
 
         if [ -n "${post_process}" ] ; then
                 ${OLDPWD}/support/download/${post_process}-post-process \
+                         -g "${gomod_init}" \
                          -o "${tmpf}" \
                          -n "${raw_base_name}"
         fi
