@@ -1,0 +1,26 @@
+# Helpers for the post-process step to re-pack vendored archives.
+
+. "${0%/*}/helpers"
+
+unpack() {
+    dest="$1"
+    tarball="$2"
+
+    mkdir ${dest}
+    tar -C ${dest} --strip-components=1 -xf ${tarball}
+}
+
+repack() {
+    local in_dir="${1}"
+    local base_dir="${2}"
+    local out="${3}"
+
+    # let's use a fixed hardcoded date to be reproducible
+    date="2020-02-06 01:02:03 +0000"
+
+    # use the helper to create a reproducible archive
+    mk_tar_gz "${in_dir}/${base_dir}" "${base_dir}" "${date}" "${out}"
+}
+
+# Keep this line and the following as last lines in this file.
+# vim: ft=bash
