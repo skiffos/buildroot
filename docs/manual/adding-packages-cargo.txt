@@ -85,15 +85,13 @@ typical packages will therefore only use a few of them.
 
 ==== About Dependencies Management
 
-A crate can depend on other libraries from crates.io or git repositories, listed
-in its Cargo.toml file. Before starting a build, Cargo usually downloads
-automatically them. This step can also be performed independently, via the
-+cargo fetch+ command.
+A crate can depend on other libraries from crates.io or git
+repositories, listed in its Cargo.toml file. Buildroot automatically
+takes care of downloading such dependencies as part of the download
+step of packages that use the +cargo-package+ infrastructure. Such
+dependencies are then kept together with the package source code in
+the tarball cached in Buildroot's +DL_DIR+, and therefore the hash of
+the package's tarball includes such dependencies.
 
-Cargo maintains a local cache of the registry index and of git checkouts of the
-crates, whose location is given by +$CARGO_HOME+.
-
-This dependency download mechanism is not convenient when performing an offline
-build, as Cargo will fail to fetch the dependencies. In that case, it is advised
-to generate a tarball of the dependencies using the +cargo vendor+ and add it to
-+FOO_EXTRA_DOWNLOADS+.
+This mechanism ensures that any change in the dependencies will be
+detected, and allows the build to be performed completely offline.
