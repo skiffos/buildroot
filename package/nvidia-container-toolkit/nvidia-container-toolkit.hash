@@ -1,3 +1,4 @@
 # Locally computed
-sha256  f386cba53b818e557583a18e7d84a6772d2eb1fa32778854557f7a210f44153e  nvidia-container-toolkit-1.2.1.tar.gz
+# Note: modified by go-post-process to vendor dependencies.
+sha256  ead7c3c96ac942cf8353f0819c19ad1de37e4e7e6eaafb5e75138acb889a4f79  nvidia-container-toolkit-1.2.1.tar.gz
 sha256  552a739c3b25792263f731542238b92f6f8d07e9a488eae27e6c4690038a8243  LICENSE
