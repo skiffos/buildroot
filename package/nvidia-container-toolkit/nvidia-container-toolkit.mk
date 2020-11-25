@@ -4,15 +4,15 @@
 #
 ################################################################################
 
-NVIDIA_CONTAINER_TOOLKIT_VERSION = 1.2.1
+NVIDIA_CONTAINER_TOOLKIT_VERSION = 1.4.2
 NVIDIA_CONTAINER_TOOLKIT_SITE = $(call github,NVIDIA,nvidia-container-toolkit,v$(NVIDIA_CONTAINER_TOOLKIT_VERSION))
 
 NVIDIA_CONTAINER_TOOLKIT_LICENSE = Apache-2.0
 NVIDIA_CONTAINER_TOOLKIT_LICENSE_FILES = LICENSE
 
-NVIDIA_CONTAINER_TOOLKIT_DEPENDENCIES = nvidia-container-runtime libnvidia-container
+NVIDIA_CONTAINER_TOOLKIT_DEPENDENCIES = libnvidia-container
 
-NVIDIA_CONTAINER_TOOLKIT_GOMOD = github.com/NVIDIA/container-toolkit
+NVIDIA_CONTAINER_TOOLKIT_GOMOD = github.com/NVIDIA/nvidia-container-toolkit
 NVIDIA_CONTAINER_TOOLKIT_BUILD_TARGETS = pkg
 NVIDIA_CONTAINER_TOOLKIT_BIN_NAME = nvidia-container-toolkit
 NVIDIA_CONTAINER_TOOLKIT_TAGS = cgo static_build
