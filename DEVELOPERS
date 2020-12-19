@@ -525,6 +525,7 @@ F:	package/pkg-golang.mk
 F:	package/rtl8821au/
 F:	package/runc/
 F:	package/tini/
+F:	package/tinifier/
 
 N:	Christophe Priouzeau <christophe.priouzeau@foss.st.com>
 F:	board/stmicroelectronics/stm32f429-disco/
@@ -2717,6 +2718,7 @@ F:	package/rtc-tools/
 F:	package/sam-ba/
 F:	package/scons/
 F:	package/squashfs/
+F:	package/tinifier/
 F:	package/wayland/
 F:	package/weston/
 F:	support/testing/tests/boot/test_syslinux.py
