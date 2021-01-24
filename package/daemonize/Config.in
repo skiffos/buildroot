@@ -1,0 +1,4 @@
+menuconfig BR2_PACKAGE_DAEMONIZE
+	bool "daemonize"
+	help
+	  Command line utility to run a daemon.
