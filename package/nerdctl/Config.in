@@ -1,0 +1,24 @@
+config BR2_PACKAGE_NERDCTL
+	bool "nerdctl"
+	depends on BR2_PACKAGE_HOST_GO_TARGET_ARCH_SUPPORTS
+	depends on BR2_PACKAGE_HOST_GO_TARGET_CGO_LINKING_SUPPORTS
+	depends on BR2_TOOLCHAIN_HAS_THREADS
+	depends on !BR2_TOOLCHAIN_USES_UCLIBC # containerd
+	depends on BR2_USE_MMU # util-linux
+	select BR2_PACKAGE_CONTAINERD # containerd runtime dependency
+	select BR2_PACKAGE_RUNC # containerd runtime dependency
+	select BR2_PACKAGE_UTIL_LINUX # runtime dependency
+	select BR2_PACKAGE_UTIL_LINUX_BINARIES # containerd
+	select BR2_PACKAGE_UTIL_LINUX_PIVOT_ROOT # containerd
+	select BR2_PACKAGE_UTIL_LINUX_MOUNTPOINT # containerd
+	select BR2_PACKAGE_UTIL_LINUX_MOUNT # containerd
+	help
+	  Docker-compatible CLI for containerd, controlling runc.
+
+	  https://github.com/containerd/nerdctl
+
+comment "nerdctl needs a glibc or musl toolchain w/ threads"
+	depends on BR2_PACKAGE_HOST_GO_TARGET_ARCH_SUPPORTS
+	depends on BR2_PACKAGE_HOST_GO_TARGET_CGO_LINKING_SUPPORTS
+	depends on BR2_USE_MMU
+	depends on !BR2_TOOLCHAIN_HAS_THREADS || BR2_TOOLCHAIN_USES_UCLIBC
