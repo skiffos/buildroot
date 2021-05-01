@@ -39,6 +39,7 @@ define HOST_LOCALEDEF_CONFIGURE_CMDS
 		--with-pkgversion="Buildroot" \
 		--without-cvs \
 		--disable-profile \
+		--disable-werror \
 		--without-gd \
 		--enable-obsolete-rpc)
 endef
