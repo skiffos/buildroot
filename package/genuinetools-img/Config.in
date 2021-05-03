@@ -1,0 +1,23 @@
+config BR2_PACKAGE_GENUINETOOLS_IMG
+	bool "genuinetools-img"
+	depends on BR2_USE_MMU # fuse-overlayfs libfuse3
+	depends on !BR2_STATIC_LIBS # fuse-overlayfs libfuse3
+	depends on BR2_TOOLCHAIN_HAS_THREADS # fuse-overlayfs libfuse3
+	depends on BR2_TOOLCHAIN_HEADERS_AT_LEAST_3_15 # fuse-overlayfs
+	depends on BR2_PACKAGE_HOST_GO_TARGET_ARCH_SUPPORTS
+	depends on BR2_PACKAGE_HOST_GO_TARGET_CGO_LINKING_SUPPORTS
+	depends on BR2_TOOLCHAIN_HAS_THREADS
+	depends on !BR2_TOOLCHAIN_USES_UCLIBC
+	select BR2_PACKAGE_CGROUPFS_MOUNT if !BR2_PACKAGE_SYSTEMD # runtime dependency
+	select BR2_PACKAGE_FUSE_OVERLAYFS # runtime dependency
+	select BR2_PACKAGE_LIBFUSE3 # fuse-overlayfs
+	help
+	  Img is a standalone, daemon-less, unprivileged Dockerfile
+	  and OCI compatible container image builder.
+
+	  https://github.com/genuinetools/img
+
+comment "genuinetools-img needs a toolchain w/ threads, dynamic library, headers >= 3.15"
+	depends on BR2_USE_MMU
+	depends on !BR2_TOOLCHAIN_HAS_THREADS || BR2_STATIC_LIBS || \
+		!BR2_TOOLCHAIN_HEADERS_AT_LEAST_3_15
