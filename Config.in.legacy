@@ -146,11 +146,21 @@ endif
 
 comment "Legacy options removed in 2021.05"
 
+config BR2_PACKAGE_DOCKER_CONTAINERD
+	bool "docker-containerd package was renamed to containerd"
+	select BR2_LEGACY
+	select BR2_PACKAGE_CONTAINERD
+	help
+	  The containerd project is now independent from Docker.
+	  The package was renamed to containerd accordingly.
+
 config BR2_PACKAGE_IOSTAT
 	bool "iostat removed"
 	select BR2_LEGACY
 	help
 	  This package has been removed, use sysstat instead.
+
+comment "Legacy options removed in 2021.02"
 
 config BR2_PACKAGE_SCONESERVER_HTTP_SCONESITE_IMAGE
 	bool "sconeserver http::sconesite::image removed"
