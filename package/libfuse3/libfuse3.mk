@@ -12,9 +12,15 @@ LIBFUSE3_CPE_ID_VENDOR = libfuse_project
 LIBFUSE3_CPE_ID_PRODUCT = libfuse
 LIBFUSE3_INSTALL_STAGING = YES
 LIBFUSE3_DEPENDENCIES = $(if $(BR2_PACKAGE_LIBICONV),libiconv)
+
 LIBFUSE3_CONF_OPTS = \
 	-Dexamples=false \
 	-Dudevrulesdir=/lib/udev/rules.d \
+	-Duseroot=false
+
+HOST_LIBFUSE3_CONF_OPTS = \
+	-Dexamples=false \
+	-Dudevrulesdir=$(HOST_DIR)/lib/udev/rules.d \
 	-Duseroot=false
 
 define LIBFUSE3_DEVICES
@@ -30,3 +36,4 @@ define LIBFUSE3_LINUX_CONFIG_FIXUPS
 endef
 
 $(eval $(meson-package))
+$(eval $(host-meson-package))
