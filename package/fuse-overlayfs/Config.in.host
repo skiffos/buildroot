@@ -1,0 +1,7 @@
+config BR2_PACKAGE_HOST_FUSE_OVERLAYFS
+	bool "host fuse-overlayfs"
+	help
+	  FUSE-overlayfs is an implementation of overlay+shiftfs in
+	  FUSE, intended to be used for rootless containers.
+
+	  http://github.com/containers/fuse-overlayfs
