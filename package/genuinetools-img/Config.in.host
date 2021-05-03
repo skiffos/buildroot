@@ -1,0 +1,9 @@
+config BR2_PACKAGE_HOST_GENUINETOOLS_IMG
+	bool "host genuinetools-img"
+	depends on BR2_PACKAGE_HOST_GO_HOST_ARCH_SUPPORTS
+	select BR2_PACKAGE_HOST_FUSE_OVERLAYFS # runtime dependency
+	help
+	  Img is a standalone, daemon-less, unprivileged Dockerfile
+	  and OCI compatible container image builder.
+
+	  https://github.com/genuinetools/img
