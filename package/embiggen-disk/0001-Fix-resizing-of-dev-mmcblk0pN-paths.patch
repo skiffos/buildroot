@@ -1,0 +1,45 @@
+From b628e4c561cb4d3ffc92a5d7aac8f4967e44977e Mon Sep 17 00:00:00 2001
+From: Christian Stewart <christian@paral.in>
+Date: Thu, 27 May 2021 20:07:07 -0700
+Subject: [PATCH] Fix resizing of /dev/mmcblk0pN paths
+
+Signed-off-by: Christian Stewart <christian@paral.in>
+---
+ fs.go   | 4 +++-
+ part.go | 5 +++++
+ 2 files changed, 8 insertions(+), 1 deletion(-)
+
+diff --git a/fs.go b/fs.go
+index 0b83e24..8ab3690 100644
+--- a/fs.go
++++ b/fs.go
+@@ -67,7 +67,9 @@ func (e fsResizer) DepResizer() (Resizer, error) {
+ 	if dev == "/dev/root" {
+ 		return nil, errors.New("unexpected device /dev/root from statFS")
+ 	}
+-	if (strings.HasPrefix(dev, "/dev/sd") || strings.HasPrefix(dev, "/dev/nvme")) &&
++	if (strings.HasPrefix(dev, "/dev/sd") ||
++		strings.HasPrefix(dev, "/dev/mmcblk") ||
++		strings.HasPrefix(dev, "/dev/nvme")) &&
+ 		devEndsInNumber(dev) {
+ 		vlogf("fsResizer.DepResizer: returning partitionResizer(%q)", dev)
+ 		return partitionResizer(dev), nil
+diff --git a/part.go b/part.go
+index 0315a6e..f3e280f 100644
+--- a/part.go
++++ b/part.go
+@@ -51,6 +51,11 @@ func diskDev(partDev string) string {
+ 	if strings.HasPrefix(partDev, "/dev/sd") {
+ 		return strings.TrimRight(partDev, "0123456789")
+ 	}
++	if strings.HasPrefix(partDev, "/dev/mmcblk") {
++		v := strings.TrimRight(partDev, "0123456789")
++		v = strings.TrimSuffix(v, "p")
++		return v
++	}
+ 	if strings.HasPrefix(partDev, "/dev/nvme") {
+ 		chopP := regexp.MustCompile(`p\d+$`)
+ 		if !chopP.MatchString(partDev) {
+-- 
+2.31.1
+
