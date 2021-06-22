@@ -12,7 +12,11 @@ GO_LICENSE = BSD-3-Clause
 GO_LICENSE_FILES = LICENSE
 GO_CPE_ID_VENDOR = golang
 
-HOST_GO_DEPENDENCIES = host-go-bootstrap
+# Depend on the host Go compiler if go-bootstrap is not available.
+ifeq ($(BR2_PACKAGE_HOST_GO_BOOTSTRAP_ARCH_SUPPORTS),y)
+HOST_GO_DEPENDENCIES += host-go-bootstrap
+endif
+
 HOST_GO_GOPATH = $(HOST_DIR)/usr/share/go-path
 HOST_GO_HOST_CACHE = $(HOST_DIR)/usr/share/host-go-cache
 HOST_GO_ROOT = $(HOST_DIR)/lib/go
