@@ -19,7 +19,13 @@ GO_BOOTSTRAP_LICENSE_FILES = LICENSE
 # host-go-bootstrap.
 HOST_GO_BOOTSTRAP_DEPENDENCIES = toolchain
 
+# If we do not support this architecture with go-bootstrap, depend on the host
+# Go compiler to bootstrap the host-go compiler instead.
+ifeq ($(BR2_PACKAGE_HOST_GO_BOOTSTRAP_ARCH_SUPPORTS),y)
 HOST_GO_BOOTSTRAP_ROOT = $(HOST_DIR)/lib/go-$(GO_BOOTSTRAP_VERSION)
+else
+HOST_GO_BOOTSTRAP_ROOT = /usr/lib/go
+endif
 
 # The go build system is not compatable with ccache, so use HOSTCC_NOCCACHE
 # here.  See https://github.com/golang/go/issues/11685.
