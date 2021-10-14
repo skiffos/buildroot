@@ -533,6 +533,7 @@ F:	package/buildah/
 F:	package/catatonit/
 F:	package/conmon/
 F:	package/containerd/
+F:	package/crun/
 F:	package/delve/
 F:	package/docker-cli/
 F:	package/docker-engine/
