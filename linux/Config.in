@@ -471,6 +471,12 @@ config BR2_LINUX_KERNEL_NEEDS_HOST_LIBELF
 	  CONFIG_UNWINDER_ORC=y, please install libelf-dev,
 	  libelf-devel or elfutils-libelf-devel".
 
+config BR2_LINUX_KERNEL_NEEDS_HOST_LIBYAML
+	bool "Needs host libyaml"
+	help
+	  Enabling this option will ensure host-libyaml is built
+	  before the Linux kernel (to provide libyaml).
+
 # Linux extensions
 source "linux/Config.ext.in"
 
