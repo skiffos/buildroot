@@ -4,12 +4,12 @@
 #
 ################################################################################
 
-NVIDIA_DRIVER_VERSION = 470.57.02
+NVIDIA_DRIVER_VERSION = 470.94
 
 ifeq ($(BR2_x86_64),y)
 NVIDIA_DRIVER_SUFFIX = _64
 else
-NVIDIA_DRIVER_VERSION = 390.138
+NVIDIA_DRIVER_VERSION = 390.147
 endif # BR2_x86_64
 
 NVIDIA_DRIVER_SITE = http://download.nvidia.com/XFree86/Linux-x86$(NVIDIA_DRIVER_SUFFIX)/$(NVIDIA_DRIVER_VERSION)
