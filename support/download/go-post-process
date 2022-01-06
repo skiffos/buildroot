@@ -24,9 +24,10 @@ post_process_unpack "${base_name}" "${output}"
 # Do the Go vendoring
 pushd "${base_name}" > /dev/null
 
+# Generate go.mod if it doesn't exist
 if [ ! -f go.mod ]; then
-    echo "ERROR: no vendor/ folder and no go.mod, aborting"
-    exit 1
+    # Note: if BR_GOMOD is unset, infers module path.
+    go mod init -modcacherw ${BR_GOMOD}
 fi
 
 go mod vendor -v -modcacherw
