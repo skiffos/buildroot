@@ -25,8 +25,9 @@ post_process_unpack ${base_name} ${output}
 pushd ${base_name} > /dev/null
 
 # Generate go.mod if it doesn't exist
-if [ ! -f go.mod ] && [ -n "${BR_GOMOD}" ]; then
-    printf "module ${BR_GOMOD}\n" > go.mod
+if [ ! -f go.mod ]; then
+    # Note: if BR_GOMOD is unset, infers module path.
+    go mod init -modcacherw ${BR_GOMOD}
 fi
 
 go mod vendor -v -modcacherw
