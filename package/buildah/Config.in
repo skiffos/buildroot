@@ -1,0 +1,23 @@
+config BR2_PACKAGE_BUILDAH
+	bool "buildah"
+	depends on BR2_PACKAGE_HOST_GO_TARGET_ARCH_SUPPORTS
+	depends on BR2_PACKAGE_HOST_GO_TARGET_CGO_LINKING_SUPPORTS
+	depends on BR2_PACKAGE_LIBGPG_ERROR_ARCH_SUPPORTS # libgpgme -> libgpg-error
+	depends on BR2_TOOLCHAIN_HAS_THREADS # runc
+	depends on BR2_USE_MMU # libgpgme -> libassuan
+	depends on !BR2_TOOLCHAIN_USES_UCLIBC # runc -> no fexecve
+	# gnupg and runc are not needed to build, but at runtime.
+	select BR2_PACKAGE_LIBGPGME
+	select BR2_PACKAGE_GNUPG if !BR2_PACKAGE_GNUPG2
+	select BR2_PACKAGE_LIBGPG_ERROR
+	select BR2_PACKAGE_LIBASSUAN
+	select BR2_PACKAGE_RUNC
+	help
+	  Buildah is a tool that facilitates building OCI images.
+
+	  https://github.com/containers/buildah
+
+comment "buildah needs a glibc or musl toolchain w/ threads"
+	depends on BR2_PACKAGE_HOST_GO_TARGET_ARCH_SUPPORTS && \
+		BR2_PACKAGE_HOST_GO_TARGET_CGO_LINKING_SUPPORTS
+	depends on !BR2_TOOLCHAIN_HAS_THREADS || BR2_TOOLCHAIN_USES_UCLIBC
