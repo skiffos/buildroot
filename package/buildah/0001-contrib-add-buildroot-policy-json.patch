@@ -1,0 +1,38 @@
+From 6808cfa788f03fca36a41202d9475ee5bc9feac7 Mon Sep 17 00:00:00 2001
+From: Christian Stewart <christian@paral.in>
+Date: Wed, 26 Jan 2022 22:07:09 -0800
+Subject: [PATCH] contrib: add buildroot policy json
+
+Buildah does not ship a default policy.json in-tree.
+
+Signed-off-by: Christian Stewart <christian@paral.in>
+---
+ contrib/buildroot/policy.json | 16 ++++++++++++++++
+ 1 file changed, 16 insertions(+)
+ create mode 100644 contrib/buildroot/policy.json
+
+diff --git a/contrib/buildroot/policy.json b/contrib/buildroot/policy.json
+new file mode 100644
+index 00000000..d8c638a0
+--- /dev/null
++++ b/contrib/buildroot/policy.json
+@@ -0,0 +1,16 @@
++{
++  "default": [
++    {
++      "type": "insecureAcceptAnything"
++    }
++  ],
++  "transports": {
++    "docker-daemon": {
++      "": [
++        {
++          "type": "insecureAcceptAnything"
++        }
++      ]
++    }
++  }
++}
+-- 
+2.35.0
+
