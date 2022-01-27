@@ -23,4 +23,10 @@ RUNC_TAGS += seccomp
 RUNC_DEPENDENCIES += libseccomp host-pkgconf
 endif
 
+HOST_RUNC_BIN_NAME = runc
+HOST_RUNC_LDFLAGS = $(RUNC_LDFLAGS)
+HOST_RUNC_TAGS = cgo static_build
+HOST_RUNC_INSTALL_BINS = $(HOST_RUNC_BIN_NAME)
+
 $(eval $(golang-package))
+$(eval $(host-golang-package))
