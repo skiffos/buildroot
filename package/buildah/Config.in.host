@@ -1,0 +1,8 @@
+config BR2_PACKAGE_HOST_BUILDAH
+	bool "host buildah"
+	depends on BR2_PACKAGE_HOST_GO_HOST_ARCH_SUPPORTS
+	select BR2_PACKAGE_HOST_RUNC
+	help
+	  Buildah is a tool that facilitates building OCI images.
+
+	  https://github.com/containers/buildah
