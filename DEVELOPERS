@@ -512,6 +512,7 @@ F:	package/python-pylibftdi/
 
 N:	Christian Stewart <christian@paral.in>
 F:	package/batman-adv/
+F:	package/buildah/
 F:	package/containerd/
 F:	package/delve/
 F:	package/docker-cli/
