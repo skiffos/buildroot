@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-NVIDIA_DRIVER_VERSION = 470.94
+NVIDIA_DRIVER_VERSION = 510.54
 
 ifeq ($(BR2_x86_64),y)
 NVIDIA_DRIVER_SUFFIX = _64
