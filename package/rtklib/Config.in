@@ -1,0 +1,38 @@
+comment "rtklib needs a toolchain w/ threads"
+	depends on !BR2_TOOLCHAIN_HAS_THREADS
+
+config BR2_PACKAGE_RTKLIB
+	bool "rtklib"
+	depends on BR2_TOOLCHAIN_HAS_THREADS
+	help
+	  RTKLIB is an open source program package for standard and
+	  precise positioning with GNSS (global navigation satellite
+	  system).
+
+	  This is a version of RTKLIB optimized for single and dual
+	  frequency low cost GPS receivers, especially u-blox receivers.
+
+	  https://rtkexplorer.com/
+
+if BR2_PACKAGE_RTKLIB
+
+config BR2_PACKAGE_RTKLIB_CONVBIN
+	bool "convbin"
+
+config BR2_PACKAGE_RTKLIB_POS2KML
+	bool "pos2kml"
+
+comment "rnx2rtkp needs Fortran"
+	depends on !BR2_TOOLCHAIN_HAS_FORTRAN
+
+config BR2_PACKAGE_RTKLIB_RNX2RTKP
+	bool "rnx2rtkp"
+	depends on BR2_TOOLCHAIN_HAS_FORTRAN
+
+config BR2_PACKAGE_RTKLIB_RTKRCV
+	bool "rtkrcv"
+
+config BR2_PACKAGE_RTKLIB_STR2STR
+	bool "str2str"
+
+endif
