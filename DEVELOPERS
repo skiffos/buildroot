@@ -1476,6 +1476,7 @@ F:	package/microchip-hss-payload-generator/
 N:	Jan Havran <havran.jan@email.cz>
 F:	board/pine64/pinecube/
 F:	configs/pine64_pinecube_defconfig
+F:	package/rtklib/
 
 N:	Jan Heylen <jan.heylen@nokia.com>
 F:	package/opentracing-cpp/
