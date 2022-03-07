@@ -1,0 +1,30 @@
+From aece6cb25704d86bfea9a4ad8b79970471ac5059 Mon Sep 17 00:00:00 2001
+From: Christian Stewart <christian@paral.in>
+Date: Mon, 7 Mar 2022 11:44:38 -0800
+Subject: [PATCH] error date-time: remove date and time macros
+
+Fixes: -Werror=date-time
+
+error: macro "__TIME__" might prevent reproducible builds
+
+Signed-off-by: Christian Stewart <christian@paral.in>
+---
+ core/rtw_debug.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/core/rtw_debug.c b/core/rtw_debug.c
+index d1a41e1..e16efa5 100755
+--- a/core/rtw_debug.c
++++ b/core/rtw_debug.c
+@@ -42,7 +42,7 @@ const char *rtw_log_level_str[] = {
+ void dump_drv_version(void *sel)
+ {
+ 	RTW_PRINT_SEL(sel, "%s %s\n", DRV_NAME, DRIVERVERSION);
+-	RTW_PRINT_SEL(sel, "build time: %s %s\n", __DATE__, __TIME__);
++	RTW_PRINT_SEL(sel, "build time: [unset] [unset]\n");
+ }
+ 
+ #ifdef CONFIG_PROC_DEBUG
+-- 
+2.35.1
+
