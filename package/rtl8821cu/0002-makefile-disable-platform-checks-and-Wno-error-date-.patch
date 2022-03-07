@@ -1,0 +1,41 @@
+From 36d9944f3608eed1e7821e538597d79352708578 Mon Sep 17 00:00:00 2001
+From: Christian Stewart <christian@paral.in>
+Date: Wed, 30 Nov 2022 16:08:25 -0800
+Subject: [PATCH] makefile: disable platform checks and Wno-error-date-time
+
+Remove unnecessary PLATFORM_I386 and add Wno-error-date-time.
+
+Signed-off-by: Christian Stewart <christian@paral.in>
+---
+ Makefile | 8 ++------
+ 1 file changed, 2 insertions(+), 6 deletions(-)
+
+diff --git a/Makefile b/Makefile
+index 7d79fcd..3563ac2 100644
+--- a/Makefile
++++ b/Makefile
+@@ -22,11 +22,7 @@ EXTRA_CFLAGS += -Wno-implicit-fallthrough
+ # gcc-12
+ EXTRA_CFLAGS += -Wno-address
+ EXTRA_CFLAGS += -Wframe-larger-than=1648
+-
+-GCC_VER_49 := $(shell echo `$(CC) -dumpversion | cut -f1-2 -d.` \>= 4.9 | bc )
+-ifeq ($(GCC_VER_49),1)
+-EXTRA_CFLAGS += -Wno-date-time	# Fix compile error && warning on gcc 4.9 and later
+-endif
++EXTRA_CFLAGS += -Wno-error=date-time
+ 
+ EXTRA_CFLAGS += -I$(src)/include
+ 
+@@ -147,7 +143,7 @@ CONFIG_LAYER2_ROAMING = y
+ #bit0: ROAM_ON_EXPIRED, #bit1: ROAM_ON_RESUME, #bit2: ROAM_ACTIVE
+ CONFIG_ROAMING_FLAG = 0x3
+ ###################### Platform Related #######################
+-CONFIG_PLATFORM_I386_PC = y
++CONFIG_PLATFORM_I386_PC = n
+ CONFIG_PLATFORM_ARM_RPI = n
+ CONFIG_PLATFORM_ARM64_RPI = n
+ CONFIG_PLATFORM_ANDROID_X86 = n
+-- 
+2.38.1
+
