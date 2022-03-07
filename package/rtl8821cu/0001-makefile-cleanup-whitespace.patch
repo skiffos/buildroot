@@ -1,0 +1,122 @@
+From 839960e49d82eb3c463a8020a039cec888a95511 Mon Sep 17 00:00:00 2001
+From: Christian Stewart <christian@paral.in>
+Date: Wed, 30 Nov 2022 16:07:28 -0800
+Subject: [PATCH] makefile: cleanup whitespace
+
+Signed-off-by: Christian Stewart <christian@paral.in>
+---
+ Makefile | 28 ++++++++++++++--------------
+ 1 file changed, 14 insertions(+), 14 deletions(-)
+
+diff --git a/Makefile b/Makefile
+index df5380d..7d79fcd 100644
+--- a/Makefile
++++ b/Makefile
+@@ -309,8 +309,8 @@ endif
+ EXTRA_CFLAGS += -DCONFIG_RTL8188E
+ 
+ _HAL_INTFS_FILES +=	hal/HalPwrSeqCmd.o \
+-					hal/$(RTL871X)/Hal8188EPwrSeq.o\
+- 					hal/$(RTL871X)/$(RTL871X)_xmit.o\
++					hal/$(RTL871X)/Hal8188EPwrSeq.o \
++					hal/$(RTL871X)/$(RTL871X)_xmit.o \
+ 					hal/$(RTL871X)/$(RTL871X)_sreset.o
+ 
+ _HAL_INTFS_FILES +=	hal/$(RTL871X)/$(RTL871X)_hal_init.o \
+@@ -365,8 +365,8 @@ MODULE_NAME = 8192ee
+ endif
+ EXTRA_CFLAGS += -DCONFIG_RTL8192E
+ _HAL_INTFS_FILES += hal/HalPwrSeqCmd.o \
+-					hal/$(RTL871X)/Hal8192EPwrSeq.o\
+-					hal/$(RTL871X)/$(RTL871X)_xmit.o\
++					hal/$(RTL871X)/Hal8192EPwrSeq.o \
++					hal/$(RTL871X)/$(RTL871X)_xmit.o \
+ 					hal/$(RTL871X)/$(RTL871X)_sreset.o
+ 
+ _HAL_INTFS_FILES +=	hal/$(RTL871X)/$(RTL871X)_hal_init.o \
+@@ -425,8 +425,8 @@ endif
+ 
+ _HAL_INTFS_FILES +=  hal/HalPwrSeqCmd.o \
+ 					hal/$(RTL871X)/Hal8812PwrSeq.o \
+-					hal/$(RTL871X)/Hal8821APwrSeq.o\
+-					hal/$(RTL871X)/$(RTL871X)_xmit.o\
++					hal/$(RTL871X)/Hal8821APwrSeq.o \
++					hal/$(RTL871X)/$(RTL871X)_xmit.o \
+ 					hal/$(RTL871X)/$(RTL871X)_sreset.o
+ 
+ _HAL_INTFS_FILES +=	hal/$(RTL871X)/$(RTL871X)_hal_init.o \
+@@ -532,7 +532,7 @@ endif
+ EXTRA_CFLAGS += -DCONFIG_RTL8723B
+ 
+ _HAL_INTFS_FILES += hal/HalPwrSeqCmd.o \
+-					hal/$(RTL871X)/Hal8723BPwrSeq.o\
++					hal/$(RTL871X)/Hal8723BPwrSeq.o \
+ 					hal/$(RTL871X)/$(RTL871X)_sreset.o
+ 
+ _HAL_INTFS_FILES +=	hal/$(RTL871X)/$(RTL871X)_hal_init.o \
+@@ -594,7 +594,7 @@ EXTRA_CFLAGS += -DCONFIG_RTL8814A
+ 
+ _HAL_INTFS_FILES +=  hal/HalPwrSeqCmd.o \
+ 					hal/$(RTL871X)/Hal8814PwrSeq.o \
+-					hal/$(RTL871X)/$(RTL871X)_xmit.o\
++					hal/$(RTL871X)/$(RTL871X)_xmit.o \
+ 					hal/$(RTL871X)/$(RTL871X)_sreset.o
+ 
+ _HAL_INTFS_FILES +=	hal/$(RTL871X)/$(RTL871X)_hal_init.o \
+@@ -654,7 +654,7 @@ endif
+ EXTRA_CFLAGS += -DCONFIG_RTL8703B
+ 
+ _HAL_INTFS_FILES += hal/HalPwrSeqCmd.o \
+-					hal/$(RTL871X)/Hal8703BPwrSeq.o\
++					hal/$(RTL871X)/Hal8703BPwrSeq.o \
+ 					hal/$(RTL871X)/$(RTL871X)_sreset.o
+ 
+ _HAL_INTFS_FILES +=	hal/$(RTL871X)/$(RTL871X)_hal_init.o \
+@@ -710,7 +710,7 @@ endif
+ EXTRA_CFLAGS += -DCONFIG_RTL8723D
+ 
+ _HAL_INTFS_FILES += hal/HalPwrSeqCmd.o \
+-					hal/$(RTL871X)/Hal8723DPwrSeq.o\
++					hal/$(RTL871X)/Hal8723DPwrSeq.o \
+ 					hal/$(RTL871X)/$(RTL871X)_sreset.o
+ 
+ _HAL_INTFS_FILES +=	hal/$(RTL871X)/$(RTL871X)_hal_init.o \
+@@ -778,7 +778,7 @@ endif
+ EXTRA_CFLAGS += -DCONFIG_RTL8188F
+ 
+ _HAL_INTFS_FILES += hal/HalPwrSeqCmd.o \
+-					hal/$(RTL871X)/Hal8188FPwrSeq.o\
++					hal/$(RTL871X)/Hal8188FPwrSeq.o \
+ 					hal/$(RTL871X)/$(RTL871X)_sreset.o
+ 
+ _HAL_INTFS_FILES +=	hal/$(RTL871X)/$(RTL871X)_hal_init.o \
+@@ -825,7 +825,7 @@ endif
+ EXTRA_CFLAGS += -DCONFIG_RTL8188GTV
+ 
+ _HAL_INTFS_FILES += hal/HalPwrSeqCmd.o \
+-					hal/$(RTL871X)/Hal8188GTVPwrSeq.o\
++					hal/$(RTL871X)/Hal8188GTVPwrSeq.o \
+ 					hal/$(RTL871X)/$(RTL871X)_sreset.o
+ 
+ _HAL_INTFS_FILES +=	hal/$(RTL871X)/$(RTL871X)_hal_init.o \
+@@ -903,7 +903,7 @@ endif
+ EXTRA_CFLAGS += -DCONFIG_RTL8710B
+ 
+ _HAL_INTFS_FILES += hal/HalPwrSeqCmd.o \
+-					hal/$(RTL871X)/Hal8710BPwrSeq.o\
++					hal/$(RTL871X)/Hal8710BPwrSeq.o \
+ 					hal/$(RTL871X)/$(RTL871X)_sreset.o
+ 
+ _HAL_INTFS_FILES +=	hal/$(RTL871X)/$(RTL871X)_hal_init.o \
+@@ -950,7 +950,7 @@ endif
+ EXTRA_CFLAGS += -DCONFIG_RTL8192F
+ 
+ _HAL_INTFS_FILES += hal/HalPwrSeqCmd.o \
+-					hal/$(RTL871X)/Hal8192FPwrSeq.o\
++					hal/$(RTL871X)/Hal8192FPwrSeq.o \
+ 					hal/$(RTL871X)/$(RTL871X)_sreset.o
+ 
+ _HAL_INTFS_FILES +=	hal/$(RTL871X)/$(RTL871X)_hal_init.o \
+-- 
+2.38.1
+
