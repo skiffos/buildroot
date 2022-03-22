@@ -4,8 +4,9 @@
 #
 ################################################################################
 
-CONTAINERD_VERSION = 1.5.9
-CONTAINERD_SITE = $(call github,containerd,containerd,v$(CONTAINERD_VERSION))
+# 1.6.1 w/ compatibility with go1.18
+CONTAINERD_VERSION = 977cb8bef06ea5c2e8c1a88e1308580ba95360d7
+CONTAINERD_SITE = $(call github,containerd,containerd,$(CONTAINERD_VERSION))
 CONTAINERD_LICENSE = Apache-2.0
 CONTAINERD_LICENSE_FILES = LICENSE
 CONTAINERD_CPE_ID_VENDOR = linuxfoundation
