@@ -1,46 +1,52 @@
-From 4d43f7c4dd06e6f62be446996019d4505af54764 Mon Sep 17 00:00:00 2001
+From 451e55eef1c5958388bc782683aba423448ab9bb Mon Sep 17 00:00:00 2001
 From: Christian Stewart <christian@paral.in>
 Date: Thu, 14 Apr 2022 13:34:26 -0700
-Subject: [PATCH] build: bootstrap: set environment before generating buildcfg
+Subject: [PATCH] build: bootstrap: unset goarch when rewriting compiler files
 
 The GOOS and GOARCH environment variables should be unset before calling
-mkbuildcfg. This change fixes a build failure when GOARCH=riscv64.
+mkbuildcfg, as the target GOOS and GOARCH is not relevant while compiling the
+bootstrap Go compiler using the C-based go-bootstrap go1.4 compiler.
+
+This change fixes a build failure when GOARCH=riscv64:
 
 Building Go toolchain1 using go-1.4-bootstrap-20171003.
 src/cmd/compile/internal/ssa/rewriteRISCV64.go:4814
 invalid operation: y << x (shift count type int64, must be unsigned integer)
 
-There is a build issue with go1.4 with the riscv64 code: however, why is the
-riscv64 code being compiled at all?
+This is because:
 
-GOARCH is set when calling mkbuildcfg, so go1.4 is trying to compile riscv64.
+ - buildtool.go:198: calls bootstrapRewriteFile(src)
+ - bootstrapRewriteFile: buildtool.go:283 calls:
+ - isUnneededSSARewriteFile: checks os.Getenv("GOARCH")
+ - isUnneededSSARewriteFile: returns "", false
+ - bootstrapRewriteFile: calls bootstrapFixImports
+ - boostrapFixImports: generates code go1.4 cannot compile
+
+By unsetting GOARCH here we are causing isUnneededSSARewriteFile to return true
+instead of false which generates stub functions bypassing the incompatible code.
+
+buildtool.go:272 in isUnneededSSARewriteFile is the only place the GOARCH
+environment variable is checked apart from the xinit function.
+
+This patch simply moves the os.Setenv("GOARCH", "") to before the block of code
+where bootstrapRewriteFile is called.
 
 [Buildroot]: submitted to upstream:
 
- - https://github.com/golang/go/issues/52583
- - https://go-review.googlesource.com/c/go/+/400376
- - GitHub-Pull-Request: golang/go#52362
+- https://github.com/golang/go/issues/52583
+- https://go-review.googlesource.com/c/go/+/400376
+- GitHub-Pull-Request: golang/go#52362
 
 Signed-off-by: Christian Stewart <christian@paral.in>
 ---
- src/cmd/dist/buildtool.go | 56 ++++++++++++++++++++-------------------
- 1 file changed, 29 insertions(+), 27 deletions(-)
+ src/cmd/dist/buildtool.go | 49 ++++++++++++++++++++-------------------
+ 1 file changed, 25 insertions(+), 24 deletions(-)
 
 diff --git a/src/cmd/dist/buildtool.go b/src/cmd/dist/buildtool.go
-index f1f3d50b6f..dabf01cf84 100644
+index f1f3d50b6f..c8fd583832 100644
 --- a/src/cmd/dist/buildtool.go
 +++ b/src/cmd/dist/buildtool.go
-@@ -116,9 +116,6 @@ func bootstrapBuildTools() {
- 	}
- 	xprintf("Building Go toolchain1 using %s.\n", goroot_bootstrap)
- 
--	mkbuildcfg(pathf("%s/src/internal/buildcfg/zbootstrap.go", goroot))
--	mkobjabi(pathf("%s/src/cmd/internal/objabi/zbootstrap.go", goroot))
--
- 	// Use $GOROOT/pkg/bootstrap as the bootstrap workspace root.
- 	// We use a subdirectory of $GOROOT/pkg because that's the
- 	// space within $GOROOT where we store all generated objects.
-@@ -130,6 +127,34 @@ func bootstrapBuildTools() {
+@@ -130,6 +130,31 @@ func bootstrapBuildTools() {
  	base := pathf("%s/src/bootstrap", workspace)
  	xmkdirall(base)
  
@@ -53,6 +59,7 @@ index f1f3d50b6f..dabf01cf84 100644
 +	// Restore GOROOT, GOPATH, and GOBIN when done.
 +	// Don't bother with GOOS, GOHOSTOS, GOARCH, and GOHOSTARCH,
 +	// because setup will take care of those when bootstrapBuildTools returns.
++	// Note: GOARCH is read by bootstrapRewriteFile -> isUnneededSSARewriteFile.
 +
 +	defer os.Setenv("GOROOT", os.Getenv("GOROOT"))
 +	os.Setenv("GOROOT", goroot_bootstrap)
@@ -67,10 +74,6 @@ index f1f3d50b6f..dabf01cf84 100644
 +	os.Setenv("GOHOSTOS", "")
 +	os.Setenv("GOARCH", "")
 +	os.Setenv("GOHOSTARCH", "")
-+
-+	// Create the build config files.
-+	mkbuildcfg(pathf("%s/src/internal/buildcfg/zbootstrap.go", goroot))
-+	mkobjabi(pathf("%s/src/cmd/internal/objabi/zbootstrap.go", goroot))
 +
  	// Copy source code into $GOROOT/pkg/bootstrap and rewrite import paths.
  	writefile("module bootstrap\n", pathf("%s/%s", base, "go.mod"), 0)
@@ -106,14 +109,6 @@ index f1f3d50b6f..dabf01cf84 100644
  	// Run Go 1.4 to build binaries. Use -gcflags=-l to disable inlining to
  	// workaround bugs in Go 1.4's compiler. See discussion thread:
  	// https://groups.google.com/d/msg/golang-dev/Ss7mCKsvk8w/Gsq7VYI0AwAJ
-@@ -221,6 +222,7 @@ func bootstrapBuildTools() {
- 		cmd = append(cmd, "-toolexec="+tool)
- 	}
- 	cmd = append(cmd, "bootstrap/cmd/...")
-+
- 	run(base, ShowOutput|CheckExit, cmd...)
- 
- 	// Copy binaries into tool binary directory.
 -- 
 2.35.1
 
