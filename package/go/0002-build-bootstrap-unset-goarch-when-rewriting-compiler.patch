@@ -1,0 +1,114 @@
+From 451e55eef1c5958388bc782683aba423448ab9bb Mon Sep 17 00:00:00 2001
+From: Christian Stewart <christian@paral.in>
+Date: Thu, 14 Apr 2022 13:34:26 -0700
+Subject: [PATCH] build: bootstrap: unset goarch when rewriting compiler files
+
+The GOOS and GOARCH environment variables should be unset before calling
+mkbuildcfg, as the target GOOS and GOARCH is not relevant while compiling the
+bootstrap Go compiler using the C-based go-bootstrap go1.4 compiler.
+
+This change fixes a build failure when GOARCH=riscv64:
+
+Building Go toolchain1 using go-1.4-bootstrap-20171003.
+src/cmd/compile/internal/ssa/rewriteRISCV64.go:4814
+invalid operation: y << x (shift count type int64, must be unsigned integer)
+
+This is because:
+
+ - buildtool.go:198: calls bootstrapRewriteFile(src)
+ - bootstrapRewriteFile: buildtool.go:283 calls:
+ - isUnneededSSARewriteFile: checks os.Getenv("GOARCH")
+ - isUnneededSSARewriteFile: returns "", false
+ - bootstrapRewriteFile: calls bootstrapFixImports
+ - boostrapFixImports: generates code go1.4 cannot compile
+
+By unsetting GOARCH here we are causing isUnneededSSARewriteFile to return true
+instead of false which generates stub functions bypassing the incompatible code.
+
+buildtool.go:272 in isUnneededSSARewriteFile is the only place the GOARCH
+environment variable is checked apart from the xinit function.
+
+This patch simply moves the os.Setenv("GOARCH", "") to before the block of code
+where bootstrapRewriteFile is called.
+
+[Buildroot]: submitted to upstream:
+
+- https://github.com/golang/go/issues/52583
+- https://go-review.googlesource.com/c/go/+/400376
+- GitHub-Pull-Request: golang/go#52362
+
+Signed-off-by: Christian Stewart <christian@paral.in>
+---
+ src/cmd/dist/buildtool.go | 49 ++++++++++++++++++++-------------------
+ 1 file changed, 25 insertions(+), 24 deletions(-)
+
+diff --git a/src/cmd/dist/buildtool.go b/src/cmd/dist/buildtool.go
+index f1f3d50b6f..c8fd583832 100644
+--- a/src/cmd/dist/buildtool.go
++++ b/src/cmd/dist/buildtool.go
+@@ -130,6 +130,31 @@ func bootstrapBuildTools() {
+ 	base := pathf("%s/src/bootstrap", workspace)
+ 	xmkdirall(base)
+ 
++	// Set up environment for invoking Go 1.4 go command.
++	// GOROOT points at Go 1.4 GOROOT,
++	// GOPATH points at our bootstrap workspace,
++	// GOBIN is empty, so that binaries are installed to GOPATH/bin,
++	// and GOOS, GOHOSTOS, GOARCH, and GOHOSTOS are empty,
++	// so that Go 1.4 builds whatever kind of binary it knows how to build.
++	// Restore GOROOT, GOPATH, and GOBIN when done.
++	// Don't bother with GOOS, GOHOSTOS, GOARCH, and GOHOSTARCH,
++	// because setup will take care of those when bootstrapBuildTools returns.
++	// Note: GOARCH is read by bootstrapRewriteFile -> isUnneededSSARewriteFile.
++
++	defer os.Setenv("GOROOT", os.Getenv("GOROOT"))
++	os.Setenv("GOROOT", goroot_bootstrap)
++
++	defer os.Setenv("GOPATH", os.Getenv("GOPATH"))
++	os.Setenv("GOPATH", workspace)
++
++	defer os.Setenv("GOBIN", os.Getenv("GOBIN"))
++	os.Setenv("GOBIN", "")
++
++	os.Setenv("GOOS", "")
++	os.Setenv("GOHOSTOS", "")
++	os.Setenv("GOARCH", "")
++	os.Setenv("GOHOSTARCH", "")
++
+ 	// Copy source code into $GOROOT/pkg/bootstrap and rewrite import paths.
+ 	writefile("module bootstrap\n", pathf("%s/%s", base, "go.mod"), 0)
+ 	for _, dir := range bootstrapDirs {
+@@ -176,30 +201,6 @@ func bootstrapBuildTools() {
+ 		})
+ 	}
+ 
+-	// Set up environment for invoking Go 1.4 go command.
+-	// GOROOT points at Go 1.4 GOROOT,
+-	// GOPATH points at our bootstrap workspace,
+-	// GOBIN is empty, so that binaries are installed to GOPATH/bin,
+-	// and GOOS, GOHOSTOS, GOARCH, and GOHOSTOS are empty,
+-	// so that Go 1.4 builds whatever kind of binary it knows how to build.
+-	// Restore GOROOT, GOPATH, and GOBIN when done.
+-	// Don't bother with GOOS, GOHOSTOS, GOARCH, and GOHOSTARCH,
+-	// because setup will take care of those when bootstrapBuildTools returns.
+-
+-	defer os.Setenv("GOROOT", os.Getenv("GOROOT"))
+-	os.Setenv("GOROOT", goroot_bootstrap)
+-
+-	defer os.Setenv("GOPATH", os.Getenv("GOPATH"))
+-	os.Setenv("GOPATH", workspace)
+-
+-	defer os.Setenv("GOBIN", os.Getenv("GOBIN"))
+-	os.Setenv("GOBIN", "")
+-
+-	os.Setenv("GOOS", "")
+-	os.Setenv("GOHOSTOS", "")
+-	os.Setenv("GOARCH", "")
+-	os.Setenv("GOHOSTARCH", "")
+-
+ 	// Run Go 1.4 to build binaries. Use -gcflags=-l to disable inlining to
+ 	// workaround bugs in Go 1.4's compiler. See discussion thread:
+ 	// https://groups.google.com/d/msg/golang-dev/Ss7mCKsvk8w/Gsq7VYI0AwAJ
+-- 
+2.35.1
+
