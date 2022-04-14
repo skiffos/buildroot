@@ -1,4 +1,4 @@
-From 335c6245674088de616324398137416c7a1cbe8f Mon Sep 17 00:00:00 2001
+From a8f2a2b9ade01a099a05a2f4ea47e9a1de85df14 Mon Sep 17 00:00:00 2001
 From: Angelo Compagnucci <angelo@amarulasolutions.com>
 Date: Tue, 8 May 2018 16:08:44 +0200
 Subject: [PATCH] build.go: explicit option for crosscompilation
