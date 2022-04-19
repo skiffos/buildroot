@@ -1,0 +1,7 @@
+# TODO: more dependencies
+config BR2_PACKAGE_HOST_LIBGUESTFS
+	bool "host libguestfs"
+	help
+	  libguestfs is a library and tool to create disk images
+
+	  https://github.com/libguestfs/libguestfs
