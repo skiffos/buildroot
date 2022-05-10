@@ -59,6 +59,11 @@ config BR2_PACKAGE_LINUX_FIRMWARE_ROCKCHIP_DPTX
 	help
 	  Firmware files for RockChip dptx (DisplayPort).
 
+config BR2_PACKAGE_LINUX_FIRMWARE_TI_VPDMA
+	bool "TI VPDMA"
+	help
+	  Firmware files for TI Video Port Direct Memory Engine.
+
 endmenu # Video
 
 menu "Bluetooth firmware"
