@@ -1,0 +1,97 @@
+From 04a62922ce238f3106a916a30c0c2995ffa1526c Mon Sep 17 00:00:00 2001
+From: Christian Stewart <christian@paral.in>
+Date: Sat, 14 May 2022 20:58:14 -0700
+Subject: [PATCH] makefile: remove cc and ar definitions
+
+Signed-off-by: Christian Stewart <christian@paral.in>
+---
+ Makefile             | 26 +-------------------------
+ libmincrypt/Makefile | 27 +++++----------------------
+ 2 files changed, 6 insertions(+), 47 deletions(-)
+
+diff --git a/Makefile b/Makefile
+index 6ee3a38c..39d0996b 100644
+--- a/Makefile
++++ b/Makefile
+@@ -1,29 +1,4 @@
+ # Andrew Huang <bluedrum@163.com>
+-ifeq ($(CC),cc)
+-CC = gcc
+-endif
+-AR = ar rcv
+-ifeq ($(windir),)
+-EXE =
+-RM = rm -f
+-else
+-EXE = .exe
+-RM = del
+-endif
+-
+-CFLAGS = -ffunction-sections -O3
+-
+-ifneq (,$(findstring darwin,$(CROSS_COMPILE)))
+-    UNAME_S := Darwin
+-else
+-    UNAME_S := $(shell uname -s)
+-endif
+-ifeq ($(UNAME_S),Darwin)
+-    LDFLAGS += -Wl,-dead_strip
+-else
+-    LDFLAGS += -Wl,--gc-sections -s
+-endif
+-
+ all:mkbootimg$(EXE) unpackbootimg$(EXE)
+ 
+ static:
+@@ -31,6 +6,7 @@ static:
+ 
+ libmincrypt.a:
+ 	$(MAKE) -C libmincrypt
++	cp ./libmincrypt/libmincrypt.a ./libmincrypt.a
+ 
+ mkbootimg$(EXE):mkbootimg.o libmincrypt.a
+ 	$(CROSS_COMPILE)$(CC) -o $@ $^ -L. -lmincrypt $(LDFLAGS)
+diff --git a/libmincrypt/Makefile b/libmincrypt/Makefile
+index ad482de9..c7c478ff 100755
+--- a/libmincrypt/Makefile
++++ b/libmincrypt/Makefile
+@@ -1,31 +1,14 @@
+-ifeq ($(CC),cc)
+-CC = gcc
+-endif
+-AR = ar rc
+-ifeq ($(windir),)
+-RM = rm -f
+-CP = cp
+-else
+-RM = del
+-CP = copy /y
+-endif
+-
+-CFLAGS = -ffunction-sections -O3
+-EXT = a
+-LIB = libmincrypt.$(EXT)
++LIB = libmincrypt.a
+ LIB_OBJS = dsa_sig.o p256.o p256_ec.o p256_ecdsa.o rsa.o sha.o sha256.o
+ INC  = -I..
+ 
+-all:$(LIB)
++all: $(LIB)
+ 
+ clean:
+ 	$(RM) $(LIB_OBJS) $(LIB)
+ 
+-$(LIB):$(LIB_OBJS)
+-	$(CROSS_COMPILE)$(AR) $@ $^
+-	$(CP) $@ ..
+-
++$(LIB): $(LIB_OBJS)
++	$(CROSS_COMPILE)$(AR) rc $@ $^
+ 
+-%.o:%.c
++%.o: %.c
+ 	$(CROSS_COMPILE)$(CC) -o $@ $(CFLAGS) -c $< $(INC)
+-
+-- 
+2.35.1
+
