@@ -1,0 +1,4 @@
+config BR2_PACKAGE_HOST_MKBOOTIMG
+	bool "host mkbootimg"
+	help
+	  Android Bootimg mkbootimg and unpackbootimg utils.
