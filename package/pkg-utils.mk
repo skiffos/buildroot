@@ -21,8 +21,16 @@ KCONFIG_DOT_CONFIG = $(strip \
 )
 
 # KCONFIG_MUNGE_DOT_CONFIG (option, newline [, file])
+# If setting to =y and the option is already set to =m, ignore.
 define KCONFIG_MUNGE_DOT_CONFIG
-	$(SED) "/\\<$(strip $(1))\\>/d" $(call KCONFIG_DOT_CONFIG,$(3))
+	OPTION=$(firstword $(subst =, ,$(2))); \
+	VALUE=$(lastword $(subst =, ,$(2))); \
+	if [[ "$${VALUE}" == "y" ]]; then \
+		if grep -q "$${OPTION}=m" $(call KCONFIG_DOT_CONFIG,$(3)); then \
+			exit 0; \
+		fi; \
+  fi; \
+	$(SED) "/\\<$(strip $(1))\\>/d" $(call KCONFIG_DOT_CONFIG,$(3)); \
 	echo '$(strip $(2))' >> $(call KCONFIG_DOT_CONFIG,$(3))
 endef
 
