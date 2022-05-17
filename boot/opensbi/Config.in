@@ -92,6 +92,11 @@ config BR2_TARGET_OPENSBI_INSTALL_PAYLOAD_IMG
 	  This option enables the installation of the fw_paylaod
 	  image.
 
+config BR2_TARGET_OPENSBI_BUILD_FW_PIC
+	bool "Build with fw_pic flag"
+	help
+	  This option enables position independent firmware.
+
 config BR2_TARGET_OPENSBI_LINUX_PAYLOAD
 	bool "Include Linux as OpenSBI Payload"
 	depends on BR2_TARGET_OPENSBI_PLAT != ""
