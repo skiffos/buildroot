@@ -51,6 +51,10 @@ OPENSBI_MAKE_ENV += FW_FDT_PATH="$(BINARIES_DIR)/u-boot.dtb"
 endif
 endif
 
+ifeq ($(BR2_TARGET_OPENSBI_BUILD_FW_PIC),y)
+OPENSBI_MAKE_ENV += FW_PIC=y
+endif
+
 define OPENSBI_BUILD_CMDS
 	$(TARGET_MAKE_ENV) $(OPENSBI_MAKE_ENV) $(MAKE) -C $(@D)
 endef
