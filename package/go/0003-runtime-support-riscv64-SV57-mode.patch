@@ -17,6 +17,9 @@ https://groups.google.com/g/syzkaller-bugs/c/lU0GQTZoNQQ/m/O_c3vmE3AAAJ
 Change-Id: Ib5d3d6a79c0c6eddf11618d73fcc8bc1832a9c25
 
 Upstream: https://go-review.googlesource.com/c/go/+/409055/3
+
+Signed-off-by: Christian Stewart <christian@paral.in>
+
 ---
  src/runtime/lfstack_64bit.go | 10 ++++++++++
  1 file changed, 10 insertions(+)
