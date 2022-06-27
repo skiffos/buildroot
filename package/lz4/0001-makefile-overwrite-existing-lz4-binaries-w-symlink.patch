@@ -1,0 +1,30 @@
+From d838730dd11bcf25c367d1abada371ed6e82a4f3 Mon Sep 17 00:00:00 2001
+From: Christian Stewart <christian@paral.in>
+Date: Mon, 27 Jun 2022 13:12:12 -0700
+Subject: [PATCH] makefile: overwrite existing lz4 binaries w/ symlink
+
+Signed-off-by: Christian Stewart <christian@paral.in>
+---
+ programs/Makefile | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
+
+diff --git a/programs/Makefile b/programs/Makefile
+index c1053f6..6fef68e 100644
+--- a/programs/Makefile
++++ b/programs/Makefile
+@@ -163,9 +163,9 @@ install: lz4
+ 	@echo Installing binaries
+ 	@$(INSTALL_DIR) $(DESTDIR)$(bindir)/ $(DESTDIR)$(man1dir)/
+ 	@$(INSTALL_PROGRAM) lz4$(EXT) $(DESTDIR)$(bindir)/lz4$(EXT)
+-	@$(LN_S) lz4$(EXT) $(DESTDIR)$(bindir)/lz4c$(EXT)
+-	@$(LN_S) lz4$(EXT) $(DESTDIR)$(bindir)/lz4cat$(EXT)
+-	@$(LN_S) lz4$(EXT) $(DESTDIR)$(bindir)/unlz4$(EXT)
++	@$(LN_SF) lz4$(EXT) $(DESTDIR)$(bindir)/lz4c$(EXT)
++	@$(LN_SF) lz4$(EXT) $(DESTDIR)$(bindir)/lz4cat$(EXT)
++	@$(LN_SF) lz4$(EXT) $(DESTDIR)$(bindir)/unlz4$(EXT)
+ 	@echo Installing man pages
+ 	@$(INSTALL_DATA) lz4.1 $(DESTDIR)$(man1dir)/lz4.1
+ 	@$(LN_SF) lz4.1 $(DESTDIR)$(man1dir)/lz4c.1
+-- 
+2.35.1
+
