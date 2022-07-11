@@ -1,0 +1,9 @@
+[Unit]
+Description=ADB Daemon
+
+[Service]
+Restart=always
+ExecStart=adbd
+
+[Install]
+WantedBy=multi-user.target
