@@ -1,0 +1,214 @@
+From 057f163e8ae587153302e51674b2da01be3bd494 Mon Sep 17 00:00:00 2001
+From: Christian Stewart <christian@paral.in>
+Date: Mon, 11 Jul 2022 06:20:03 -0700
+Subject: [PATCH] Use pkgconfig to find libs
+
+Signed-off-by: Christian Stewart <christian@paral.in>
+---
+ debian/makefiles/adb.mk        |  2 +-
+ debian/makefiles/adbd.mk       | 48 ++--------------------------------
+ debian/makefiles/ext4_utils.mk | 44 +++++++++++--------------------
+ debian/makefiles/fastboot.mk   |  9 +++----
+ 4 files changed, 21 insertions(+), 82 deletions(-)
+
+diff --git a/debian/makefiles/adb.mk b/debian/makefiles/adb.mk
+index 89cd51d..88aabd9 100644
+--- a/debian/makefiles/adb.mk
++++ b/debian/makefiles/adb.mk
+@@ -59,7 +59,7 @@ CFLAGS += -I$(SRCDIR)/system/core/adb
+ CFLAGS += -I$(SRCDIR)/system/core/include
+ CFLAGS += -include $(SRCDIR)/build/core/combo/include/arch/$(android_arch)/AndroidConfig.h
+ 
+-LIBS += libcutils.a -lpthread -lcrypto
++LIBS += libcutils.a -lpthread `pkg-config --libs libcrypto`
+ 
+ all: adb
+ 
+diff --git a/debian/makefiles/adbd.mk b/debian/makefiles/adbd.mk
+index 5882d43..682fc06 100644
+--- a/debian/makefiles/adbd.mk
++++ b/debian/makefiles/adbd.mk
+@@ -62,45 +62,6 @@ libcutils_SRC_FILES += klog.c
+ libcutils_SRC_FILES += properties.c
+ libcutils_OBJS := $(libcutils_SRC_FILES:.c=.o)
+ 
+-VPATH += $(SRCDIR)/external/libselinux/src
+-libselinux_SRC_FILES += booleans.c
+-libselinux_SRC_FILES += canonicalize_context.c
+-libselinux_SRC_FILES += disable.c
+-libselinux_SRC_FILES += enabled.c
+-libselinux_SRC_FILES += fgetfilecon.c
+-libselinux_SRC_FILES += fsetfilecon.c
+-libselinux_SRC_FILES += getenforce.c
+-libselinux_SRC_FILES += getfilecon.c
+-libselinux_SRC_FILES += getpeercon.c
+-libselinux_SRC_FILES += lgetfilecon.c
+-libselinux_SRC_FILES += load_policy.c
+-libselinux_SRC_FILES += lsetfilecon.c
+-libselinux_SRC_FILES += policyvers.c
+-libselinux_SRC_FILES += procattr.c
+-libselinux_SRC_FILES += setenforce.c
+-libselinux_SRC_FILES += setfilecon.c
+-libselinux_SRC_FILES += context.c
+-libselinux_SRC_FILES += mapping.c
+-libselinux_SRC_FILES += stringrep.c
+-libselinux_SRC_FILES += compute_create.c
+-libselinux_SRC_FILES += compute_av.c
+-libselinux_SRC_FILES += avc.c
+-libselinux_SRC_FILES += avc_internal.c
+-libselinux_SRC_FILES += avc_sidtab.c
+-libselinux_SRC_FILES += get_initial_context.c
+-libselinux_SRC_FILES += checkAccess.c
+-libselinux_SRC_FILES += sestatus.c
+-libselinux_SRC_FILES += deny_unknown.c
+-
+-libselinux_SRC_FILES += callbacks.c
+-libselinux_SRC_FILES += check_context.c
+-libselinux_SRC_FILES += freecon.c
+-libselinux_SRC_FILES += init.c
+-libselinux_SRC_FILES += label.c
+-libselinux_SRC_FILES += label_file.c
+-libselinux_SRC_FILES += label_android_property.c
+-libselinux_OBJS := $(libselinux_SRC_FILES:.c=.o)
+-
+ VPATH += $(SRCDIR)/system/extras/ext4_utils
+ libext4_utils_SRC_FILES += make_ext4fs.c
+ libext4_utils_SRC_FILES += ext4fixup.c
+@@ -133,14 +94,13 @@ CFLAGS += -I$(SRCDIR)/system/core/libsparse/include
+ CFLAGS += -I$(SRCDIR)/system/extras/ext4_utils
+ CFLAGS += -I$(SRCDIR)/system/core/fs_mgr/include
+ CFLAGS += -I$(SRCDIR)/hardware/libhardware/include
+-CFLAGS += -I$(SRCDIR)/external/libselinux/include
+ CFLAGS += -include $(SRCDIR)/build/core/combo/include/arch/$(android_arch)/AndroidConfig.h
+ 
+-LIBS += liblog.a libfs_mgr.a libcutils.a libselinux.a libext4_utils.a -lpthread -lbsd -lpcre -lresolv -lcrypto
++LIBS += liblog.a libfs_mgr.a libcutils.a libext4_utils.a -lpthread -lresolv `pkg-config --libs libcrypto libselinux libpcre`
+ 
+ all: adbd
+ 
+-adbd: liblog.a libfs_mgr.a libcutils.a libselinux.a libext4_utils.a $(adbd_OBJS)
++adbd: liblog.a libfs_mgr.a libcutils.a libext4_utils.a $(adbd_OBJS)
+ 	$(CC) -o $@ $(LDFLAGS) $(adbd_OBJS) $(LIBS)
+ 
+ liblog.a: $(liblog_OBJS)
+@@ -152,10 +112,6 @@ libfs_mgr.a: $(fs_mgr_OBJS)
+ libcutils.a: $(libcutils_OBJS)
+ 	$(AR) rcs $@ $(libcutils_OBJS)
+ 
+-libselinux.a: $(libselinux_OBJS)
+-	export CFLAGS="-DANDROID -DHOST"
+-	$(AR) rcs $@ $(libselinux_OBJS)
+-
+ libext4_utils.a: $(libext4_utils_OBJS)
+ 	$(AR) rcs $@ $(libext4_utils_OBJS)
+ 
+diff --git a/debian/makefiles/ext4_utils.mk b/debian/makefiles/ext4_utils.mk
+index cc713a3..c0a756c 100644
+--- a/debian/makefiles/ext4_utils.mk
++++ b/debian/makefiles/ext4_utils.mk
+@@ -47,46 +47,35 @@ libsparse_SRC_FILES += sparse_err.c
+ libsparse_SRC_FILES += sparse_read.c
+ libsparse_OBJS := $(libsparse_SRC_FILES:.c=.o)
+ 
+-VPATH += $(SRCDIR)/external/libselinux/src
+-libselinux_SRC_FILES += callbacks.c
+-libselinux_SRC_FILES += check_context.c
+-libselinux_SRC_FILES += freecon.c
+-libselinux_SRC_FILES += init.c
+-libselinux_SRC_FILES += label.c
+-libselinux_SRC_FILES += label_file.c
+-libselinux_SRC_FILES += label_android_property.c
+-libselinux_OBJS := $(libselinux_SRC_FILES:.c=.o)
+-
+ CFLAGS += -std=gnu11
+ CFLAGS += -DANDROID
+ CFLAGS += -DHOST
+ CFLAGS += -I$(SRCDIR)/system/extras/ext4_utils
+ CFLAGS += -I$(SRCDIR)/system/core/include
+ CFLAGS += -I$(SRCDIR)/system/core/libsparse/include
+-CFLAGS += -I$(SRCDIR)/external/libselinux/include
+ CFLAGS += -include $(SRCDIR)/build/core/combo/include/arch/$(android_arch)/AndroidConfig.h
+ 
++LIBS += libext4_utils.a libsparse.a `pkg-config --libs libselinux libpcre zlib`
++
+ all: make_ext4fs ext2simg ext4fixup simg2img img2simg simg2simg
+ 
+-make_ext4fs: libext4_utils.a libsparse.a libselinux.a $(make_ext4fs_OBJS)
+-	$(CC) -o $@ $(LDFLAGS) $(make_ext4fs_OBJS) \
+-		libext4_utils.a libsparse.a libselinux.a -lz -lpcre
++make_ext4fs: $(LIBS) $(make_ext4fs_OBJS)
++	$(CC) -o $@ $(LDFLAGS) $(make_ext4fs_OBJS) $(LIBS)
+ 
+-ext2simg: libext4_utils.a libselinux.a libsparse.a $(ext2simg_OBJS)
+-	$(CC) -o $@ $(LDFLAGS) $(ext2simg_OBJS) \
+-		libext4_utils.a libselinux.a libsparse.a -lz -lpcre
++ext2simg: $(LIBS) $(ext2simg_OBJS)
++	$(CC) -o $@ $(LDFLAGS) $(ext2simg_OBJS) $(LIBS)
+ 
+-ext4fixup: libext4_utils.a libsparse.a $(ext4fixup_OBJS)
+-	$(CC) -o $@ $(LDFLAGS) $(ext4fixup_OBJS) libext4_utils.a libsparse.a -lz
++ext4fixup: $(LIBS) $(ext4fixup_OBJS)
++	$(CC) -o $@ $(LDFLAGS) $(ext4fixup_OBJS) $(LIBS)
+ 
+-simg2img: libsparse.a $(simg2img_OBJS)
+-	$(CC) -o $@ $(LDFLAGS) $(simg2img_OBJS) libsparse.a -lz
++simg2img: $(LIBS) $(simg2img_OBJS)
++	$(CC) -o $@ $(LDFLAGS) $(simg2img_OBJS) $(LIBS)
+ 
+-img2simg: libsparse.a $(img2simg_OBJS)
+-	$(CC) -o $@ $(LDFLAGS) $(img2simg_OBJS) libsparse.a -lz
++img2simg: $(LIBS) $(img2simg_OBJS)
++	$(CC) -o $@ $(LDFLAGS) $(img2simg_OBJS) $(LIBS)
+ 
+-simg2simg: libsparse.a $(simg2simg_OBJS)
+-	$(CC) -o $@ $(LDFLAGS) $(simg2simg_OBJS) libsparse.a -lz
++simg2simg: $(LIBS) $(simg2simg_OBJS)
++	$(CC) -o $@ $(LDFLAGS) $(simg2simg_OBJS) $(LIBS)
+ 
+ libext4_utils.a: $(libext4_utils_OBJS)
+ 	$(AR) rcs $@ $(libext4_utils_OBJS)
+@@ -94,11 +83,8 @@ libext4_utils.a: $(libext4_utils_OBJS)
+ libsparse.a: $(libsparse_OBJS)
+ 	$(AR) rcs $@ $(libsparse_OBJS)
+ 
+-libselinux.a: $(libselinux_OBJS)
+-	$(AR) rcs $@ $(libselinux_OBJS)
+-
+ clean:
+ 	$(RM) $(make_ext4fs_OBJS) $(ext2simg_OBJS) $(ext4fixup_OBJS) \
+ 		$(simg2img_OBJS) $(img2simg_OBJS) $(simg2simg_OBJS) \
+-		$(libext4_utils_OBJS) $(libsparse_OBJS) $(libselinux_OBJS) \
++		$(libext4_utils_OBJS) $(libsparse_OBJS) \
+ 		make_ext4fs ext2simg ext4fixup simg2img img2simg simg2simg *.a
+diff --git a/debian/makefiles/fastboot.mk b/debian/makefiles/fastboot.mk
+index 2c1d481..c21ee31 100644
+--- a/debian/makefiles/fastboot.mk
++++ b/debian/makefiles/fastboot.mk
+@@ -65,11 +65,11 @@ CFLAGS += -I$(SRCDIR)/system/core/libsparse/include
+ CFLAGS += -I$(SRCDIR)/external/libselinux/include
+ CFLAGS += -include $(SRCDIR)/build/core/combo/include/arch/$(android_arch)/AndroidConfig.h
+ 
+-LIBS += libzipfile.a libext4_utils.a libsparse.a libselinux.a -lz -lpcre
++LIBS += libzipfile.a libext4_utils.a libsparse.a `pkg-config --libs libselinux libpcre zlib`
+ 
+ all: fastboot
+ 
+-fastboot: libzipfile.a libext4_utils.a libsparse.a libselinux.a $(fastboot_OBJS)
++fastboot: $(LIBS) $(fastboot_OBJS)
+ 	$(CC) -o $@ $(LDFLAGS) $(fastboot_OBJS) $(LIBS)
+ 
+ libzipfile.a: $(libzipfile_OBJS)
+@@ -81,9 +81,6 @@ libext4_utils.a: $(libext4_utils_OBJS)
+ libsparse.a: $(libsparse_OBJS)
+ 	$(AR) rcs $@ $(libsparse_OBJS)
+ 
+-libselinux.a: $(libselinux_OBJS)
+-	$(AR) rcs $@ $(libselinux_OBJS)
+-
+ clean:
+ 	$(RM) $(fastboot_OBJS) $(libzipfile_OBJS) $(libext4_utils_OBJS) \
+-		$(libsparse_OBJS) $(libselinux_OBJS) fastboot *.a
++		$(libsparse_OBJS) fastboot *.a
+-- 
+2.35.1
+
