@@ -5,14 +5,39 @@
 ################################################################################
 
 ANDROID_TOOLS_SITE = https://launchpad.net/ubuntu/+archive/primary/+files
-ANDROID_TOOLS_VERSION = 4.2.2+git20130218
+ANDROID_TOOLS_VERSION = 5.1.1.r38
 ANDROID_TOOLS_SOURCE = android-tools_$(ANDROID_TOOLS_VERSION).orig.tar.xz
-ANDROID_TOOLS_EXTRA_DOWNLOADS = android-tools_$(ANDROID_TOOLS_VERSION)-3ubuntu41.debian.tar.gz
+ANDROID_TOOLS_EXTRA_DOWNLOADS = android-tools_$(ANDROID_TOOLS_VERSION)-1.1.debian.tar.xz
 HOST_ANDROID_TOOLS_EXTRA_DOWNLOADS = $(ANDROID_TOOLS_EXTRA_DOWNLOADS)
 ANDROID_TOOLS_LICENSE = Apache-2.0
 ANDROID_TOOLS_LICENSE_FILES = debian/copyright
 ANDROID_TOOLS_DEPENDENCIES = host-pkgconf
 HOST_ANDROID_TOOLS_DEPENDENCIES = host-pkgconf
+
+# Target android_arch selection
+ifeq ($(BR2_arm),y)
+ifeq ($(BR2_ARCH_IS_64),y)
+ANDROID_TOOLS_ANDROID_ARCH = arm64
+else
+ANDROID_TOOLS_ANDROID_ARCH = arm
+endif
+else ifeq ($(BR2_mips),y)
+ANDROID_TOOLS_ANDROID_ARCH = mips
+else ifeq ($(BR2_mips64),y)
+ANDROID_TOOLS_ANDROID_ARCH = mips64
+else
+ANDROID_TOOLS_ANDROID_ARCH = x86
+endif
+
+ANDROID_TOOLS_TARGET_MAKE_ENV = \
+	$(TARGET_MAKE_ENV) \
+	android_arch=linux-$(ANDROID_TOOLS_ANDROID_ARCH)
+
+# Host android_arch: use generic x86 AndroidConfig.h
+# The AndroidConfig.h not contain any arch-specific code
+ANDROID_TOOLS_HOST_MAKE_ENV = \
+	$(HOST_MAKE_ENV) \
+	android_arch=linux-x86
 
 # Extract the Debian tarball inside the sources
 define ANDROID_TOOLS_DEBIAN_EXTRACT
@@ -71,15 +96,15 @@ endif
 define HOST_ANDROID_TOOLS_BUILD_CMDS
 	$(foreach t,$(HOST_ANDROID_TOOLS_BUILD_TARGETS),\
 		mkdir -p $(@D)/build-$(t) && \
-		$(HOST_MAKE_ENV) $(HOST_CONFIGURE_OPTS) $(MAKE) SRCDIR=$(@D) \
-			-C $(@D)/build-$(t) -f $(@D)/debian/makefiles/$(t).mk$(sep))
+		$(ANDROID_TOOLS_HOST_MAKE_ENV) $(HOST_CONFIGURE_OPTS) $(MAKE) \
+			SRCDIR=$(@D) -C $(@D)/build-$(t) -f $(@D)/debian/makefiles/$(t).mk$(sep))
 endef
 
 define ANDROID_TOOLS_BUILD_CMDS
 	$(foreach t,$(ANDROID_TOOLS_TARGETS),\
 		mkdir -p $(@D)/build-$(t) && \
-		$(TARGET_MAKE_ENV) $(TARGET_CONFIGURE_OPTS) $(MAKE) SRCDIR=$(@D) \
-			-C $(@D)/build-$(t) -f $(@D)/debian/makefiles/$(t).mk$(sep))
+		$(ANDROID_TOOLS_TARGET_MAKE_ENV) $(TARGET_CONFIGURE_OPTS) $(MAKE) \
+			SRCDIR=$(@D) -C $(@D)/build-$(t) -f $(@D)/debian/makefiles/$(t).mk$(sep))
 endef
 
 define HOST_ANDROID_TOOLS_INSTALL_CMDS

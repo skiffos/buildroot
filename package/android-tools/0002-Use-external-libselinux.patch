@@ -1,0 +1,91 @@
+From 9fa06e90e27fcc970ce19ea785a980f0f7093505 Mon Sep 17 00:00:00 2001
+From: Christian Stewart <christian@paral.in>
+Date: Mon, 11 Jul 2022 06:20:03 -0700
+Subject: [PATCH] Use external libselinux
+
+Signed-off-by: Christian Stewart <christian@paral.in>
+---
+ debian/makefiles/adbd.mk | 48 ++--------------------------------------
+ 1 file changed, 2 insertions(+), 46 deletions(-)
+
+diff --git a/debian/makefiles/adbd.mk b/debian/makefiles/adbd.mk
+index 5882d43..388b4b6 100644
+--- a/debian/makefiles/adbd.mk
++++ b/debian/makefiles/adbd.mk
+@@ -62,45 +62,6 @@ libcutils_SRC_FILES += klog.c
+ libcutils_SRC_FILES += properties.c
+ libcutils_OBJS := $(libcutils_SRC_FILES:.c=.o)
+ 
+-VPATH += $(SRCDIR)/external/libselinux/src
+-libselinux_SRC_FILES += booleans.c
+-libselinux_SRC_FILES += canonicalize_context.c
+-libselinux_SRC_FILES += disable.c
+-libselinux_SRC_FILES += enabled.c
+-libselinux_SRC_FILES += fgetfilecon.c
+-libselinux_SRC_FILES += fsetfilecon.c
+-libselinux_SRC_FILES += getenforce.c
+-libselinux_SRC_FILES += getfilecon.c
+-libselinux_SRC_FILES += getpeercon.c
+-libselinux_SRC_FILES += lgetfilecon.c
+-libselinux_SRC_FILES += load_policy.c
+-libselinux_SRC_FILES += lsetfilecon.c
+-libselinux_SRC_FILES += policyvers.c
+-libselinux_SRC_FILES += procattr.c
+-libselinux_SRC_FILES += setenforce.c
+-libselinux_SRC_FILES += setfilecon.c
+-libselinux_SRC_FILES += context.c
+-libselinux_SRC_FILES += mapping.c
+-libselinux_SRC_FILES += stringrep.c
+-libselinux_SRC_FILES += compute_create.c
+-libselinux_SRC_FILES += compute_av.c
+-libselinux_SRC_FILES += avc.c
+-libselinux_SRC_FILES += avc_internal.c
+-libselinux_SRC_FILES += avc_sidtab.c
+-libselinux_SRC_FILES += get_initial_context.c
+-libselinux_SRC_FILES += checkAccess.c
+-libselinux_SRC_FILES += sestatus.c
+-libselinux_SRC_FILES += deny_unknown.c
+-
+-libselinux_SRC_FILES += callbacks.c
+-libselinux_SRC_FILES += check_context.c
+-libselinux_SRC_FILES += freecon.c
+-libselinux_SRC_FILES += init.c
+-libselinux_SRC_FILES += label.c
+-libselinux_SRC_FILES += label_file.c
+-libselinux_SRC_FILES += label_android_property.c
+-libselinux_OBJS := $(libselinux_SRC_FILES:.c=.o)
+-
+ VPATH += $(SRCDIR)/system/extras/ext4_utils
+ libext4_utils_SRC_FILES += make_ext4fs.c
+ libext4_utils_SRC_FILES += ext4fixup.c
+@@ -133,14 +94,13 @@ CFLAGS += -I$(SRCDIR)/system/core/libsparse/include
+ CFLAGS += -I$(SRCDIR)/system/extras/ext4_utils
+ CFLAGS += -I$(SRCDIR)/system/core/fs_mgr/include
+ CFLAGS += -I$(SRCDIR)/hardware/libhardware/include
+-CFLAGS += -I$(SRCDIR)/external/libselinux/include
+ CFLAGS += -include $(SRCDIR)/build/core/combo/include/arch/$(android_arch)/AndroidConfig.h
+ 
+-LIBS += liblog.a libfs_mgr.a libcutils.a libselinux.a libext4_utils.a -lpthread -lbsd -lpcre -lresolv -lcrypto
++LIBS += liblog.a libfs_mgr.a libcutils.a libext4_utils.a -lpthread -lpcre -lresolv `pkg-config --libs libcrypto libselinux`
+ 
+ all: adbd
+ 
+-adbd: liblog.a libfs_mgr.a libcutils.a libselinux.a libext4_utils.a $(adbd_OBJS)
++adbd: liblog.a libfs_mgr.a libcutils.a libext4_utils.a $(adbd_OBJS)
+ 	$(CC) -o $@ $(LDFLAGS) $(adbd_OBJS) $(LIBS)
+ 
+ liblog.a: $(liblog_OBJS)
+@@ -152,10 +112,6 @@ libfs_mgr.a: $(fs_mgr_OBJS)
+ libcutils.a: $(libcutils_OBJS)
+ 	$(AR) rcs $@ $(libcutils_OBJS)
+ 
+-libselinux.a: $(libselinux_OBJS)
+-	export CFLAGS="-DANDROID -DHOST"
+-	$(AR) rcs $@ $(libselinux_OBJS)
+-
+ libext4_utils.a: $(libext4_utils_OBJS)
+ 	$(AR) rcs $@ $(libext4_utils_OBJS)
+ 
+-- 
+2.35.1
+
