@@ -89,6 +89,11 @@ endif
 ifeq ($(BR2_PACKAGE_ANDROID_TOOLS_ADBD),y)
 ANDROID_TOOLS_TARGETS += adbd
 ANDROID_TOOLS_DEPENDENCIES += zlib openssl
+
+define ANDROID_TOOLS_INSTALL_SYSTEMD_ADBD
+	$(INSTALL) -D -m 644 $(ANDROID_TOOLS_PKGDIR)/adbd.service \
+		$(TARGET_DIR)/usr/lib/systemd/system/adbd.service
+endef
 endif
 
 # Build each tool in its own directory not to share object files
@@ -115,6 +120,10 @@ endef
 define ANDROID_TOOLS_INSTALL_TARGET_CMDS
 	$(foreach t,$(ANDROID_TOOLS_TARGETS),\
 		$(INSTALL) -D -m 0755 $(@D)/build-$(t)/$(t) $(TARGET_DIR)/usr/bin/$(t)$(sep))
+endef
+
+define ANDROID_TOOLS_INSTALL_INIT_SYSTEMD
+	$(ANDROID_TOOLS_INSTALL_SYSTEMD_ADBD)
 endef
 
 $(eval $(generic-package))
