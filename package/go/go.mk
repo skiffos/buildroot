@@ -48,6 +48,8 @@ else ifeq ($(BR2_aarch64),y)
 GO_GOARCH = arm64
 else ifeq ($(BR2_i386),y)
 GO_GOARCH = 386
+# stack-protector causes a build failure on i386.
+HOST_GO_CGO_CFLAGS += -fno-stack-protector
 # i386: use softfloat if no SSE2: https://golang.org/doc/go1.16#386
 ifneq ($(BR2_X86_CPU_HAS_SSE2),y)
 GO_GO386 = softfloat
@@ -77,7 +79,7 @@ HOST_GO_TARGET_ENV = \
 	GOCACHE="$(HOST_GO_TARGET_CACHE)" \
 	CC="$(TARGET_CC)" \
 	CXX="$(TARGET_CXX)" \
-	CGO_CFLAGS="$(TARGET_CFLAGS)" \
+	CGO_CFLAGS="$(TARGET_CFLAGS) $(HOST_GO_CGO_CFLAGS)" \
 	CGO_CXXFLAGS="$(TARGET_CXXFLAGS)" \
 	CGO_LDFLAGS="$(TARGET_LDFLAGS)" \
 	GOTOOLDIR="$(HOST_GO_TOOLDIR)"
@@ -113,6 +115,7 @@ HOST_GO_DEPENDENCIES += toolchain
 endif
 
 # For the convenience of host golang packages
+# stack-protector causes a build failure on some architectures.
 HOST_GO_HOST_ENV = \
 	$(HOST_GO_COMMON_ENV) \
 	GOOS="" \
@@ -120,7 +123,7 @@ HOST_GO_HOST_ENV = \
 	GOCACHE="$(HOST_GO_HOST_CACHE)" \
 	CC="$(HOSTCC_NOCCACHE)" \
 	CXX="$(HOSTCXX_NOCCACHE)" \
-	CGO_CFLAGS="$(HOST_CFLAGS)" \
+	CGO_CFLAGS="$(HOST_CFLAGS) $(HOST_GO_CGO_CFLAGS)" \
 	CGO_CXXFLAGS="$(HOST_CXXFLAGS)" \
 	CGO_LDFLAGS="$(HOST_LDFLAGS)"
 
@@ -136,6 +139,9 @@ HOST_GO_MAKE_ENV = \
 	CC=$(HOSTCC_NOCCACHE) \
 	CXX=$(HOSTCXX_NOCCACHE) \
 	CGO_ENABLED=$(HOST_GO_CGO_ENABLED) \
+	CGO_CFLAGS="$(HOST_CFLAGS) $(HOST_GO_CGO_CFLAGS)" \
+	CGO_CXXFLAGS="$(HOST_CXXFLAGS)" \
+	CGO_LDFLAGS="$(HOST_LDFLAGS)" \
 	$(HOST_GO_CROSS_ENV)
 
 # Use the Go compiler bootstrapped by Buildroot if available.
