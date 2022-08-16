@@ -4,8 +4,11 @@
 #
 ################################################################################
 
-# current stable (per gentoo)
 NVIDIA_DRIVER_VERSION = 510.73.05
+
+ifeq ($(BR2_PACKAGE_NVIDIA_DRIVER_LATEST),y)
+NVIDIA_DRIVER_VERSION = 525.89.02
+endif
 
 ifeq ($(BR2_x86_64),y)
 NVIDIA_DRIVER_SUFFIX = _64
