@@ -551,6 +551,7 @@ F:	package/batman-adv/
 F:	package/buildah/
 F:	package/catatonit/
 F:	package/cni-plugins/
+F:	package/conmon/
 F:	package/containerd/
 F:	package/crun/
 F:	package/delve/
