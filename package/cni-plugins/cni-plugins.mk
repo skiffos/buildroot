@@ -11,6 +11,8 @@ CNI_PLUGINS_LICENSE_FILES = LICENSE
 
 CNI_PLUGINS_BUILD_TARGETS = \
 	plugins/ipam/dhcp \
+	plugins/ipam/host-local \
+	plugins/ipam/static \
 	plugins/main/bridge \
 	plugins/main/host-device \
 	plugins/main/ipvlan \
