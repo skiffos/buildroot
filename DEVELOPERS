@@ -531,6 +531,7 @@ N:	Christian Stewart <christian@paral.in>
 F:	package/batman-adv/
 F:	package/buildah/
 F:	package/catatonit/
+F:	package/conmon/
 F:	package/containerd/
 F:	package/cni-plugins/
 F:	package/delve/
