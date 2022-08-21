@@ -1,0 +1,7 @@
+config BR2_PACKAGE_LIBOCISPEC
+	bool "libocispec"
+	select BR2_PACKAGE_YAJL
+	help
+	  C library for accessing OCI runtime and image spec files.
+
+	  https://github.com/containers/libocispec
