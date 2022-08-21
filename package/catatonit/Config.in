@@ -1,0 +1,7 @@
+config BR2_PACKAGE_CATATONIT
+	bool "catatonit"
+	help
+	  catatonit is a simple but valid init binary to act as
+	  PID 1 for containers.
+
+	  https://github.com/openSUSE/catatonit
