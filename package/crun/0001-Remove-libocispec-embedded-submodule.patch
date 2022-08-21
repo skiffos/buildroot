@@ -1,0 +1,108 @@
+From 4e7d32835165b4c2a533dd02f4c27241cad37954 Mon Sep 17 00:00:00 2001
+From: Christian Stewart <christian@paral.in>
+Date: Sat, 20 Aug 2022 19:23:47 -0700
+Subject: [PATCH] Remove libocispec embedded submodule
+
+Signed-off-by: Christian Stewart <christian@paral.in>
+---
+ Makefile.am  | 31 +++++++++++--------------------
+ configure.ac |  1 -
+ 2 files changed, 11 insertions(+), 21 deletions(-)
+
+diff --git a/Makefile.am b/Makefile.am
+index 2a65148..5800406 100644
+--- a/Makefile.am
++++ b/Makefile.am
+@@ -1,5 +1,3 @@
+-DIST_SUBDIRS = libocispec
+-SUBDIRS = libocispec
+ ACLOCAL_AMFLAGS = -I m4
+ 
+ WD := $(shell pwd)
+@@ -54,28 +52,25 @@ else
+ maybe_libyajl.la =
+ endif
+ 
+-libocispec/libocispec.la:
+-	$(MAKE) $(AM_MAKEFLAGS) -C libocispec libocispec.la
+-
+ libcrun_la_SOURCES = $(libcrun_SOURCES)
+-libcrun_la_CFLAGS = -I $(abs_top_builddir)/libocispec/src -I $(abs_top_srcdir)/libocispec/src -fvisibility=hidden
+-libcrun_la_LIBADD = libocispec/libocispec.la $(FOUND_LIBS) $(maybe_libyajl.la)
++libcrun_la_CFLAGS = -fvisibility=hidden
++libcrun_la_LIBADD = $(FOUND_LIBS) $(maybe_libyajl.la)
+ libcrun_la_LDFLAGS = -Wl,--version-script=$(abs_top_srcdir)/libcrun.lds
+ 
+ # build a version with all the symbols visible for testing
+ libcrun_testing_a_SOURCES = $(libcrun_SOURCES)
+-libcrun_testing_a_CFLAGS = -I $(abs_top_builddir)/libocispec/src -I $(abs_top_srcdir)/libocispec/src -fvisibility=default
+-libcrun_testing_a_LIBADD = libocispec/libocispec.la $(maybe_libyajl.la)
++libcrun_testing_a_CFLAGS = -fvisibility=default
++libcrun_testing_a_LIBADD = $(FOUND_LIBS) $(maybe_libyajl.la)
+ 
+ if PYTHON_BINDINGS
+ pyexec_LTLIBRARIES = python_crun.la
+ python_crun_la_SOURCES = python/crun_python.c
+-python_crun_la_CFLAGS = -I $(abs_top_srcdir)/libocispec/src -I $(abs_top_builddir)/libocispec/src -I $(abs_top_builddir)/src $(PYTHON_CFLAGS)
++python_crun_la_CFLAGS = -I $(abs_top_builddir)/src $(PYTHON_CFLAGS)
+ python_crun_la_LDFLAGS = -avoid-version -module $(PYTHON_LDFLAGS)
+ python_crun_la_LIBADD = libcrun.la $(PYTHON_LIBS) $(FOUND_LIBS) $(maybe_libyajl.la)
+ endif
+ 
+-crun_CFLAGS = -I $(abs_top_builddir)/libocispec/src -I $(abs_top_srcdir)/libocispec/src -D CRUN_LIBDIR="\"$(CRUN_LIBDIR)\""
++crun_CFLAGS = -D CRUN_LIBDIR="\"$(CRUN_LIBDIR)\""
+ crun_SOURCES = src/crun.c src/run.c src/delete.c src/kill.c src/pause.c src/unpause.c src/spec.c \
+ 		src/exec.c src/list.c src/create.c src/start.c src/state.c src/update.c src/ps.c \
+ 		src/checkpoint.c src/restore.c
+@@ -108,17 +103,17 @@ tests_init_LDADD =
+ tests_init_LDFLAGS = -static-libgcc -all-static
+ tests_init_SOURCES = tests/init.c
+ 
+-tests_tests_libcrun_utils_CFLAGS = -I $(abs_top_builddir)/libocispec/src -I $(abs_top_srcdir)/libocispec/src -I $(abs_top_builddir)/src -I $(abs_top_srcdir)/src
++tests_tests_libcrun_utils_CFLAGS = -I $(abs_top_builddir)/src -I $(abs_top_srcdir)/src
+ tests_tests_libcrun_utils_SOURCES = tests/tests_libcrun_utils.c
+ tests_tests_libcrun_utils_LDADD = $(TESTS_LDADD)
+ tests_tests_libcrun_utils_LDFLAGS = $(crun_LDFLAGS)
+ 
+-tests_tests_libcrun_fuzzer_CFLAGS = -I $(abs_top_builddir)/libocispec/src -I $(abs_top_srcdir)/libocispec/src -I $(abs_top_builddir)/src -I $(abs_top_srcdir)/src
++tests_tests_libcrun_fuzzer_CFLAGS = -I $(abs_top_builddir)/src -I $(abs_top_srcdir)/src
+ tests_tests_libcrun_fuzzer_SOURCES = tests/tests_libcrun_fuzzer.c
+-tests_tests_libcrun_fuzzer_LDADD = $(TESTS_LDADD) libocispec/libocispec.la $(maybe_libyajl.la)
++tests_tests_libcrun_fuzzer_LDADD = $(TESTS_LDADD) $(FOUND_LIBS) $(maybe_libyajl.la)
+ tests_tests_libcrun_fuzzer_LDFLAGS = $(crun_LDFLAGS)
+ 
+-tests_tests_libcrun_errors_CFLAGS = -I $(abs_top_builddir)/libocispec/src -I $(abs_top_srcdir)/libocispec/src -I $(abs_top_builddir)/src -I $(abs_top_srcdir)/src
++tests_tests_libcrun_errors_CFLAGS = -I $(abs_top_builddir)/src -I $(abs_top_srcdir)/src
+ tests_tests_libcrun_errors_SOURCES = tests/tests_libcrun_errors.c
+ tests_tests_libcrun_errors_LDADD = $(TESTS_LDADD)
+ tests_tests_libcrun_errors_LDFLAGS = $(crun_LDFLAGS)
+@@ -180,15 +175,11 @@ endif HAVE_MD2MAN
+ 
+ generate-man: crun.1
+ 
+-sync:
+-	(cd libocispec; git pull https://github.com/containers/libocispec main)
+-
+ coverity:
+-	$(MAKE) $(AM_MAKEFLAGS) -C libocispec
+ 	$(MAKE) $(AM_MAKEFLAGS) crun
+ 
+ libcrun.rs: src/libcrun/container.h
+-	bindgen src/libcrun/container.h -- -I$(abs_builddir) -I$(abs_builddir)/libocispec/src  > $@
++	bindgen src/libcrun/container.h -- -I$(abs_builddir) > $@
+ 
+ generate-rust-bindings: libcrun.rs
+ 
+diff --git a/configure.ac b/configure.ac
+index fc669a9..0a4e6c8 100644
+--- a/configure.ac
++++ b/configure.ac
+@@ -213,5 +213,4 @@ AM_CONDITIONAL([CRIU_SUPPORT], [test "x$have_criu" = "xyes"])
+ 
+ AC_CONFIG_FILES([Makefile rpm/crun.spec])
+ 
+-AC_CONFIG_SUBDIRS([libocispec])
+ AC_OUTPUT
+-- 
+2.37.2
+
