@@ -29,6 +29,11 @@ config BR2_PACKAGE_LINUX_FIRMWARE_I915
 	help
 	  Firmware files for the Intel i915 video cards.
 
+config BR2_PACKAGE_LINUX_FIRMWARE_NVIDIA
+	bool "Nvidia video card firmware"
+	help
+	  Firmware files for the Nvidia video cards.
+
 config BR2_PACKAGE_LINUX_FIRMWARE_RADEON
 	bool "AMD Radeon video card firmware"
 	help
@@ -48,6 +53,16 @@ config BR2_PACKAGE_LINUX_FIRMWARE_MFC_V8
 	bool "Samsung MFC video encoder/decoder v8 firmware"
 	help
 	  Firmware files for Samsung MFC video encoder/decoder driver v8
+
+config BR2_PACKAGE_LINUX_FIRMWARE_ROCKCHIP_DPTX
+	bool "Rockchip dptx"
+	help
+	  Firmware files for RockChip dptx (DisplayPort).
+
+config BR2_PACKAGE_LINUX_FIRMWARE_TI_VPDMA
+	bool "TI VPDMA"
+	help
+	  Firmware files for TI Video Port Direct Memory Engine.
 
 endmenu # Video
 

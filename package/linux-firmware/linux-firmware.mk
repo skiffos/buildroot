@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-LINUX_FIRMWARE_VERSION = 20220310
+LINUX_FIRMWARE_VERSION = 20220509
 LINUX_FIRMWARE_SOURCE = linux-firmware-$(LINUX_FIRMWARE_VERSION).tar.xz
 LINUX_FIRMWARE_SITE = $(BR2_KERNEL_MIRROR)/linux/kernel/firmware
 LINUX_FIRMWARE_INSTALL_IMAGES = YES
@@ -25,6 +25,11 @@ endif
 ifeq ($(BR2_PACKAGE_LINUX_FIRMWARE_I915),y)
 LINUX_FIRMWARE_DIRS += i915
 LINUX_FIRMWARE_ALL_LICENSE_FILES += LICENSE.i915
+endif
+
+ifeq ($(BR2_PACKAGE_LINUX_FIRMWARE_NVIDIA),y)
+LINUX_FIRMWARE_DIRS += nvidia
+LINUX_FIRMWARE_ALL_LICENSE_FILES += LICENCE.nvidia
 endif
 
 ifeq ($(BR2_PACKAGE_LINUX_FIRMWARE_RADEON),y)
@@ -571,6 +576,15 @@ LINUX_FIRMWARE_FILES += \
 LINUX_FIRMWARE_ALL_LICENSE_FILES += LICENCE.rtlwifi_firmware.txt
 endif
 
+ifeq ($(BR2_PACKAGE_LINUX_FIRMWARE_ROCKCHIP_DPTX),y)
+LINUX_FIRMWARE_FILES += rockchip/dptx.bin
+endif
+
+ifeq ($(BR2_PACKAGE_LINUX_FIRMWARE_TI_VPDMA),y)
+LINUX_FIRMWARE_FILES += ti/vpdma-1b8.bin
+LINUX_FIRMWARE_ALL_LICENSE_FILES += LICENCE.ti-tspa
+endif
+
 ifeq ($(BR2_PACKAGE_LINUX_FIRMWARE_RTL_8169),y)
 LINUX_FIRMWARE_FILES += \
 	rtl_nic/rtl8105e-1.fw \
@@ -643,7 +657,10 @@ LINUX_FIRMWARE_FILES += \
 	brcm/brcmfmac4373.bin \
 	brcm/brcmfmac4330-sdio.Prowise-PT301.txt \
 	brcm/brcmfmac4356-pcie.gpd-win-pocket.txt \
-	brcm/brcmfmac4356-sdio.vamrs,rock960.txt
+	brcm/brcmfmac43430-sdio.raspberrypi,3-model-b.txt \
+	brcm/brcmfmac43455-sdio.raspberrypi,3-model-b-plus.txt \
+	brcm/brcmfmac43455-sdio.raspberrypi,4-model-b.txt \
+	brcm/brcmfmac4356-sdio.AP6356S.txt
 LINUX_FIRMWARE_ALL_LICENSE_FILES += LICENCE.broadcom_bcm43xx
 endif
 

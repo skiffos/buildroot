@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-GO_VERSION = 1.18.5
+GO_VERSION = 1.19
 GO_SITE = https://storage.googleapis.com/golang
 GO_SOURCE = go$(GO_VERSION).src.tar.gz
 
@@ -12,7 +12,6 @@ GO_LICENSE = BSD-3-Clause
 GO_LICENSE_FILES = LICENSE
 GO_CPE_ID_VENDOR = golang
 
-HOST_GO_DEPENDENCIES = host-go-bootstrap
 HOST_GO_GOPATH = $(HOST_DIR)/share/go-path
 HOST_GO_HOST_CACHE = $(HOST_DIR)/share/host-go-cache
 HOST_GO_ROOT = $(HOST_DIR)/lib/go
@@ -49,6 +48,8 @@ else ifeq ($(BR2_aarch64),y)
 GO_GOARCH = arm64
 else ifeq ($(BR2_i386),y)
 GO_GOARCH = 386
+# stack-protector causes a build failure on i386.
+HOST_GO_CGO_CFLAGS += -fno-stack-protector
 # i386: use softfloat if no SSE2: https://golang.org/doc/go1.16#386
 ifneq ($(BR2_X86_CPU_HAS_SSE2),y)
 GO_GO386 = softfloat
@@ -78,7 +79,7 @@ HOST_GO_TARGET_ENV = \
 	GOCACHE="$(HOST_GO_TARGET_CACHE)" \
 	CC="$(TARGET_CC)" \
 	CXX="$(TARGET_CXX)" \
-	CGO_CFLAGS="$(TARGET_CFLAGS)" \
+	CGO_CFLAGS="$(TARGET_CFLAGS) $(HOST_GO_CGO_CFLAGS)" \
 	CGO_CXXFLAGS="$(TARGET_CXXFLAGS)" \
 	CGO_LDFLAGS="$(TARGET_LDFLAGS)" \
 	GOTOOLDIR="$(HOST_GO_TOOLDIR)"
@@ -108,7 +109,13 @@ else # !BR2_PACKAGE_HOST_GO_TARGET_ARCH_SUPPORTS
 HOST_GO_CGO_ENABLED = 1
 endif # BR2_PACKAGE_HOST_GO_TARGET_ARCH_SUPPORTS
 
+ifeq ($(HOST_GO_CGO_ENABLED),1)
+# For cgo support the toolchain needs to be available.
+HOST_GO_DEPENDENCIES += toolchain
+endif
+
 # For the convenience of host golang packages
+# stack-protector causes a build failure on some architectures.
 HOST_GO_HOST_ENV = \
 	$(HOST_GO_COMMON_ENV) \
 	GOOS="" \
@@ -116,7 +123,7 @@ HOST_GO_HOST_ENV = \
 	GOCACHE="$(HOST_GO_HOST_CACHE)" \
 	CC="$(HOSTCC_NOCCACHE)" \
 	CXX="$(HOSTCXX_NOCCACHE)" \
-	CGO_CFLAGS="$(HOST_CFLAGS)" \
+	CGO_CFLAGS="$(HOST_CFLAGS) $(HOST_GO_CGO_CFLAGS)" \
 	CGO_CXXFLAGS="$(HOST_CXXFLAGS)" \
 	CGO_LDFLAGS="$(HOST_LDFLAGS)"
 
@@ -125,7 +132,6 @@ HOST_GO_HOST_ENV = \
 HOST_GO_MAKE_ENV = \
 	GO111MODULE=off \
 	GOCACHE=$(HOST_GO_HOST_CACHE) \
-	GOROOT_BOOTSTRAP=$(HOST_GO_BOOTSTRAP_ROOT) \
 	GOROOT_FINAL=$(HOST_GO_ROOT) \
 	GOROOT="$(@D)" \
 	GOBIN="$(@D)/bin" \
@@ -133,7 +139,17 @@ HOST_GO_MAKE_ENV = \
 	CC=$(HOSTCC_NOCCACHE) \
 	CXX=$(HOSTCXX_NOCCACHE) \
 	CGO_ENABLED=$(HOST_GO_CGO_ENABLED) \
+	CGO_CFLAGS="$(HOST_CFLAGS) $(HOST_GO_CGO_CFLAGS)" \
+	CGO_CXXFLAGS="$(HOST_CXXFLAGS)" \
+	CGO_LDFLAGS="$(HOST_LDFLAGS)" \
 	$(HOST_GO_CROSS_ENV)
+
+# Use the Go compiler bootstrapped by Buildroot if available.
+# Otherwise, use the host Go compiler.
+ifeq ($(BR2_PACKAGE_HOST_GO_BOOTSTRAP_ARCH_SUPPORTS),y)
+HOST_GO_DEPENDENCIES += host-go-bootstrap
+HOST_GO_MAKE_ENV +=	GOROOT_BOOTSTRAP=$(HOST_GO_BOOTSTRAP_ROOT)
+endif
 
 define HOST_GO_BUILD_CMDS
 	cd $(@D)/src && \
