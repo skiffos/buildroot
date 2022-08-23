@@ -1,0 +1,6 @@
+config BR2_PACKAGE_DISTROBOX
+	bool "distrobox"
+	help
+	  Tool for containerized distributions with Docker or Podman.
+
+	  https://github.com/89luca89/distrobox
