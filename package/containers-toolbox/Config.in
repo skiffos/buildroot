@@ -1,0 +1,17 @@
+config BR2_PACKAGE_CONTAINERS_TOOLBOX
+	bool "containers-toolbox"
+	depends on BR2_PACKAGE_HOST_GO_TARGET_ARCH_SUPPORTS # podman
+	depends on BR2_PACKAGE_HOST_GO_TARGET_CGO_LINKING_SUPPORTS # podman
+	depends on BR2_TOOLCHAIN_HAS_THREADS # podman
+	depends on !BR2_TOOLCHAIN_USES_UCLIBC # podman
+	depends on BR2_USE_MMU # podman
+	select BR2_PACKAGE_PODMAN
+	help
+	  Tool for containerized command line environments with Podman.
+
+	  https://containertoolbx.org
+
+comment "containers-toolbox needs a glibc or musl toolchain w/ threads"
+	depends on BR2_PACKAGE_HOST_GO_TARGET_ARCH_SUPPORTS && \
+		BR2_PACKAGE_HOST_GO_TARGET_CGO_LINKING_SUPPORTS
+	depends on !BR2_TOOLCHAIN_HAS_THREADS || BR2_TOOLCHAIN_USES_UCLIBC
