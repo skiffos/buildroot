@@ -537,6 +537,7 @@ F:	package/cni-plugins/
 F:	package/containers-toolbox/
 F:	package/crun/
 F:	package/delve/
+F:	package/distrobox/
 F:	package/docker-cli/
 F:	package/docker-engine/
 F:	package/docker-proxy/
