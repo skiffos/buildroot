@@ -532,6 +532,7 @@ F:	package/batman-adv/
 F:	package/buildah/
 F:	package/containerd/
 F:	package/delve/
+F:	package/distrobox/
 F:	package/docker-cli/
 F:	package/docker-engine/
 F:	package/docker-proxy/
