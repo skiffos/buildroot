@@ -1,0 +1,58 @@
+From 1ab4b8b448f87167d512222e0de92c0fb2e73b0e Mon Sep 17 00:00:00 2001
+From: Christian Stewart <christian@paral.in>
+Date: Fri, 2 Sep 2022 00:41:13 -0700
+Subject: [PATCH] Make.common: use environment variables for toolchain
+
+Use the environment specified CC, LD, etc.
+
+Signed-off-by: Christian Stewart <christian@paral.in>
+---
+ Make.common | 30 ------------------------------
+ 1 file changed, 30 deletions(-)
+
+diff --git a/Make.common b/Make.common
+index 95a3a97..62c1059 100644
+--- a/Make.common
++++ b/Make.common
+@@ -17,38 +17,8 @@
+ # used to compile rEFInd....
+ #
+ 
+-EFIINC          = /usr/include/efi
+-GNUEFILIB       = /usr/lib
+-EFILIB          = /usr/lib
+-EFICRT0         = /usr/lib
+-
+-# Comment out above and uncomment below if using locally-compiled GNU-EFI....
+-#EFIINC          = /usr/local/include/efi
+-#GNUEFILIB       = /usr/local/lib
+-#EFILIB          = /usr/local/lib
+-#EFICRT0         = /usr/local/lib
+-
+-HOSTARCH        = $(shell uname -m | sed s,i[3456789]86,ia32,)
+-ARCH            ?= $(HOSTARCH)
+-
+ # Note: TIANOBASE is defined in master Makefile and exported
+ GENFW           = $(TIANOBASE)/BaseTools/Source/C/bin/GenFw
+-prefix          = /usr/bin/
+-ifeq ($(ARCH),aarch64)
+-  CC            = $(prefix)aarch64-linux-gnu-gcc
+-  AS            = $(prefix)aarch64-linux-gnu-as
+-  LD            = $(prefix)aarch64-linux-gnu-ld
+-  AR            = $(prefix)aarch64-linux-gnu-ar
+-  RANLIB        = $(prefix)aarch64-linux-gnu-ranlib
+-  OBJCOPY       = $(prefix)aarch64-linux-gnu-objcopy
+-else
+-  CC            = $(prefix)gcc
+-  AS            = $(prefix)as
+-  LD            = $(prefix)ld
+-  AR            = $(prefix)ar
+-  RANLIB        = $(prefix)ranlib
+-  OBJCOPY       = $(prefix)objcopy
+-endif
+ 
+ ifeq ($(MAKEWITH),TIANO)
+ # Below file defines TARGET (RELEASE or DEBUG) and TOOL_CHAIN_TAG (GCC44, GCC45, GCC46, or GCC47)
+-- 
+2.37.2
+
