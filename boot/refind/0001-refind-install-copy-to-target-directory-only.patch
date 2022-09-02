@@ -1,0 +1,88 @@
+From 4476e664a6cb251924f6a61160c72e0fdc0d56fb Mon Sep 17 00:00:00 2001
+From: Christian Stewart <christian@paral.in>
+Date: Thu, 1 Sep 2022 20:32:30 -0700
+Subject: [PATCH] refind-install: copy to target directory only
+
+Comment all commands which require root or access the host system.
+
+Designed to be run in Buildroot:
+
+	OSTYPE="linux" \
+	Platform="$(REFIND_PLATFORM)" \
+	InstallDir="$(BINARIES_DIR)/refind" \
+	RootDir="$(BINARIES_DIR)/refind" \
+    ./refind-install
+
+Signed-off-by: Christian Stewart <christian@paral.in>
+---
+ refind-install | 31 +++++++++++--------------------
+ 1 file changed, 11 insertions(+), 20 deletions(-)
+
+diff --git a/refind-install b/refind-install
+index dfb8781..ec01f2e 100755
+--- a/refind-install
++++ b/refind-install
+@@ -1443,11 +1443,11 @@ InstallOnLinux() {
+       exit 1
+    fi
+    echo "Installing rEFInd on Linux...."
+-   modprobe efivars &> /dev/null
++   # modprobe efivars &> /dev/null
+    if [[ $TargetDir == "/EFI/BOOT" ]] ; then
+       MountDefaultTarget
+    else
+-      FindMountedESP
++      # FindMountedESP
+       DetermineTargetDir
+    fi
+ 
+@@ -1455,20 +1455,20 @@ InstallOnLinux() {
+       ReSignBinaries
+    fi
+ 
+-   CheckSecureBoot
++   # CheckSecureBoot
+    CopyRefindFiles
+-   if [[ "$TargetDir" != "/EFI/BOOT" && "$TargetDir" != "/EFI/Microsoft/Boot" ]] ; then
+-      AddBootEntry
+-      GenerateRefindLinuxConf
+-   fi
++   # if [[ "$TargetDir" != "/EFI/BOOT" && "$TargetDir" != "/EFI/Microsoft/Boot" ]] ; then
++      # AddBootEntry
++      # GenerateRefindLinuxConf
++   # fi
+    # Note that InstallSBKey may require the user to enter a password, so
+    # it must NOT be called if --yes is passed to the script, since that
+    # parameter is intended to eliminate user interaction. The user will
+    # just have to enroll any necessary Secure Boot key manually in this
+    # case.
+-   if [[ "$IsSecureBoot" == "1" && "$AlwaysYes" == "0" ]] ; then
+-      InstallSBKey
+-   fi
++   # if [[ "$IsSecureBoot" == "1" && "$AlwaysYes" == "0" ]] ; then
++   #    InstallSBKey
++   # fi
+ } # InstallOnLinux()
+ 
+ #
+@@ -1477,16 +1477,7 @@ InstallOnLinux() {
+ # install under OS X or Linux, depending on the detected platform.
+ #
+ GetParams "$@"
+-if [[ $UID != 0 ]] ; then
+-   echo "Not running as root; attempting to elevate privileges via sudo...."
+-   if ! sudo "${BASH_SOURCE[0]}" "$@" ; then
+-      echo "This script must be run as root (or using sudo). Exiting!"
+-      exit 1
+-   else
+-      exit 0
+-   fi
+-fi
+-DeterminePlatform
++# DeterminePlatform
+ CheckForFiles
+ case "$OSTYPE" in
+    darwin*)
+-- 
+2.37.2
+
