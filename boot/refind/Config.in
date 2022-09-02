@@ -1,0 +1,18 @@
+config BR2_PACKAGE_REFIND_ARCH_SUPPORTS
+	bool
+	default y if BR2_i386
+	default y if BR2_x86_64
+	default y if BR2_aarch64
+	depends on BR2_USE_MMU
+
+config BR2_TARGET_REFIND
+	bool "refind"
+	depends on BR2_PACKAGE_REFIND_ARCH_SUPPORTS
+	select BR2_PACKAGE_GNU_EFI
+	help
+	  rEFInd presents a user-friendly GUI for boot selection.
+
+	  For additional notes on using rEFInd with Buildroot, see
+	  boot/refind/readme.txt
+
+	  https://www.rodsbooks.com/refind/
