@@ -57,10 +57,16 @@ define REFIND_INSTALL_IMAGES_CMDS
 		rm -rf $(REFIND_BINARIES_DIR); \
 	fi
 	cd $(@D) && $(REFIND_INSTALL_ARGS) ./refind-install --yes --alldrivers
+endef
+
+ifeq ($(BR2_TARGET_REFIND_RENAME_TO_BOOT),y)
+define REFIND_IMAGES_RENAME_TO_BOOT
 	mv $(REFIND_BINARIES_DIR)/EFI/refind/ $(REFIND_BINARIES_DIR)/EFI/BOOT/
 	mv $(REFIND_BINARIES_DIR)/EFI/BOOT/refind_$(REFIND_PLATFORM).efi \
 		$(REFIND_BINARIES_DIR)/EFI/BOOT/boot$(REFIND_PLATFORM).efi
 	echo "boot$(REFIND_PLATFORM).efi" > $(REFIND_BINARIES_DIR)/startup.nsh
 endef
+REFIND_POST_INSTALL_IMAGES_HOOKS += REFIND_IMAGES_RENAME_TO_BOOT
+endif
 
 $(eval $(generic-package))
