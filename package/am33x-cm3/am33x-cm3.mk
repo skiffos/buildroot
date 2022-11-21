@@ -6,8 +6,14 @@
 
 # This should correpsond to v05.00.00.02
 AM33X_CM3_VERSION = 11107db2f1e9e58ee75d4fe9cc38423c9a6e4365
-AM33X_CM3_SITE = http://arago-project.org/git/projects/am33x-cm3.git
-AM33X_CM3_SITE_METHOD = git
+
+# NOTE: 20221121: arago-project.org git is currently down
+# AM33X_CM3_SITE = http://arago-project.org/git/projects/am33x-cm3.git
+# AM33X_CM3_SITE_METHOD = git
+
+AM33X_CM3_SITE = http://sources.buildroot.net/am33x-cm3
+AM33X_CM3_SOURCE = am33x-cm3-$(AM33X_CM3_VERSION)-br1.tar.gz
+
 AM33X_CM3_LICENSE = TI Publicly Available Software License
 AM33X_CM3_LICENSE_FILES = License.txt
 
