@@ -4,8 +4,11 @@
 #
 ################################################################################
 
-DOCKER_ENGINE_VERSION = 20.10.19
-DOCKER_ENGINE_SITE = $(call github,moby,moby,v$(DOCKER_ENGINE_VERSION))
+# DOCKER_ENGINE_VERSION = 23.0.0-beta.1
+# DOCKER_ENGINE_SITE = $(call github,moby,moby,v$(DOCKER_ENGINE_VERSION))
+
+DOCKER_ENGINE_VERSION = 18ef26761d0472e4399398b4e212ae7e84e19f7b
+DOCKER_ENGINE_SITE = $(call github,moby,moby,$(DOCKER_ENGINE_VERSION))
 
 DOCKER_ENGINE_LICENSE = Apache-2.0
 DOCKER_ENGINE_LICENSE_FILES = LICENSE
@@ -61,6 +64,18 @@ DOCKER_ENGINE_DEPENDENCIES += gvfs
 else
 DOCKER_ENGINE_TAGS += exclude_graphdriver_vfs
 endif
+
+# docker-engine does not use go modules
+# removing the conflicting vendor/modules.txt fixes the issue
+# https://github.com/moby/moby/issues/44618#issuecomment-1343565705
+define DOCKER_ENGINE_CONFIGURE_CMDS
+	if [ -f $(@D)/vendor/modules.txt ]; then \
+		rm $(@D)/vendor/modules.txt; \
+	fi
+	cd $(@D); \
+		$(HOST_GO_HOST_ENV) $(DOCKER_ENGINE_GO_ENV) \
+		$(GO_BIN) mod edit -go=1.18 go.mod
+endef
 
 DOCKER_ENGINE_INSTALL_BINS = $(notdir $(DOCKER_ENGINE_BUILD_TARGETS))
 
