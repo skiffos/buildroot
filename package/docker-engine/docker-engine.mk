@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-DOCKER_ENGINE_VERSION = 20.10.22
+DOCKER_ENGINE_VERSION = 23.0.0
 DOCKER_ENGINE_SITE = $(call github,moby,moby,v$(DOCKER_ENGINE_VERSION))
 
 DOCKER_ENGINE_LICENSE = Apache-2.0
@@ -61,6 +61,16 @@ DOCKER_ENGINE_DEPENDENCIES += gvfs
 else
 DOCKER_ENGINE_TAGS += exclude_graphdriver_vfs
 endif
+
+# set the go.mod language version to go1.19
+# remove the conflicting vendor/modules.txt
+# https://github.com/moby/moby/issues/44618#issuecomment-1343565705
+define DOCKER_ENGINE_CONFIGURE_CMDS
+	cd $(@D); \
+		$(HOST_GO_HOST_ENV) $(DOCKER_ENGINE_GO_ENV) \
+		$(GO_BIN) mod edit -go=1.19 go.mod
+	rm -f $(@D)/vendor/modules.txt
+endef
 
 DOCKER_ENGINE_INSTALL_BINS = $(notdir $(DOCKER_ENGINE_BUILD_TARGETS))
 
