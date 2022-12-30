@@ -1,0 +1,56 @@
+From 693475a998503d9c7a4a9a0d64628957cf306504 Mon Sep 17 00:00:00 2001
+From: Vladis Dronov <vdronov@redhat.com>
+Date: Wed, 21 Sep 2022 16:23:04 +0200
+Subject: [PATCH] configure.ac: fix jitterentropy internal timers detection
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+
+Use visibility of jent_notime_settick() to detect if jitterentropy
+library is built with internal timers. The code related is:
+
+  [ src/jitterentropy-timer.h ]
+  #ifdef JENT_CONF_ENABLE_INTERNAL_TIMER
+  int jent_notime_settick(struct rand_data *ec);
+  #else /* JENT_CONF_ENABLE_INTERNAL_TIMER */
+  static inline int jent_notime_settick(struct rand_data *ec)
+  { (void)ec; return 0; }
+  #endif /* JENT_CONF_ENABLE_INTERNAL_TIMER */
+
+---
+
+Upstream: https://github.com/nhorman/rng-tools/commit/57be6d4c90e78ea9ad036a3a6e9b09822ed4d219
+
+jitterentropy-library requires setting the macro JENT_CONF_ENABLE_INTERNAL_TIMER
+to define jent_notime_ctx. If not set, the build fails with the following error:
+
+rngd_jitter.c: In function ‘rngd_notime_stop’:
+rngd_jitter.c:97:32: error: invalid use of undefined type ‘struct jent_notime_ctx’
+   97 |         pthread_join(thread_ctx->notime_thread_id, NULL);
+---
+ configure.ac | 9 ++++++---
+ 1 file changed, 6 insertions(+), 3 deletions(-)
+
+diff --git a/configure.ac b/configure.ac
+index 6ec3c3a..95685db 100644
+--- a/configure.ac
++++ b/configure.ac
+@@ -97,9 +97,12 @@ AS_IF(
+ 		AC_SEARCH_LIBS(jent_version,jitterentropy,
+ 				[AM_CONDITIONAL([JITTER], [true])
+ 				AC_DEFINE([HAVE_JITTER],1,[Enable JITTER])
+-				AC_CHECK_LIB(jitterentropy, jent_notime_init,
+-				[],
+-				[AC_DEFINE([HAVE_JITTER_NOTIME],1, [Enable JITTER_NOTIME])],-lpthread)],
++				AC_CHECK_LIB(jitterentropy, jent_notime_settick,
++				[
++					AC_DEFINE([HAVE_JITTER_NOTIME],1,[Enable JITTER_NOTIME])
++					AC_DEFINE([JENT_CONF_ENABLE_INTERNAL_TIMER],1,[Enable JENT_CONF_ENABLE_INTERNAL_TIMER])
++				],
++				[],-lpthread)],
+ 				AC_MSG_NOTICE([No Jitterentropy library found]),-lpthread)
+ 	], [AC_MSG_NOTICE([Disabling JITTER entropy source])]
+ )
+-- 
+2.39.0
+
