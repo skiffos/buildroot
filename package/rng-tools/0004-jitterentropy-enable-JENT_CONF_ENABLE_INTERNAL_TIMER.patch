@@ -1,0 +1,39 @@
+From 49f270baf7fff2855e39b2084121d765d2a9990c Mon Sep 17 00:00:00 2001
+From: Christian Stewart <christian@paral.in>
+Date: Thu, 29 Dec 2022 19:21:04 -0800
+Subject: [PATCH] jitterentropy: enable JENT_CONF_ENABLE_INTERNAL_TIMER
+ definition
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+
+jitterentropy-library requires setting the macro JENT_CONF_ENABLE_INTERNAL_TIMER
+to define jent_notime_ctx. If not set, the build fails with the following error:
+
+rngd_jitter.c: In function ‘rngd_notime_stop’:
+rngd_jitter.c:97:32: error: invalid use of undefined type ‘struct jent_notime_ctx’
+   97 |         pthread_join(thread_ctx->notime_thread_id, NULL);
+
+Define JENT_CONF_ENABLE_INTERNAL_TIMER if jitterentropy is enabled.
+
+Signed-off-by: Christian Stewart <christian@paral.in>
+---
+ configure.ac | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/configure.ac b/configure.ac
+index 6ec3c3a..25136f2 100644
+--- a/configure.ac
++++ b/configure.ac
+@@ -87,7 +87,7 @@ AC_ARG_ENABLE(jitterentropy,
+ 	[Disable jitterentropy source, or specify its location]),
+ 	[if [ test -d $enable_jitterentropy ]; then
+ 		export LDFLAGS+=-L$enable_jitterentropy;
+-		export CFLAGS+=" -I$enable_jitterentropy";
++		export CFLAGS+=" -I$enable_jitterentropy -DJENT_CONF_ENABLE_INTERNAL_TIMER";
+ 	fi],[])
+ 
+ AS_IF(
+-- 
+2.39.0
+
