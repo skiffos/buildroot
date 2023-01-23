@@ -1,0 +1,28 @@
+config BR2_PACKAGE_REFIND_BIN_ARCH_SUPPORTS
+	bool
+	default y if BR2_i386
+	default y if BR2_x86_64
+	default y if BR2_aarch64
+	depends on BR2_USE_MMU
+
+menuconfig BR2_TARGET_REFIND_BIN
+	bool "refind-bin"
+	depends on BR2_PACKAGE_REFIND_BIN_ARCH_SUPPORTS
+	help
+	  rEFInd presents a user-friendly GUI for boot selection.
+
+	  For additional notes on using rEFInd with Buildroot, see
+	  boot/refind/readme.txt
+
+	  This is the pre-compiled binary variant.
+
+	  https://www.rodsbooks.com/refind/
+
+if BR2_TARGET_REFIND_BIN
+
+config BR2_TARGET_REFIND_BIN_RENAME_TO_BOOT
+	bool "rename refind efi files to BOOT"
+	help
+	  Move refind EFI directory to the default BOOT path.
+
+endif
