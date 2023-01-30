@@ -90,6 +90,10 @@ endif
 ifeq ($(BR2_PRIMARY_SITE_ONLY),)
 DOWNLOAD_URIS += \
 	$(patsubst %/,%,$(dir $(call qstrip,$(1))))
+ifneq ($(call qstrip,$(BR2_SKIFFOS_BACKUP_SITE)),)
+DOWNLOAD_URIS += \
+	$(call getschemeplusuri,$(call qstrip,$(BR2_SKIFFOS_BACKUP_SITE)/$($(2)_DL_SUBDIR)),urlencode)
+endif
 ifneq ($(call qstrip,$(BR2_BACKUP_SITE)),)
 DOWNLOAD_URIS += \
 	$(call getschemeplusuri,$(call qstrip,$(BR2_BACKUP_SITE)/$($(2)_DL_SUBDIR)),urlencode) \
