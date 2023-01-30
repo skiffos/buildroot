@@ -257,6 +257,16 @@ config BR2_BACKUP_SITE
 	  buildroot will fall back to download package sources from here
 	  if the normal location fails.
 
+config BR2_SKIFFOS_BACKUP_SITE
+	string "SkiffOS backup download site"
+	default "https://github.com/skiffos/mirror/raw/master"
+	help
+	  Backup site to download from. If this option is set then
+	  buildroot will fall back to download package sources from here
+	  if the normal location fails.
+
+	  This is an additional mirror used by SkiffOS.
+
 config BR2_KERNEL_MIRROR
 	string "Kernel.org mirror"
 	default "https://cdn.kernel.org/pub"
