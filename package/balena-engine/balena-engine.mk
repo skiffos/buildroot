@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-BALENA_ENGINE_VERSION = 20.10.21
+BALENA_ENGINE_VERSION = 20.10.26
 BALENA_ENGINE_SITE = $(call github,balena-os,balena-engine,v$(BALENA_ENGINE_VERSION))
 
 BALENA_ENGINE_LICENSE = Apache-2.0
@@ -33,6 +33,18 @@ BALENA_ENGINE_TAGS = \
 	exclude_graphdriver_zfs
 
 BALENA_ENGINE_BUILD_TARGETS = cmd/balena-engine
+
+# remove the conflicting vendor/modules.txt
+# remove the conflicting vendor/archive (not allowed in go1.20)
+# https://github.com/moby/moby/issues/44618#issuecomment-1343565705
+define BALENA_ENGINE_CONFIGURE_CMDS
+	if [ -f $(@D)/vendor/modules.txt ]; then \
+		rm $(@D)/vendor/modules.txt; \
+	fi
+	if [ -d $(@D)/vendor/archive ]; then \
+		rm -rf $(@D)/vendor/archive; \
+	fi
+endef
 
 ifeq ($(BR2_INIT_SYSTEMD),y)
 BALENA_ENGINE_DEPENDENCIES += systemd
