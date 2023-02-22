@@ -570,6 +570,11 @@ config BR2_PACKAGE_LINUX_FIRMWARE_RTL_8169
 	help
 	  Firmware files for Realtek 8169 gigabit ethernet cards
 
+config BR2_PACKAGE_LINUX_FIRMWARE_RTL_8192E
+	bool "Realtek 8192E"
+	help
+	  Firmware files for Realtek 8192E cards
+
 endmenu
 
 menu "DVB firmware"
