@@ -1,0 +1,30 @@
+From bf6c2bb0e2a29e0194728a2bd6c9ee54ab21a225 Mon Sep 17 00:00:00 2001
+From: Ray Burgemeestre <rayb@nvidia.com>
+Date: Thu, 20 Oct 2022 11:55:28 +0200
+Subject: [PATCH] Revert "Merge pull request #4475 from
+ thaJeztah/minor_systemd_updates"
+
+This reverts commit 6c74c391fdce62b15428d3032d10217355dcf638, reversing
+changes made to 09814d48d50816305a8e6c1a4ae3e2bcc4ba725a.
+
+Signed-off-by: Ray Burgemeestre <rayb@nvidia.com>
+---
+ containerd.service | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/containerd.service b/containerd.service
+index 38a345945..e5c973f83 100644
+--- a/containerd.service
++++ b/containerd.service
+@@ -32,7 +32,7 @@ RestartSec=5
+ # in the kernel. We recommend using cgroups to do container-local accounting.
+ LimitNPROC=infinity
+ LimitCORE=infinity
+-LimitNOFILE=infinity
++LimitNOFILE=1048576
+ # Comment TasksMax if your systemd version does not supports it.
+ # Only systemd 226 and above support this version.
+ TasksMax=infinity
+-- 
+2.40.0
+
