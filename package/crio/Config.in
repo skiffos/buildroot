@@ -1,0 +1,54 @@
+config BR2_PACKAGE_CRIO
+	bool "crio"
+	depends on BR2_PACKAGE_HOST_GO_TARGET_ARCH_SUPPORTS
+	depends on BR2_PACKAGE_HOST_GO_TARGET_CGO_LINKING_SUPPORTS
+	depends on BR2_TOOLCHAIN_HAS_THREADS
+	depends on BR2_TOOLCHAIN_HEADERS_AT_LEAST_3_4 # iproute2, __kernel_{u,}long_t
+	depends on !BR2_TOOLCHAIN_USES_UCLIBC # no fexecve
+	depends on BR2_USE_MMU # libgpgme, iproute2, fork()
+	select BR2_PACKAGE_IPROUTE2
+	select BR2_PACKAGE_IPTABLES
+	select BR2_PACKAGE_LIBGPGME
+	help
+	  crio implements the Kubelet Container Runtime Interface (CRI)
+	  using OCI conformant runtimes like runc or podman.
+
+	  https://github.com/cri-o/cri-o/
+
+if BR2_PACKAGE_CRIO
+
+config BR2_PACKAGE_CRIO_DRIVER_BTRFS
+	bool "btrfs filesystem driver"
+	depends on BR2_USE_MMU # btrfs-progs
+	depends on BR2_TOOLCHAIN_HAS_THREADS # btrfs-progs
+	select BR2_PACKAGE_BTRFS_PROGS
+	help
+	  Build the btrfs filesystem driver.
+
+config BR2_PACKAGE_CRIO_DRIVER_DEVICEMAPPER
+	bool "devicemapper filesystem driver"
+	depends on BR2_TOOLCHAIN_HAS_THREADS # lvm2
+	depends on BR2_USE_MMU # lvm2
+	depends on !BR2_STATIC_LIBS # lvm2
+	select BR2_PACKAGE_LVM2
+	help
+	  Build the devicemapper filesystem driver.
+
+config BR2_PACKAGE_CRIO_DRIVER_OSTREE
+	bool "ostree storage driver"
+	depends on BR2_PACKAGE_LIBGPG_ERROR_ARCH_SUPPORTS # libostree, libgpgme, libgpg-error
+	depends on BR2_TOOLCHAIN_HAS_THREADS # libostree, libglib2
+	depends on BR2_USE_WCHAR # libostree, libglib2
+	depends on BR2_USE_MMU # libostree, e2fsprogs, libglib2, libgpgme
+	# doesn't build with musl due to lack of TEMP_FAILURE_RETRY()
+	depends on !BR2_TOOLCHAIN_USES_MUSL # libostree
+	select BR2_PACKAGE_LIBOSTREE
+	help
+	  Build the ostree storage driver.
+
+endif
+
+comment "crio needs a glibc or musl toolchain w/ threads"
+	depends on BR2_PACKAGE_HOST_GO_TARGET_ARCH_SUPPORTS && \
+		BR2_PACKAGE_HOST_GO_TARGET_CGO_LINKING_SUPPORTS
+	depends on !BR2_TOOLCHAIN_HAS_THREADS || BR2_TOOLCHAIN_USES_UCLIBC
