@@ -433,6 +433,7 @@ endmenu
 menu "Hardware handling"
 menu "Firmware"
 	source "package/am33x-cm3/Config.in"
+	source "package/amlogic-boot-fip/Config.in"
 	source "package/armbian-firmware/Config.in"
 	source "package/b43-firmware/Config.in"
 	source "package/brcmfmac_sdio-firmware-rpi/Config.in"
