@@ -227,6 +227,11 @@ endif
 
 LINUX_DTBS = $(addsuffix .dtb,$(LINUX_DTS_NAME)) $(addsuffix .dtbo,$(LINUX_DTSO_NAMES))
 
+LINUX_DTS_OVERLAY_NAME += $(call qstrip,$(BR2_LINUX_KERNEL_INTREE_DTS_OVERLAY_NAME))
+LINUX_DTS_OVERLAY_NAME += $(basename $(filter %.dts,$(notdir $(call qstrip,$(BR2_LINUX_KERNEL_CUSTOM_DTS_OVERLAY_PATH)))))
+
+LINUX_DTBS += $(addsuffix .dtbo,$(LINUX_DTS_OVERLAY_NAME))
+
 ifeq ($(BR2_LINUX_KERNEL_IMAGE_TARGET_CUSTOM),y)
 LINUX_IMAGE_NAME = $(call qstrip,$(BR2_LINUX_KERNEL_IMAGE_NAME))
 LINUX_TARGET_NAME = $(call qstrip,$(BR2_LINUX_KERNEL_IMAGE_TARGET_NAME))
