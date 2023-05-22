@@ -33,6 +33,11 @@ define TINI_INSTALL_TARGET_CMDS
 	$(INSTALL) -D -m 0755 $(@D)/bin/tini $(TARGET_DIR)/usr/bin/tini
 	mkdir -p $(TARGET_DIR)/usr/libexec/docker
 	ln -sf ../../bin/tini $(TARGET_DIR)/usr/libexec/docker/docker-init
+	mkdir -p $(TARGET_DIR)/usr/share/containers
+	touch $(TARGET_DIR)/usr/share/containers/libpod.conf
+	sed -i '/init_path/d' $(TARGET_DIR)/usr/share/containers/libpod.conf && \
+		echo 'init_path = "/usr/libexec/docker/docker-init"' >> \
+			$(TARGET_DIR)/usr/share/containers/libpod.conf
 endef
 
 # Tini's CMakeLists.txt is not suitable for Buildroot.
