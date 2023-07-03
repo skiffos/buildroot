@@ -37,4 +37,9 @@ config BR2_PACKAGE_OPENVPN_SMALL
 	  You loose eurephia, debugging info, help messages and more.
 	  It saves around 100 KiB in binary file size.
 
+config BR2_PACKAGE_OPENVPN_DISABLE_DCO
+	bool "Disable DCO"
+	help
+	  Disable DCO feature in OpenVPN
+
 endif
