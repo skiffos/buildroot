@@ -16,11 +16,15 @@ OPENVPN_CONF_OPTS = \
 	$(if $(BR2_STATIC_LIBS),--disable-plugins)
 OPENVPN_CONF_ENV = NETSTAT=/bin/netstat
 
+ifeq ($(BR2_PACKAGE_OPENVPN_DISABLE_DCO),y)
+OPENVPN_CONF_OPTS += --disable-dco
+else
 ifeq ($(BR2_PACKAGE_LIBNL),y)
 OPENVPN_CONF_OPTS += --enable-dco
 OPENVPN_DEPENDENCIES += libnl
 else
 OPENVPN_CONF_OPTS += --disable-dco
+endif
 endif
 
 ifeq ($(BR2_PACKAGE_OPENVPN_SMALL),y)
