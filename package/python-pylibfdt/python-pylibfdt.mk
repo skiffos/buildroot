@@ -13,5 +13,7 @@ PYTHON_PYLIBFDT_LICENSE_FILES = BSD-2-Clause GPL
 PYTHON_PYLIBFDT_DEPENDENCIES = host-python-setuptools-scm host-swig
 HOST_PYTHON_PYLIBFDT_DEPENDENCIES = host-python-setuptools-scm host-swig
 
+HOST_PYTHON_PYLIBFDT_DEPENDENCIES = $(PYTHON_PYLIBFDT_DEPENDENCIES)
+
 $(eval $(python-package))
 $(eval $(host-python-package))
