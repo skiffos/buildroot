@@ -1,0 +1,54 @@
+From 15d3b81ebafb790495a31339881d1c32bd9ca1b9 Mon Sep 17 00:00:00 2001
+From: Christian Stewart <christian@aperture.us>
+Date: Thu, 27 Jul 2023 15:00:49 -0700
+Subject: [PATCH] cmd/dist: add GOBOOTSTRAP_BUILDVCS environment variable
+
+Add an environment variable to bypass the isGitRepo() check and force it to
+return false, thereby also setting -buildvcs=false during "go install."
+
+This is useful in situations where the .git directory may be present but we
+still want to force cmd/dist to ignore it.
+
+Fixes: #61620
+Related: #54852
+
+---
+
+Report: https://lists.buildroot.org/pipermail/buildroot/2023-July/671344.html
+Fixes: https://gitlab.com/buildroot.org/buildroot/-/jobs/4725186525
+Upstream: https://github.com/golang/go/pull/61621
+
+Signed-off-by: Christian Stewart <christian@aperture.us>
+
+---
+ src/cmd/dist/build.go | 7 +++++++
+ 1 file changed, 7 insertions(+)
+
+diff --git a/src/cmd/dist/build.go b/src/cmd/dist/build.go
+index 48c9beccce..892174d305 100644
+--- a/src/cmd/dist/build.go
++++ b/src/cmd/dist/build.go
+@@ -15,6 +15,7 @@ import (
+ 	"path/filepath"
+ 	"regexp"
+ 	"sort"
++	"strconv"
+ 	"strings"
+ 	"sync"
+ 	"time"
+@@ -405,6 +406,12 @@ func findgoversion() string {
+ 
+ // isGitRepo reports whether the working directory is inside a Git repository.
+ func isGitRepo() bool {
++	// Respect GOBOOTSTRAP_BUILDVCS=false if set to 0 or false.
++	// Otherwise check if the Git repo is present with "git rev-parse" as usual.
++	if val, err := strconv.ParseBool(os.Getenv("GOBOOTSTRAP_BUILDVCS")); err == nil && val == false {
++		return false
++	}
++
+ 	// NB: simply checking the exit code of `git rev-parse --git-dir` would
+ 	// suffice here, but that requires deviating from the infrastructure
+ 	// provided by `run`.
+-- 
+2.41.0
+
