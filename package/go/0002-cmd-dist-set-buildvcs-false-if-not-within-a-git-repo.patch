@@ -1,0 +1,44 @@
+From 9b8532e7c59ba09ad499b0d84af6d89a8eefc9f1 Mon Sep 17 00:00:00 2001
+From: Christian Stewart <christian@aperture.us>
+Date: Thu, 27 Jul 2023 14:59:09 -0700
+Subject: [PATCH] cmd/dist: set buildvcs=false if not within a git repository
+
+When compiling without a Git repository, "go install" returns an error:
+
+error obtaining VCS status: exit status 128
+	Use -buildvcs=false to disable VCS stamping.
+
+Set -buildvcs=false in go install when isGitDir() returns false.
+
+Fixes: #61620
+Related: #54852
+
+---
+
+Report: https://lists.buildroot.org/pipermail/buildroot/2023-July/671344.html
+Fixes: https://gitlab.com/buildroot.org/buildroot/-/jobs/4725186525
+Upstream: https://github.com/golang/go/pull/61621
+
+Signed-off-by: Christian Stewart <christian@aperture.us>
+
+---
+ src/cmd/dist/buildtool.go | 3 +++
+ 1 file changed, 3 insertions(+)
+
+diff --git a/src/cmd/dist/buildtool.go b/src/cmd/dist/buildtool.go
+index c4e366024c..1a33a45b23 100644
+--- a/src/cmd/dist/buildtool.go
++++ b/src/cmd/dist/buildtool.go
+@@ -213,6 +213,9 @@ func bootstrapBuildTools() {
+ 	if tool := os.Getenv("GOBOOTSTRAP_TOOLEXEC"); tool != "" {
+ 		cmd = append(cmd, "-toolexec="+tool)
+ 	}
++	if !isGitRepo() {
++		cmd = append(cmd, "-buildvcs=false")
++	}
+ 	cmd = append(cmd, "bootstrap/cmd/...")
+ 	run(base, ShowOutput|CheckExit, cmd...)
+ 
+-- 
+2.41.0
+
