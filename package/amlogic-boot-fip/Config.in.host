@@ -1,11 +1,12 @@
 config BR2_PACKAGE_HOST_AMLOGIC_BOOT_FIP
 	bool "host amlogic-boot-fip"
-	depends on BR2_HOSTARCH = "x86_64"
 	help
 	  Firmware Image Package (FIP) sources used to sign Amlogic
 	  u-boot binaries in LibreELEC images
 
-	  https://github.com/LibreELEC/amlogic-boot-fip
+	  https://gitlab.com/LibreELEC/amlogic-boot-fip
+
+if BR2_PACKAGE_HOST_AMLOGIC_BOOT_FIP
 
 config BR2_PACKAGE_HOST_AMLOGIC_BOOT_FIP_DEVICE
 	string "fip device"
@@ -15,3 +16,5 @@ config BR2_PACKAGE_HOST_AMLOGIC_BOOT_FIP_DEVICE
 	  Device for which you want to use this package.
 	  See the list of supported SoCs:
 	  https://github.com/LibreELEC/amlogic-boot-fip
+
+endif # BR2_PACKAGE_HOST_AMLOGIC_BOOT_FIP
