@@ -1,0 +1,28 @@
+From 7a0074a82248228062054476bd317b9a40af58dd Mon Sep 17 00:00:00 2001
+From: Christian Stewart <christian@aperture.us>
+Date: Sat, 17 Feb 2024 02:22:46 -0800
+Subject: [PATCH] lib/util/Makefile.in: set TIME_BITS and FILE_OFFSET_BITS to
+ 64
+
+Fixes a build failure building mksiglist on Ubuntu 22.04.4 LTS.
+
+Signed-off-by: Christian Stewart <christian@aperture.us>
+---
+ lib/util/Makefile.in | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/lib/util/Makefile.in b/lib/util/Makefile.in
+index 05455f701..a8c84888b 100644
+--- a/lib/util/Makefile.in
++++ b/lib/util/Makefile.in
+@@ -72,6 +72,7 @@ CPPDEFS = -D_PATH_SUDO_CONF=\"@sudo_conf@\"
+ CPPFLAGS = -I$(incdir) -I$(top_builddir) -I. -I$(srcdir) $(CPPDEFS) \
+ 	    @CPPFLAGS@ -DDEFAULT_TEXT_DOMAIN=\"@PACKAGE_NAME@\"
+ HOSTCPPFLAGS = -I$(incdir) -I$(top_builddir) -I. -I$(srcdir) $(CPPDEFS) \
++	       -D_TIME_BITS=64 -D_FILE_OFFSET_BITS=64 \
+ 	       @CPPFLAGS_FOR_BUILD@ -DDEFAULT_TEXT_DOMAIN=\"@PACKAGE_NAME@\"
+ 
+ # Usually -O and/or -g
+-- 
+2.43.1
+
