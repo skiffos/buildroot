@@ -4,8 +4,8 @@
 #
 ################################################################################
 
-IRQBALANCE_VERSION = 1.9.3
-IRQBALANCE_SITE = $(call github,irqbalance,irqbalance,v$(IRQBALANCE_VERSION))
+IRQBALANCE_VERSION = 64285577b465c4c5d8b5bbfa0120432e1d5ffd63
+IRQBALANCE_SITE = $(call github,irqbalance,irqbalance,$(IRQBALANCE_VERSION))
 IRQBALANCE_LICENSE = GPL-2.0
 IRQBALANCE_LICENSE_FILES = COPYING
 IRQBALANCE_SELINUX_MODULES = irqbalance
