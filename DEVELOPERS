@@ -579,8 +579,10 @@ N:	Christian Kellermann <christian.kellermann@solectrix.de>
 F:	package/python-pylibftdi/
 
 N:	Christian Stewart <christian@aperture.us>
+F:	boot/refind/
 F:	package/balena-engine/
 F:	package/batman-adv/
+F:	package/buildah/
 F:	package/catatonit/
 F:	package/cni-plugins/
 F:	package/conmon/
@@ -595,12 +597,14 @@ F:	package/fuse-overlayfs/
 F:	package/go/
 F:	package/go-bootstrap-stage1/
 F:	package/go-bootstrap-stage2/
+F:	package/go-bootstrap-stage3/
 F:	package/gocryptfs/
 F:	package/mbpfan/
 F:	package/moby-buildkit/
 F:	package/mosh/
 F:	package/nerdctl/
 F:	package/pkg-golang.mk
+F:	package/podman/
 F:	package/rtl8821au/
 F:	package/rtl8821cu/
 F:	package/runc/
@@ -1477,6 +1481,7 @@ F:	package/microchip-hss-payload-generator/
 N:	Jan Havran <havran.jan@email.cz>
 F:	board/pine64/pinecube/
 F:	configs/pine64_pinecube_defconfig
+F:	package/rtklib/
 
 N:	Jan Heylen <jan.heylen@nokia.com>
 F:	package/opentracing-cpp/
