@@ -19,7 +19,7 @@
 # - Diff sysusers.d with the previous version
 # - Diff factory/etc/nsswitch.conf with the previous version
 #   (details are often sprinkled around in README and manpages)
-SYSTEMD_VERSION = 254.13
+SYSTEMD_VERSION = 256
 SYSTEMD_SITE = $(call github,systemd,systemd-stable,v$(SYSTEMD_VERSION))
 SYSTEMD_LICENSE = \
 	LGPL-2.1+, \
@@ -96,7 +96,6 @@ SYSTEMD_CONF_OPTS += \
 	-Dsystem-uid-max=999 \
 	-Dsysvinit-path= \
 	-Dsysvrcnd-path= \
-	-Dtelinit-path= \
 	-Dtests=false \
 	-Dtmpfiles=true \
 	-Dukify=false \
