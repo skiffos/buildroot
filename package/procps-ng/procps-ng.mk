@@ -14,12 +14,13 @@ PROCPS_NG_INSTALL_STAGING = YES
 PROCPS_NG_DEPENDENCIES = ncurses host-pkgconf $(TARGET_NLS_DEPENDENCIES)
 PROCPS_NG_CONF_OPTS = LIBS=$(TARGET_NLS_LIBS)
 
-ifeq ($(BR2_PACKAGE_SYSTEMD),y)
-PROCPS_NG_DEPENDENCIES += systemd
-PROCPS_NG_CONF_OPTS += --with-systemd
-else
+# https://gitlab.com/buildroot.org/buildroot/-/issues/28
+# ifeq ($(BR2_PACKAGE_SYSTEMD),y)
+# PROCPS_NG_DEPENDENCIES += systemd
+# PROCPS_NG_CONF_OPTS += --with-systemd
+# else
 PROCPS_NG_CONF_OPTS += --without-systemd
-endif
+# endif
 
 # Make sure binaries get installed in /bin, as busybox does, so that we
 # don't end up with two versions.
