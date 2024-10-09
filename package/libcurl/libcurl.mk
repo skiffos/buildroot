@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-LIBCURL_VERSION = 8.0.1
+LIBCURL_VERSION = 8.10.1
 LIBCURL_SOURCE = curl-$(LIBCURL_VERSION).tar.xz
 LIBCURL_SITE = https://curl.se/download
 LIBCURL_DEPENDENCIES = host-pkgconf \
@@ -13,7 +13,6 @@ LIBCURL_DEPENDENCIES = host-pkgconf \
 LIBCURL_LICENSE = curl
 LIBCURL_LICENSE_FILES = COPYING
 LIBCURL_CPE_ID_VENDOR = haxx
-LIBCURL_CPE_ID_PRODUCT = libcurl
 LIBCURL_INSTALL_STAGING = YES
 
 # We disable NTLM delegation to winbinds ntlm_auth ('--disable-ntlm-wb')
@@ -113,6 +112,13 @@ else
 LIBCURL_CONF_OPTS += --without-libidn2
 endif
 
+ifeq ($(BR2_PACKAGE_LIBPSL),y)
+LIBCURL_DEPENDENCIES += libpsl
+LIBCURL_CONF_OPTS += --with-libpsl
+else
+LIBCURL_CONF_OPTS += --without-libpsl
+endif
+
 # Configure curl to support libssh2
 ifeq ($(BR2_PACKAGE_LIBSSH2),y)
 LIBCURL_DEPENDENCIES += libssh2
@@ -154,6 +160,12 @@ else
 LIBCURL_CONF_OPTS += --disable-proxy
 endif
 
+ifeq ($(BR2_PACKAGE_LIBCURL_WEBSOCKETS_SUPPORT),y)
+LIBCURL_CONF_OPTS += --enable-websockets
+else
+LIBCURL_CONF_OPTS += --disable-websockets
+endif
+
 ifeq ($(BR2_PACKAGE_LIBCURL_EXTRA_PROTOCOLS_FEATURES),y)
 LIBCURL_CONF_OPTS += \
 	--enable-dict \
@@ -177,11 +189,6 @@ LIBCURL_CONF_OPTS += \
 	--disable-telnet \
 	--disable-tftp
 endif
-
-define LIBCURL_FIX_DOT_PC
-	printf 'Requires: openssl\n' >>$(@D)/libcurl.pc.in
-endef
-LIBCURL_POST_PATCH_HOOKS += $(if $(BR2_PACKAGE_LIBCURL_OPENSSL),LIBCURL_FIX_DOT_PC)
 
 ifeq ($(BR2_PACKAGE_LIBCURL_CURL),)
 define LIBCURL_TARGET_CLEANUP

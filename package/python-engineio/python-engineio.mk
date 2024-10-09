@@ -4,11 +4,12 @@
 #
 ################################################################################
 
-PYTHON_ENGINEIO_VERSION = 4.3.4
-PYTHON_ENGINEIO_SITE = https://files.pythonhosted.org/packages/7e/ff/970c5d084f513fb38108cd7c90497489d7cff8666f9bfabae00a3f4e13d4
+PYTHON_ENGINEIO_VERSION = 4.9.1
+PYTHON_ENGINEIO_SOURCE = python_engineio-$(PYTHON_ENGINEIO_VERSION).tar.gz
+PYTHON_ENGINEIO_SITE = https://files.pythonhosted.org/packages/50/01/94faf505820f1fb94133a456dad87a76df589f6999de563229a342e412fa
 PYTHON_ENGINEIO_SETUP_TYPE = setuptools
 PYTHON_ENGINEIO_LICENSE = MIT
 PYTHON_ENGINEIO_LICENSE_FILES = LICENSE
-PYTHON_ENGINEIO_CPE_ID_VENDOR = python-engineio_project
+PYTHON_ENGINEIO_CPE_ID_VALID = YES
 
 $(eval $(python-package))

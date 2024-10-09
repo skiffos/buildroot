@@ -1,6 +1,6 @@
 # md5, sha256 from https://pypi.org/pypi/marshmallow/json
-md5  3cf5c42917509a199c3105466435c425  marshmallow-3.19.0.tar.gz
-sha256  90032c0fd650ce94b6ec6dc8dfeb0e3ff50c144586462c389b81a07205bedb78  marshmallow-3.19.0.tar.gz
+md5  55bc9b09b8557d53541521b723232133  marshmallow-3.22.0.tar.gz
+sha256  4972f529104a220bb8637d595aa4c9762afbe7f7a77d82dc58c1615d70c5823e  marshmallow-3.22.0.tar.gz
 # Locally computed sha256 checksums
-sha256  759dc79c383ad79340c6e41f712e80407fe0d2cb3cbaad1ed98aa9c3e28a602c  LICENSE
+sha256  906b5d9051e426144cb173ad911667b8ebd05a9c584c2c26c135b32a3ed12001  LICENSE
 sha256  f982e6fd97ba00973e94605b972ff04894b22c4fa937b868828b32ae8f0a7c2e  docs/license.rst

@@ -10,9 +10,6 @@ config BR2_PACKAGE_ZABBIX
 
 	  https://zabbix.com
 
-comment "zabbix need glibc"
-	depends on !BR2_TOOLCHAIN_USES_GLIBC
-
 if BR2_PACKAGE_ZABBIX
 
 comment "zabbix server needs C++ and threads or wchar and dynamic libs"
@@ -26,7 +23,7 @@ config BR2_PACKAGE_ZABBIX_SERVER
 	depends on BR2_USE_MMU # mysql, postgresql
 	depends on \
 		(BR2_INSTALL_LIBSTDCPP && BR2_TOOLCHAIN_HAS_THREADS) || \
-		(BR2_USE_WCHAR && !BR2_STATIC_LIBS)
+		(BR2_USE_WCHAR && !BR2_STATIC_LIBS && !BR2_OPTIMIZE_FAST)
 	select BR2_PACKAGE_ZLIB
 	select BR2_PACKAGE_LIBEVENT
 
@@ -39,7 +36,7 @@ config BR2_PACKAGE_ZABBIX_SERVER_MYSQL
 	bool "mysql"
 	depends on BR2_INSTALL_LIBSTDCPP # mysql
 	depends on BR2_TOOLCHAIN_HAS_THREADS # mysql
-	select BR2_PACKAGE_MYSQL
+	select BR2_PACKAGE_MARIADB
 
 config BR2_PACKAGE_ZABBIX_SERVER_POSTGRESQL
 	bool "postgresql"
@@ -81,3 +78,6 @@ comment "zabbix web UI requires PHP"
 endif
 
 endif
+
+comment "zabbix need glibc"
+	depends on !BR2_TOOLCHAIN_USES_GLIBC

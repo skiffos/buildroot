@@ -4,11 +4,12 @@
 #
 ################################################################################
 
-PYTHON_AIOFILES_VERSION = 23.1.0
+PYTHON_AIOFILES_VERSION = 24.1.0
 PYTHON_AIOFILES_SOURCE = aiofiles-$(PYTHON_AIOFILES_VERSION).tar.gz
-PYTHON_AIOFILES_SITE = https://files.pythonhosted.org/packages/40/a0/07be94aecba162ed5147359f9883e82afd2ac13aed33678a008fc8c36f8b
-PYTHON_AIOFILES_SETUP_TYPE = setuptools
+PYTHON_AIOFILES_SITE = https://files.pythonhosted.org/packages/0b/03/a88171e277e8caa88a4c77808c20ebb04ba74cc4681bf1e9416c862de237
+PYTHON_AIOFILES_SETUP_TYPE = pep517
 PYTHON_AIOFILES_LICENSE = Apache-2.0
 PYTHON_AIOFILES_LICENSE_FILES = LICENSE
+PYTHON_AIOFILES_DEPENDENCIES = host-python-hatchling
 
 $(eval $(python-package))

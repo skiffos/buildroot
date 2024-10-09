@@ -143,7 +143,7 @@ fi
 
 # Check bash
 # We only check bash is available, setting SHELL appropriately is done
-# in the top-level Makefile, and we mimick the same sequence here
+# in the top-level Makefile, and we mimic the same sequence here
 if   [ -n "${BASH}" ]; then :
 elif [ -x /bin/bash ]; then :
 elif [ -z "$( sh -c 'echo $BASH' )" ]; then
@@ -280,6 +280,11 @@ required_perl_modules="$required_perl_modules English" # Used by host-libxml-par
 required_perl_modules="$required_perl_modules ExtUtils::MakeMaker" # Used by host-libxml-parser-perl
 required_perl_modules="$required_perl_modules Thread::Queue" # Used by host-automake
 required_perl_modules="$required_perl_modules FindBin" # Used by (host-)libopenssl
+required_perl_modules="$required_perl_modules IPC::Cmd" # Used by (host-)libopenssl
+
+if grep -q ^BR2_PACKAGE_LIBOPENSSL=y $BR2_CONFIG && grep -q ^BR2_s390x=y $BR2_CONFIG ; then
+    required_perl_modules="$required_perl_modules bigint"
+fi
 
 if grep -q ^BR2_PACKAGE_MOSH=y $BR2_CONFIG ; then
     required_perl_modules="$required_perl_modules diagnostics"

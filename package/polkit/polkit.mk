@@ -4,11 +4,11 @@
 #
 ################################################################################
 
-POLKIT_VERSION = 122
+POLKIT_VERSION = 123
 POLKIT_SITE = https://gitlab.freedesktop.org/polkit/polkit/-/archive/$(POLKIT_VERSION)
 POLKIT_LICENSE = GPL-2.0
 POLKIT_LICENSE_FILES = COPYING
-POLKIT_CPE_ID_VENDOR = polkit_project
+POLKIT_CPE_ID_VALID = YES
 POLKIT_INSTALL_STAGING = YES
 POLKIT_DEPENDENCIES = \
 	duktape libglib2 host-intltool expat $(TARGET_NLS_DEPENDENCIES)
@@ -28,6 +28,10 @@ POLKIT_CONF_OPTS += -Dintrospection=true
 POLKIT_DEPENDENCIES += gobject-introspection
 else
 POLKIT_CONF_OPTS += -Dintrospection=false
+endif
+
+ifeq ($(BR2_PACKAGE_LIBXCRYPT),y)
+POLKIT_DEPENDENCIES += libxcrypt
 endif
 
 ifeq ($(BR2_PACKAGE_LINUX_PAM),y)

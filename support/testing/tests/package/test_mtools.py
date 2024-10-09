@@ -4,14 +4,8 @@ import infra.basetest
 
 
 class TestMtools(infra.basetest.BRTest):
-    # We use a glibc toolchain to have iconv conversion working for
-    # codepage 850.
-    config = \
+    config = infra.basetest.BASIC_TOOLCHAIN_CONFIG + \
         """
-        BR2_arm=y
-        BR2_TOOLCHAIN_EXTERNAL=y
-        BR2_TOOLCHAIN_EXTERNAL_BOOTLIN=y
-        BR2_TOOLCHAIN_EXTERNAL_BOOTLIN_ARMV5_EABI_GLIBC_STABLE=y
         BR2_PACKAGE_MTOOLS=y
         BR2_TARGET_ROOTFS_CPIO=y
         # BR2_TARGET_ROOTFS_TAR is not set
@@ -32,7 +26,7 @@ class TestMtools(infra.basetest.BRTest):
         # Create an empty image file to hold the FAT partition
         self.assertRunOk(f"dd if=/dev/zero of={dos_img} bs=1M count=1")
 
-        # Any Mtools command is expected to fail on an unformated
+        # Any Mtools command is expected to fail on an unformatted
         # partition.
         cmd = f"minfo {mtools_opts} ::"
         _, exit_code = self.emulator.run(cmd)

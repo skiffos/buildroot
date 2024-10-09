@@ -1,5 +1,5 @@
 # md5, sha256 from https://pypi.org/pypi/dtschema/json
-md5  3fd3ba2d98ad320c06277274ca40d045  dtschema-2022.12.tar.gz
-sha256  f532d433a915e507d4b426b7ef57a6730d23c0938b682fb4866f9dfa80a58ec6  dtschema-2022.12.tar.gz
+md5  1bd2cb19c8d9da652e4d7c5be16c7d20  dtschema-2024.9.tar.gz
+sha256  1e5cc422736d5e4167f764478e50093f340bbede95b569ed66d60748dbc39ab2  dtschema-2024.9.tar.gz
 # Locally computed sha256 checksums
 sha256  ca0d66263406dc684fe9db60577b234f65ffdf620d7e041c708e969447b69111  LICENSE.txt

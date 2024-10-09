@@ -6,7 +6,7 @@
 
 ULOGD_VERSION = 2.0.8
 ULOGD_SOURCE = ulogd-$(ULOGD_VERSION).tar.bz2
-ULOGD_SITE = http://www.netfilter.org/projects/ulogd/files
+ULOGD_SITE = https://www.netfilter.org/projects/ulogd/files
 ULOGD_DEPENDENCIES = host-pkgconf \
 	libmnl libnetfilter_acct libnetfilter_conntrack libnetfilter_log \
 	libnfnetlink
@@ -22,11 +22,11 @@ ULOGD_DEPENDENCIES += libdbi
 else
 ULOGD_CONF_OPTS += --disable-dbi
 endif
-ifeq ($(BR2_PACKAGE_MYSQL),y)
+ifeq ($(BR2_PACKAGE_MARIADB),y)
 ULOGD_CONF_OPTS += \
 	--enable-mysql \
 	--with-mysql-config=$(STAGING_DIR)/usr/bin/mysql_config
-ULOGD_DEPENDENCIES += mysql
+ULOGD_DEPENDENCIES += mariadb
 else
 ULOGD_CONF_OPTS += --disable-mysql
 endif

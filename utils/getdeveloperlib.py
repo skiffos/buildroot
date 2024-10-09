@@ -25,7 +25,7 @@ def analyze_patch(patch):
         m = FIND_INFRA_IN_PATCH.match(line)
         if m:
             infras.add(m.group(2))
-        if not line.startswith("+++ "):
+        if not line.startswith("+++ ") and not line.startswith("--- "):
             continue
         line.strip()
         fname = line[line.find("/") + 1:].strip()
@@ -85,7 +85,7 @@ def get_all_test_cases(suite):
 
 
 def list_unittests():
-    """Use the unittest module to retreive all test cases from a given
+    """Use the unittest module to retrieve all test cases from a given
     directory"""
     loader = unittest.TestLoader()
     suite = loader.discover(os.path.join(brpath, "support", "testing"))

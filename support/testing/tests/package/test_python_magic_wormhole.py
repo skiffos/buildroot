@@ -1,18 +1,13 @@
 import os
+import time
 
 from tests.package.test_python import TestPythonPackageBase
 
 
 class TestPythonPy3MagicWormhole(TestPythonPackageBase):
     __test__ = True
-    # Need to use a different toolchain than the default due to
-    # python-cryptography using Rust (not available with uclibc)
-    config = \
+    config = TestPythonPackageBase.config + \
         """
-        BR2_arm=y
-        BR2_TOOLCHAIN_EXTERNAL=y
-        BR2_TOOLCHAIN_EXTERNAL_BOOTLIN=y
-        BR2_TOOLCHAIN_EXTERNAL_BOOTLIN_ARMV5_EABI_GLIBC_STABLE=y
         BR2_PACKAGE_PYTHON3=y
         BR2_PACKAGE_PYTHON_MAGIC_WORMHOLE=y
         BR2_PACKAGE_PYTHON_MAGIC_WORMHOLE_MAILBOX_SERVER=y
@@ -52,11 +47,16 @@ class TestPythonPy3MagicWormhole(TestPythonPackageBase):
         wormhole_cmd = "wormhole --relay-url={} --transit-helper={}".format(
             relay_url, transit_helper)
 
-        cmd = wormhole_cmd + " send --code={} --text=\"{}\" & ".format(code, text)
-        cmd += "sleep 25"
-        self.assertRunOk(cmd, timeout=30)
+        cmd = wormhole_cmd
+        cmd += f" send --code={code} --text=\"{text}\""
+        cmd += " &> /dev/null &"
+        self.assertRunOk(cmd)
 
-        cmd = wormhole_cmd + " receive {}".format(code)
+        time.sleep(30 * self.timeout_multiplier)
+
+        wormhole_env = "_MAGIC_WORMHOLE_TEST_KEY_TIMER=100 "
+        wormhole_env += "_MAGIC_WORMHOLE_TEST_VERIFY_TIMER=100 "
+        cmd = wormhole_env + wormhole_cmd + " receive {}".format(code)
         output, exit_code = self.emulator.run(cmd, timeout=35)
         self.assertEqual(exit_code, 0)
         self.assertEqual(output[0], text)

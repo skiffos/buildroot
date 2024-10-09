@@ -4,11 +4,12 @@
 #
 ################################################################################
 
-MDADM_VERSION = 4.2
+MDADM_VERSION = 4.3
 MDADM_SOURCE = mdadm-$(MDADM_VERSION).tar.xz
 MDADM_SITE = $(BR2_KERNEL_MIRROR)/linux/utils/raid/mdadm
 MDADM_LICENSE = GPL-2.0+
 MDADM_LICENSE_FILES = COPYING
+MDADM_CPE_ID_VALID = YES
 
 MDADM_CXFLAGS = $(TARGET_CFLAGS)
 
@@ -19,7 +20,8 @@ MDADM_BUILD_OPTS = \
 	CWFLAGS="" \
 	CXFLAGS="$(MDADM_CXFLAGS)" \
 	CPPFLAGS="$(TARGET_CPPFLAGS) -DBINDIR=\\\"/sbin\\\"" \
-	CHECK_RUN_DIR=0
+	CHECK_RUN_DIR=0 \
+	LDFLAGS="$(TARGET_LDFLAGS)"
 
 MDADM_INSTALL_TARGET_OPTS = install-bin
 

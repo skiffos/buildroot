@@ -60,21 +60,11 @@ LIBGLIB2_MESON_EXTRA_PROPERTIES = \
 	have_c99_snprintf=true \
 	have_unix98_printf=true
 
-ifneq ($(BR2_ENABLE_LOCALE),y)
-LIBGLIB2_DEPENDENCIES += libiconv
-endif
-
 ifeq ($(BR2_PACKAGE_ELFUTILS),y)
 LIBGLIB2_DEPENDENCIES += elfutils
 endif
 
-# Uses __atomic_compare_exchange_4
-ifeq ($(BR2_TOOLCHAIN_HAS_LIBATOMIC),y)
-LIBGLIB2_LDFLAGS += -latomic
-endif
-
 ifeq ($(BR2_PACKAGE_LIBICONV),y)
-LIBGLIB2_CONF_OPTS += -Diconv=external
 LIBGLIB2_DEPENDENCIES += libiconv
 endif
 
@@ -134,7 +124,7 @@ endef
 
 # Compile schemas at target finalization since other packages install
 # them as well, and better do it in a central place.
-# It's used at run time so it doesn't matter defering it.
+# It's used at run time so it doesn't matter deferring it.
 define LIBGLIB2_COMPILE_SCHEMAS
 	$(HOST_DIR)/bin/glib-compile-schemas \
 		$(STAGING_DIR)/usr/share/glib-2.0/schemas \

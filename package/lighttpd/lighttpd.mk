@@ -5,7 +5,7 @@
 ################################################################################
 
 LIGHTTPD_VERSION_MAJOR = 1.4
-LIGHTTPD_VERSION = $(LIGHTTPD_VERSION_MAJOR).69
+LIGHTTPD_VERSION = $(LIGHTTPD_VERSION_MAJOR).76
 LIGHTTPD_SOURCE = lighttpd-$(LIGHTTPD_VERSION).tar.xz
 LIGHTTPD_SITE = http://download.lighttpd.net/lighttpd/releases-$(LIGHTTPD_VERSION_MAJOR).x
 LIGHTTPD_LICENSE = BSD-3-Clause
@@ -29,6 +29,10 @@ LIGHTTPD_CONF_OPTS = \
 	-Dbuild_extra_warnings=false \
 	-Dbuild_static=false \
 	-Dmoduledir=lib/lighttpd
+
+ifeq ($(BR2_PACKAGE_LIBXCRYPT),y)
+LIGHTTPD_DEPENDENCIES += libxcrypt
+endif
 
 ifeq ($(BR2_PACKAGE_LIGHTTPD_BROTLI),y)
 LIGHTTPD_DEPENDENCIES += brotli
@@ -73,7 +77,7 @@ LIGHTTPD_CONF_OPTS += -Dwith_maxminddb=disabled
 endif
 
 ifeq ($(BR2_PACKAGE_LIGHTTPD_MYSQL),y)
-LIGHTTPD_DEPENDENCIES += mysql
+LIGHTTPD_DEPENDENCIES += mariadb
 LIGHTTPD_CONF_OPTS += -Dwith_mysql=enabled
 else
 LIGHTTPD_CONF_OPTS += -Dwith_mysql=disabled
