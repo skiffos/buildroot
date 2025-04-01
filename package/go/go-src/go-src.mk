@@ -44,9 +44,9 @@ HOST_GO_SRC_MAKE_ENV = \
 
 # Use the Go compiler bootstrapped by Buildroot if available.
 # Otherwise, use the host Go compiler.
-ifeq ($(BR2_PACKAGE_HOST_GO_BOOTSTRAP_STAGE3_ARCH_SUPPORTS),y)
-HOST_GO_SRC_DEPENDENCIES += host-go-bootstrap-stage3
-HOST_GO_SRC_MAKE_ENV += GOROOT_BOOTSTRAP=$(HOST_GO_BOOTSTRAP_STAGE3_ROOT)
+ifeq ($(BR2_PACKAGE_HOST_GO_BOOTSTRAP_STAGE4_ARCH_SUPPORTS),y)
+HOST_GO_SRC_DEPENDENCIES += host-go-bootstrap-stage4
+HOST_GO_SRC_MAKE_ENV += GOROOT_BOOTSTRAP=$(HOST_GO_BOOTSTRAP_STAGE4_ROOT)
 endif
 
 define HOST_GO_SRC_BUILD_CMDS
