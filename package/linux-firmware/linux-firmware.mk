@@ -1,4 +1,4 @@
-################################################################################
+####################################	############################################
 #
 # linux-firmware
 #
@@ -13,6 +13,11 @@ LINUX_FIRMWARE_INSTALL_IMAGES = YES
 ifeq ($(BR2_PACKAGE_LINUX_FIRMWARE_INTEL_SST_DSP),y)
 LINUX_FIRMWARE_FILES += intel/fw_sst_0f28.bin-48kHz_i2s_master
 LINUX_FIRMWARE_ALL_LICENSE_FILES += LICENCE.fw_sst_0f28
+endif
+
+ifeq ($(BR2_PACKAGE_LINUX_FIRMWARE_AMD_UCODE),y)
+LINUX_FIRMWARE_DIRS += amd-ucode
+LINUX_FIRMWARE_ALL_LICENSE_FILES += LICENSE.amd-ucode
 endif
 
 ifeq ($(BR2_PACKAGE_LINUX_FIRMWARE_AMDGPU),y)
