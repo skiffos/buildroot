@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-REFIND_BIN_VERSION = 0.13.3.1
+REFIND_BIN_VERSION = 0.14.2
 REFIND_BIN_SITE = http://downloads.sourceforge.net/project/refind/$(REFIND_BIN_VERSION)
 REFIND_BIN_SOURCE = refind-bin-$(REFIND_BIN_VERSION).zip
 REFIND_BIN_LICENSE = GPL-3.0+, GFDL-1.3+ (docs)
