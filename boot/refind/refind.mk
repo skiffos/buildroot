@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-REFIND_VERSION = 0.13.3.1
+REFIND_VERSION = 0.14.2
 REFIND_SITE = http://downloads.sourceforge.net/project/refind/$(REFIND_VERSION)
 REFIND_SOURCE = refind-src-$(REFIND_VERSION).tar.gz
 REFIND_LICENSE = GPL-3.0+, GFDL-1.3+ (docs)
