@@ -1,0 +1,16 @@
+config BR2_PACKAGE_DBUS_FORWARDING_PROXY
+	bool "dbus-forwarding-proxy"
+	depends on BR2_USE_WCHAR # libglib2 -> gettext
+	depends on BR2_TOOLCHAIN_HAS_THREADS # libglib2, systemd
+	depends on BR2_USE_MMU # libglib2, systemd
+	depends on !BR2_STATIC_LIBS # systemd
+	select BR2_PACKAGE_LIBGLIB2
+	select BR2_PACKAGE_SYSTEMD
+	help
+	  D-Bus forwarding proxy for connecting multiple namespaces.
+
+	  https://github.com/igo95862/dbus-forwarding-proxy
+
+comment "dbus-forwarding-proxy needs a toolchain w/ wchar, threads, dynamic library"
+	depends on BR2_USE_MMU
+	depends on !BR2_USE_WCHAR || !BR2_TOOLCHAIN_HAS_THREADS || BR2_STATIC_LIBS
