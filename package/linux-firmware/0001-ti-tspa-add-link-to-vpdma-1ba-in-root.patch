@@ -2,6 +2,7 @@ From 25e53eaf9e766713bed499cfff6f43855cd35e61 Mon Sep 17 00:00:00 2001
 From: Christian Stewart <christian@paral.in>
 Date: Tue, 10 May 2022 06:21:46 -0700
 Subject: [PATCH] ti-tspa: add link to vpdma-1ba in root
+Upstream: N/A
 
 Signed-off-by: Christian Stewart <christian@paral.in>
 ---
