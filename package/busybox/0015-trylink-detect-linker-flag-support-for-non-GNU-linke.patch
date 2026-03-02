@@ -1,0 +1,62 @@
+From 8748eabaa4c0d66a9d1c67e9baeb40f64af94ab2 Mon Sep 17 00:00:00 2001
+From: Christian Stewart <christian@aperture.us>
+Date: Tue, 3 Mar 2026 15:45:28 -0800
+Subject: [PATCH] trylink: detect linker flag support for non-GNU linkers
+
+wasm-ld does not support --start-group/--end-group, --warn-common,
+--verbose, or -Map flags. Add check_cc tests so these are only used
+when the linker supports them, following the existing --sort-section
+and --sort-common patterns.
+
+Upstream: https://github.com/paralin/busybox/pull/1
+
+E-mail sent to BusyBox maintainer as of 20260303.
+
+Signed-off-by: Christian Stewart <christian@aperture.us>
+---
+ scripts/trylink | 28 +++++++++++++++++++++++++++-
+ 1 file changed, 27 insertions(+), 1 deletion(-)
+
+diff --git a/scripts/trylink b/scripts/trylink
+index 2255deee7..6390850c2 100755
+--- a/scripts/trylink
++++ b/scripts/trylink
+@@ -95,8 +95,34 @@ fi
+ 
+ START_GROUP="-Wl,--start-group"
+ END_GROUP="-Wl,--end-group"
++if ! check_cc "-Wl,--start-group -Wl,--end-group"; then
++    echo "Your linker does not support --start-group"
++    START_GROUP=""
++    END_GROUP=""
++fi
++
++WARN_COMMON="-Wl,--warn-common"
++if ! check_cc "-Wl,--warn-common"; then
++    echo "Your linker does not support --warn-common"
++    WARN_COMMON=""
++fi
++
++MAP_OPT=true
++if ! check_cc "-Wl,-Map,/dev/null"; then
++    echo "Your linker does not support -Map"
++    MAP_OPT=false
++fi
++
++VERBOSE_OPT="-Wl,--verbose"
++if ! check_cc "-Wl,--verbose"; then
++    echo "Your linker does not support --verbose"
++    VERBOSE_OPT=""
++fi
++
+ INFO_OPTS() {
+-	echo "-Wl,--warn-common -Wl,-Map,$EXE.map -Wl,--verbose"
++	local map_flag=""
++	$MAP_OPT && map_flag="-Wl,-Map,$EXE.map"
++	echo "$WARN_COMMON $map_flag $VERBOSE_OPT"
+ }
+ 
+ # gold may not support --sort-common (yet)
+-- 
+2.50.1 (Apple Git-155)
+
