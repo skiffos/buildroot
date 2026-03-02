@@ -1,0 +1,11 @@
+config BR2_TOOLCHAIN_EXTERNAL_WASI_SDK
+	bool "wasi-sdk 30"
+	depends on BR2_wasm32
+	depends on BR2_HOSTARCH = "x86_64" || BR2_HOSTARCH = "aarch64"
+	select BR2_TOOLCHAIN_EXTERNAL_MUSL
+	select BR2_TOOLCHAIN_HAS_NO_GDBSERVER
+	help
+	  wasi-sdk toolchain for WebAssembly (wasm32-wasi) targets.
+	  Based on Clang/LLVM with wasi-libc (musl-based).
+
+	  https://github.com/WebAssembly/wasi-sdk
