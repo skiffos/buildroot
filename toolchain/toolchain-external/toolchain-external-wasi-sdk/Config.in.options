@@ -1,0 +1,15 @@
+if BR2_TOOLCHAIN_EXTERNAL_WASI_SDK
+
+config BR2_TOOLCHAIN_EXTERNAL_PREFIX
+	default "wasm32-wasi"
+
+config BR2_TOOLCHAIN_EXTERNAL_CUSTOM_PREFIX
+	default "wasm32-wasi"
+
+config BR2_PACKAGE_PROVIDES_TOOLCHAIN_EXTERNAL
+	default "toolchain-external-wasi-sdk"
+
+config BR2_TOOLCHAIN_EXTERNAL_HAS_NO_GDBSERVER
+	default y
+
+endif
