@@ -266,6 +266,14 @@ config BR2_x86_64
 	  architecture compatible microprocessor).
 	  http://en.wikipedia.org/wiki/X86_64
 
+config BR2_wasm32
+	bool "WebAssembly (wasm32)"
+	select BR2_ARCH_HAS_NO_TOOLCHAIN_BUILDROOT
+	select BR2_USE_MMU
+	help
+	  WebAssembly 32-bit target using wasi-sdk external toolchain.
+	  Produces .wasm binaries for WASI-compatible runtimes.
+
 config BR2_xtensa
 	bool "Xtensa"
 	depends on !BR2_HIDE_SECONDARY_TARGET_OPTIONS
@@ -464,6 +472,10 @@ if BR2_i386 || BR2_x86_64
 source "arch/Config.in.x86"
 endif
 
+if BR2_wasm32
+source "arch/Config.in.wasm32"
+endif
+
 if BR2_xtensa
 source "arch/Config.in.xtensa"
 endif
@@ -471,6 +483,7 @@ endif
 # Set up target binary format
 choice
 	prompt "Target Binary Format"
+	default BR2_BINFMT_WASM if BR2_wasm32
 	default BR2_BINFMT_ELF if BR2_USE_MMU
 	default BR2_BINFMT_FLAT
 
@@ -501,6 +514,12 @@ config BR2_BINFMT_FLAT
 	  format based on the original a.out format. It is widely used
 	  in environment where no MMU is available.
 
+config BR2_BINFMT_WASM
+	bool "WASM"
+	depends on BR2_wasm32
+	help
+	  WebAssembly binary format. WASM binaries are executed by a
+	  host runtime (e.g. wazero) rather than the OS kernel directly.
 endchoice
 
 endmenu # Target options
