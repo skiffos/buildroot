@@ -1,0 +1,4 @@
+# wasi-libc emulation flags for wasm32-wasi targets.
+ifeq ($(BR2_wasm32),y)
+ARCH_TOOLCHAIN_WRAPPER_OPTS += 	-D_WASI_EMULATED_SIGNAL 	-D_WASI_EMULATED_MMAN 	-D_WASI_EMULATED_PROCESS_CLOCKS 	-D_WASI_EMULATED_GETPID 		-include wasi-posix-fixups.h
+endif
