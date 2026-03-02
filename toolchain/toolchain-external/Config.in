@@ -23,6 +23,9 @@ source "toolchain/toolchain-external/toolchain-external-arm-arm/Config.in"
 # Bootlin toolchains, available for virtually all architectures
 source "toolchain/toolchain-external/toolchain-external-bootlin/Config.in"
 
+# WebAssembly (wasi-sdk)
+source "toolchain/toolchain-external/toolchain-external-wasi-sdk/Config.in"
+
 # Kept last, so it remains the non-default choice, unless there isn't
 # any available toolchain profile for the currently selected
 # architecture, but before toolchains from br2-external trees.
@@ -110,6 +113,9 @@ source "toolchain/toolchain-external/toolchain-external-arm-arm/Config.in.option
 
 # Bootlin toolchains
 source "toolchain/toolchain-external/toolchain-external-bootlin/Config.in.options"
+
+# WebAssembly (wasi-sdk)
+source "toolchain/toolchain-external/toolchain-external-wasi-sdk/Config.in.options"
 
 # Custom toolchains
 source "toolchain/toolchain-external/toolchain-external-custom/Config.in.options"
