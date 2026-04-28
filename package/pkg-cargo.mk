@@ -51,7 +51,16 @@ PKG_CARGO_ENV = \
 	CARGO_TARGET_APPLIES_TO_HOST="false" \
 	CARGO_BUILD_TARGET="$(RUSTC_TARGET_NAME)" \
 	CARGO_HOST_RUSTFLAGS="$(addprefix -C link-args=,$(HOST_LDFLAGS))" \
-	CARGO_TARGET_$(call UPPERCASE,$(RUSTC_TARGET_NAME))_LINKER=$(notdir $(TARGET_CROSS))gcc
+	CARGO_TARGET_$(call UPPERCASE,$(RUSTC_TARGET_NAME))_LINKER=$(notdir $(TARGET_CROSS))gcc \
+	HOST_CC="$(HOSTCC_NOCCACHE)" \
+	HOST_CXX="$(HOSTCXX_NOCCACHE)" \
+	HOST_AR="$(HOSTAR)" \
+	CC_$(subst -,_,$(RUSTC_HOST_NAME))="$(HOSTCC_NOCCACHE)" \
+	CXX_$(subst -,_,$(RUSTC_HOST_NAME))="$(HOSTCXX_NOCCACHE)" \
+	AR_$(subst -,_,$(RUSTC_HOST_NAME))="$(HOSTAR)" \
+	CC_$(subst -,_,$(RUSTC_TARGET_NAME))="$(TARGET_CC)" \
+	CXX_$(subst -,_,$(RUSTC_TARGET_NAME))="$(TARGET_CXX)" \
+	AR_$(subst -,_,$(RUSTC_TARGET_NAME))="$(TARGET_AR)"
 
 # We always set both CARGO_PROFILE_DEV and CARGO_PROFILE_RELEASE
 # as we are unable to select a build profile using the environment.
