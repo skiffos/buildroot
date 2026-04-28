@@ -1,0 +1,323 @@
+diff --git i/codex-rs/Cargo.toml w/codex-rs/Cargo.toml
+index d39651f..8068538 100644
+--- i/codex-rs/Cargo.toml
++++ w/codex-rs/Cargo.toml
+@@ -135,7 +135,7 @@ codex-collaboration-mode-templates = { path = "collaboration-mode-templates" }
+ codex-cloud-requirements = { path = "cloud-requirements" }
+ codex-cloud-tasks-client = { path = "cloud-tasks-client" }
+ codex-cloud-tasks-mock-client = { path = "cloud-tasks-mock-client" }
+-codex-code-mode = { path = "code-mode" }
++codex-code-mode = { path = "code-mode", default-features = false }
+ codex-config = { path = "config" }
+ codex-connectors = { path = "connectors" }
+ codex-core = { path = "core" }
+diff --git i/codex-rs/code-mode/Cargo.toml w/codex-rs/code-mode/Cargo.toml
+index 23b2ce2..12c258d 100644
+--- i/codex-rs/code-mode/Cargo.toml
++++ w/codex-rs/code-mode/Cargo.toml
+@@ -12,17 +12,21 @@ path = "src/lib.rs"
+ [lints]
+ workspace = true
+ 
++[features]
++default = ["runtime"]
++runtime = ["dep:deno_core_icudata", "dep:v8"]
++
+ [dependencies]
+ async-channel = { workspace = true }
+ async-trait = { workspace = true }
+ codex-protocol = { workspace = true }
+-deno_core_icudata = { workspace = true }
++deno_core_icudata = { workspace = true, optional = true }
+ serde = { workspace = true, features = ["derive"] }
+ serde_json = { workspace = true }
+ tokio = { workspace = true, features = ["macros", "rt", "sync", "time"] }
+ tokio-util = { workspace = true, features = ["rt"] }
+ tracing = { workspace = true }
+-v8 = { workspace = true }
++v8 = { workspace = true, optional = true }
+ 
+ [dev-dependencies]
+ pretty_assertions = { workspace = true }
+diff --git i/codex-rs/code-mode/src/lib.rs w/codex-rs/code-mode/src/lib.rs
+index bf0ce69..1b25601 100644
+--- i/codex-rs/code-mode/src/lib.rs
++++ w/codex-rs/code-mode/src/lib.rs
+@@ -1,7 +1,13 @@
+ mod description;
+ mod response;
++#[cfg(feature = "runtime")]
+ mod runtime;
++#[cfg(not(feature = "runtime"))]
++mod runtime_disabled;
++#[cfg(feature = "runtime")]
+ mod service;
++#[cfg(not(feature = "runtime"))]
++mod service_disabled;
+ 
+ pub use description::CODE_MODE_PRAGMA_PREFIX;
+ pub use description::CodeModeToolKind;
+@@ -18,17 +24,20 @@ pub use description::render_json_schema_to_typescript;
+ pub use response::DEFAULT_IMAGE_DETAIL;
+ pub use response::FunctionCallOutputContentItem;
+ pub use response::ImageDetail;
+-pub use runtime::CodeModeNestedToolCall;
+-pub use runtime::DEFAULT_EXEC_YIELD_TIME_MS;
+-pub use runtime::DEFAULT_MAX_OUTPUT_TOKENS_PER_EXEC_CALL;
+-pub use runtime::DEFAULT_WAIT_YIELD_TIME_MS;
+-pub use runtime::ExecuteRequest;
+-pub use runtime::RuntimeResponse;
+-pub use runtime::WaitOutcome;
+-pub use runtime::WaitRequest;
+-pub use service::CodeModeService;
+-pub use service::CodeModeTurnHost;
+-pub use service::CodeModeTurnWorker;
++#[cfg(feature = "runtime")]
++pub use runtime::{
++    CodeModeNestedToolCall, DEFAULT_EXEC_YIELD_TIME_MS, DEFAULT_MAX_OUTPUT_TOKENS_PER_EXEC_CALL,
++    DEFAULT_WAIT_YIELD_TIME_MS, ExecuteRequest, RuntimeResponse, WaitOutcome, WaitRequest,
++};
++#[cfg(not(feature = "runtime"))]
++pub use runtime_disabled::{
++    CodeModeNestedToolCall, DEFAULT_EXEC_YIELD_TIME_MS, DEFAULT_MAX_OUTPUT_TOKENS_PER_EXEC_CALL,
++    DEFAULT_WAIT_YIELD_TIME_MS, ExecuteRequest, RuntimeResponse, WaitOutcome, WaitRequest,
++};
++#[cfg(feature = "runtime")]
++pub use service::{CodeModeService, CodeModeTurnHost, CodeModeTurnWorker};
++#[cfg(not(feature = "runtime"))]
++pub use service_disabled::{CodeModeService, CodeModeTurnHost, CodeModeTurnWorker};
+ 
+ pub const PUBLIC_TOOL_NAME: &str = "exec";
+ pub const WAIT_TOOL_NAME: &str = "wait";
+diff --git i/codex-rs/code-mode/src/runtime_disabled.rs w/codex-rs/code-mode/src/runtime_disabled.rs
+new file mode 100644
+index 0000000..23d4215
+--- /dev/null
++++ w/codex-rs/code-mode/src/runtime_disabled.rs
+@@ -0,0 +1,76 @@
++use std::collections::HashMap;
++
++use codex_protocol::ToolName;
++use serde::Serialize;
++use serde_json::Value as JsonValue;
++
++use crate::response::FunctionCallOutputContentItem;
++use crate::ToolDefinition;
++
++pub const DEFAULT_EXEC_YIELD_TIME_MS: u64 = 1_000;
++pub const DEFAULT_WAIT_YIELD_TIME_MS: u64 = 1_000;
++pub const DEFAULT_MAX_OUTPUT_TOKENS_PER_EXEC_CALL: usize = 8_000;
++
++#[derive(Debug)]
++pub struct ExecuteRequest {
++    pub cell_id: String,
++    pub tool_call_id: String,
++    pub enabled_tools: Vec<ToolDefinition>,
++    pub source: String,
++    pub stored_values: HashMap<String, JsonValue>,
++    pub yield_time_ms: Option<u64>,
++    pub max_output_tokens: Option<usize>,
++}
++
++#[derive(Debug, Serialize)]
++pub enum RuntimeResponse {
++    Yielded {
++        cell_id: String,
++        content_items: Vec<FunctionCallOutputContentItem>,
++    },
++    Terminated {
++        cell_id: String,
++        content_items: Vec<FunctionCallOutputContentItem>,
++    },
++    Result {
++        cell_id: String,
++        content_items: Vec<FunctionCallOutputContentItem>,
++        stored_values: HashMap<String, JsonValue>,
++        error_text: Option<String>,
++    },
++}
++
++pub struct WaitRequest {
++    pub cell_id: String,
++    pub yield_time_ms: u64,
++    pub terminate: bool,
++}
++
++pub enum WaitOutcome {
++    MissingCell,
++    LiveCell(RuntimeResponse),
++}
++
++impl From<WaitOutcome> for RuntimeResponse {
++    fn from(value: WaitOutcome) -> Self {
++        match value {
++            WaitOutcome::LiveCell(response) => response,
++            WaitOutcome::MissingCell => RuntimeResponse::Result {
++                cell_id: String::new(),
++                content_items: vec![FunctionCallOutputContentItem::InputText {
++                    text: "code mode runtime is not available in this build".to_string(),
++                }],
++                stored_values: HashMap::new(),
++                error_text: Some("code mode runtime is not available in this build".to_string()),
++            },
++        }
++    }
++}
++
++#[derive(Debug)]
++pub struct CodeModeNestedToolCall {
++    pub cell_id: String,
++    pub runtime_tool_call_id: String,
++    pub tool_name: ToolName,
++    pub input: Option<JsonValue>,
++}
+diff --git i/codex-rs/code-mode/src/service_disabled.rs w/codex-rs/code-mode/src/service_disabled.rs
+new file mode 100644
+index 0000000..099c300
+--- /dev/null
++++ w/codex-rs/code-mode/src/service_disabled.rs
+@@ -0,0 +1,61 @@
++use std::collections::HashMap;
++use std::sync::Arc;
++
++use async_trait::async_trait;
++use serde_json::Value as JsonValue;
++use tokio_util::sync::CancellationToken;
++
++use crate::runtime_disabled::CodeModeNestedToolCall;
++use crate::runtime_disabled::ExecuteRequest;
++use crate::runtime_disabled::RuntimeResponse;
++use crate::runtime_disabled::WaitOutcome;
++use crate::runtime_disabled::WaitRequest;
++
++#[async_trait]
++pub trait CodeModeTurnHost: Send + Sync {
++    async fn invoke_tool(
++        &self,
++        invocation: CodeModeNestedToolCall,
++        cancellation_token: CancellationToken,
++    ) -> Result<JsonValue, String>;
++
++    async fn notify(&self, call_id: String, cell_id: String, text: String) -> Result<(), String>;
++}
++
++pub struct CodeModeService;
++
++impl CodeModeService {
++    pub fn new() -> Self {
++        Self
++    }
++
++    pub async fn stored_values(&self) -> HashMap<String, JsonValue> {
++        HashMap::new()
++    }
++
++    pub async fn replace_stored_values(&self, _values: HashMap<String, JsonValue>) {}
++
++    pub fn allocate_cell_id(&self) -> String {
++        String::new()
++    }
++
++    pub async fn execute(&self, _request: ExecuteRequest) -> Result<RuntimeResponse, String> {
++        Err("code mode runtime is not available in this build".to_string())
++    }
++
++    pub async fn wait(&self, _request: WaitRequest) -> Result<WaitOutcome, String> {
++        Err("code mode runtime is not available in this build".to_string())
++    }
++
++    pub fn start_turn_worker(&self, _host: Arc<dyn CodeModeTurnHost>) -> CodeModeTurnWorker {
++        CodeModeTurnWorker
++    }
++}
++
++impl Default for CodeModeService {
++    fn default() -> Self {
++        Self::new()
++    }
++}
++
++pub struct CodeModeTurnWorker;
+diff --git i/codex-rs/linux-sandbox/src/landlock.rs w/codex-rs/linux-sandbox/src/landlock.rs
+index 5794982..644cde1 100644
+--- i/codex-rs/linux-sandbox/src/landlock.rs
++++ w/codex-rs/linux-sandbox/src/landlock.rs
+@@ -2,6 +2,7 @@
+ //!
+ //! Filesystem restrictions are enforced by bubblewrap in `linux_run_main`.
+ //! Landlock helpers remain available here as legacy/backup utilities.
++#[cfg(any(target_arch = "x86_64", target_arch = "aarch64"))]
+ use std::collections::BTreeMap;
+ use std::path::Path;
+ 
+@@ -21,15 +22,11 @@ use landlock::Compatible;
+ use landlock::Ruleset;
+ use landlock::RulesetAttr;
+ use landlock::RulesetCreatedAttr;
+-use seccompiler::BpfProgram;
+-use seccompiler::SeccompAction;
+-use seccompiler::SeccompCmpArgLen;
+-use seccompiler::SeccompCmpOp;
+-use seccompiler::SeccompCondition;
+-use seccompiler::SeccompFilter;
+-use seccompiler::SeccompRule;
+-use seccompiler::TargetArch;
+-use seccompiler::apply_filter;
++#[cfg(any(target_arch = "x86_64", target_arch = "aarch64"))]
++use seccompiler::{
++    BpfProgram, SeccompAction, SeccompCmpArgLen, SeccompCmpOp, SeccompCondition, SeccompFilter,
++    SeccompRule, TargetArch, apply_filter,
++};
+ 
+ /// Apply sandbox policies inside this thread so only the child inherits
+ /// them, not the entire CLI process.
+@@ -106,7 +103,9 @@ fn network_seccomp_mode(
+     allow_network_for_proxy: bool,
+     proxy_routed_network: bool,
+ ) -> Option<NetworkSeccompMode> {
+-    if !should_install_network_seccomp(network_sandbox_policy, allow_network_for_proxy) {
++    if !network_seccomp_supported()
++        || !should_install_network_seccomp(network_sandbox_policy, allow_network_for_proxy)
++    {
+         None
+     } else if proxy_routed_network {
+         Some(NetworkSeccompMode::ProxyRouted)
+@@ -115,6 +114,16 @@ fn network_seccomp_mode(
+     }
+ }
+ 
++#[cfg(any(target_arch = "x86_64", target_arch = "aarch64"))]
++fn network_seccomp_supported() -> bool {
++    true
++}
++
++#[cfg(not(any(target_arch = "x86_64", target_arch = "aarch64")))]
++fn network_seccomp_supported() -> bool {
++    false
++}
++
+ /// Enable `PR_SET_NO_NEW_PRIVS` so seccomp can be applied safely.
+ fn set_no_new_privs() -> Result<()> {
+     let result = unsafe { libc::prctl(libc::PR_SET_NO_NEW_PRIVS, 1, 0, 0, 0) };
+@@ -165,6 +174,7 @@ fn install_filesystem_landlock_rules_on_current_thread(
+ ///
+ /// The filter is applied to the current thread so only the sandboxed child
+ /// inherits it.
++#[cfg(any(target_arch = "x86_64", target_arch = "aarch64"))]
+ fn install_network_seccomp_filter_on_current_thread(
+     mode: NetworkSeccompMode,
+ ) -> std::result::Result<(), SandboxErr> {
+@@ -263,6 +273,13 @@ fn install_network_seccomp_filter_on_current_thread(
+     Ok(())
+ }
+ 
++#[cfg(not(any(target_arch = "x86_64", target_arch = "aarch64")))]
++fn install_network_seccomp_filter_on_current_thread(
++    _mode: NetworkSeccompMode,
++) -> std::result::Result<(), SandboxErr> {
++    Ok(())
++}
++
+ #[cfg(test)]
+ mod tests {
+     use super::NetworkSeccompMode;
