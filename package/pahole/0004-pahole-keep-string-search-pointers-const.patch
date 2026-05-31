@@ -1,0 +1,99 @@
+From 7af4d8f0b5b976af32401fcde4d04da577f8a28d Mon Sep 17 00:00:00 2001
+From: Christian Stewart <christian@aperture.us>
+Date: Sun, 7 Jun 2026 01:02:00 -0700
+Subject: [PATCH] pahole: keep string search pointers const
+
+GCC 16 diagnoses strchr() results from const input strings when they are stored
+in mutable char pointers. Keep the initial search results const, then use
+mutable pointers only after the code has copied the strings into owned storage.
+
+This preserves the existing parsing behavior while fixing the host build when
+warnings are treated as errors.
+
+Upstream: not submitted
+Signed-off-by: Christian Stewart <christian@aperture.us>
+---
+ btf_encoder.c |  2 +-
+ pahole.c      | 16 ++++++++--------
+ 2 files changed, 9 insertions(+), 9 deletions(-)
+
+--- a/btf_encoder.c
++++ b/btf_encoder.c
+@@ -1202 +1202 @@ static bool str_contains_non_fn_suffix(const char *str) {
+-	char *suffix = strchr(str, '.');
++	const char *suffix = strchr(str, '.');
+
+--- a/pahole.c
++++ b/pahole.c
+@@ -2448,9 +2448,9 @@
+ 	int byte_offset = 0;
+ 
+ 	if (!member) {
+-		char *sep = strchr(member_name_orig, '.');
++		const char *orig_sep = strchr(member_name_orig, '.');
+ 
+-		if (!sep)
++		if (!orig_sep)
+ 			return -1;
+ 
+ 		char *member_name_alloc = strdup(member_name_orig);
+@@ -2461,7 +2461,7 @@
+ 		char *member_name = member_name_alloc;
+ 		struct type *type = instance->type;
+ 
+-		sep = member_name_alloc + (sep - member_name_orig);
++		char *sep = member_name_alloc + (orig_sep - member_name_orig);
+ 		*sep = 0;
+ 
+ 		while (1) {
+@@ -2915,7 +2915,7 @@
+ 
+ 	strcpy(prototype->name, expression);
+ 
+-	const char *name = prototype->name;
++	char *name = prototype->name;
+ 
+ 	prototype->nr_args = 0;
+ 
+@@ -3079,9 +3079,9 @@
+ 		return type__add_type_enum(type, te, cu);
+ 
+ 	// Now look at a 'virtual enum', i.e. the concatenation of multiple enums
+-	char *sep = strchr(type_enum, '+');
++	const char *orig_sep = strchr(type_enum, '+');
+ 
+-	if (!sep)
++	if (!orig_sep)
+ 		return -1;
+ 
+ 	char *type_enums = strdup(type_enum);
+@@ -3091,13 +3091,13 @@
+ 
+ 	int ret = -1;
+ 
+-	sep = type_enums + (sep - type_enum);
++	char *sep = type_enums + (orig_sep - type_enum);
+ 
+-	type_enum = type_enums;
++	char *type_enum_name = type_enums;
+ 	*sep = '\0';
+ 
+ 	while (1) {
+-		te = cu__find_enumeration_by_name(cu, type_enum, NULL);
++		te = cu__find_enumeration_by_name(cu, type_enum_name, NULL);
+ 
+ 		if (!te)
+ 			goto out;
+@@ -3108,8 +3108,8 @@
+ 
+ 		if (sep == NULL)
+ 			break;
+-		type_enum = sep + 1;
+-		sep = strchr(type_enum, '+');
++		type_enum_name = sep + 1;
++		sep = strchr(type_enum_name, '+');
+ 	}
+ 
+ 	ret = 0;
+-- 
+2.49.0
