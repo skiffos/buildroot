@@ -1,0 +1,45 @@
+From 06350d14776a77e16ea5064030fea63bbdd22f27 Mon Sep 17 00:00:00 2001
+From: Alan Maguire <alan.maguire@oracle.com>
+Date: Fri, 28 Feb 2025 12:24:29 +0000
+Subject: [PATCH] dwarves: Fix clang warning about unused variable
+
+With dwarves CI, clang builds give a legit warning:
+
+/build/dwarves_fprintf.c:2102:9: error: variable 'printed' set but not used [-Werror,-Wunused-but-set-variable]
+ 2102 |         size_t printed = fprintf(fp, "namespace %s {\n", namespace__name(space));
+      |                ^
+1 error generated.
+
+And in fact we accumulate values in printed but never use it
+for the return value.  Add the printed count to the final fprintf().
+
+Upstream: https://git.kernel.org/pub/scm/devel/pahole/pahole.git/commit/?id=06350d14776a77e16ea5064030fea63bbdd22f27
+Signed-off-by: Alan Maguire <alan.maguire@oracle.com>
+Cc: Arnaldo Carvalho de Melo <acme@kernel.org>
+Cc: Alexei Starovoitov <ast@kernel.org>
+Cc: Andrii Nakryiko <andrii@kernel.org>
+Cc: Yonghong Song <yonghong.song@linux.dev>
+Cc: Daniel Borkmann <daniel@iogearbox.net>
+Cc: Song Liu <song@kernel.org>
+Cc: Eduard Zingerman <eddyz87@gmail.com>
+Cc: Jiri Olsa <jolsa@kernel.org>
+Link: https://lore.kernel.org/dwarves/20250401092435.1619617-3-alan.maguire@oracle.com/
+---
+ dwarves_fprintf.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/dwarves_fprintf.c b/dwarves_fprintf.c
+index c3e7f3c..4407fd1 100644
+--- a/dwarves_fprintf.c
++++ b/dwarves_fprintf.c
+@@ -2110,7 +2110,7 @@ static size_t namespace__fprintf(const struct tag *tag, const struct cu *cu,
+ 		printed += fprintf(fp, "\n\n");
+ 	}
+ 
+-	return fprintf(fp, "%.*s}", conf->indent, tabs);
++	return printed + fprintf(fp, "%.*s}", conf->indent, tabs);
+ }
+ 
+ size_t tag__fprintf(struct tag *tag, const struct cu *cu,
+-- 
+2.49.0
