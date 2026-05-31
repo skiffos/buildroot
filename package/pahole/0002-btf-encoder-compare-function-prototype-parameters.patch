@@ -1,0 +1,37 @@
+From 52a2f866426ec86fa1919e1e01d6d5fc9b9b7f35 Mon Sep 17 00:00:00 2001
+From: Christian Stewart <christian@aperture.us>
+Date: Sun, 31 May 2026 01:45:00 -0700
+Subject: [PATCH] btf_encoder: compare function prototype parameters
+
+GCC 16 reports the BTF_KIND_FUNC_PROTO parameter pointers as set but
+unused because types__match() only increments them. The loop already
+checked the function return type before iterating, but then compared the
+same return type once per parameter instead of comparing each parameter
+type.
+
+Use the current BTF parameter entries inside the loop. This removes the
+warning and makes prototype matching reject mismatched parameter types.
+
+Upstream: not submitted
+Signed-off-by: Christian Stewart <christian@aperture.us>
+---
+ btf_encoder.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/btf_encoder.c b/btf_encoder.c
+index 3754884..c0a5b47 100644
+--- a/btf_encoder.c
++++ b/btf_encoder.c
+@@ -1017,8 +1017,8 @@ static bool types__match(struct btf_encoder *encoder,
+ 					  btf2, t2->type))
+ 				return false;
+ 			for (i = 0; i < vlen; i++, p1++, p2++) {
+-				if (!types__match(encoder, btf1, t1->type,
+-						  btf2, t2->type))
++				if (!types__match(encoder, btf1, p1->type,
++						  btf2, p2->type))
+ 					return false;
+ 			}
+ 			return true;
+-- 
+2.49.0
