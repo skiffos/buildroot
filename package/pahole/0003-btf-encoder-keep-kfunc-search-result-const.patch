@@ -1,0 +1,33 @@
+From 9b1aab8a2e02ac78f1db18e6d44952b4f723b5aa Mon Sep 17 00:00:00 2001
+From: Christian Stewart <christian@aperture.us>
+Date: Sun, 7 Jun 2026 00:48:00 -0700
+Subject: [PATCH] btf_encoder: keep kfunc search result const
+
+GCC 16 reports the result of bsearch() in btf_encoder__tag_kfunc() as
+discarding the const qualifier from the searched gobuffer entries. The function
+only reads the matched BTF function metadata before adding tags, so keep the
+local result pointer const.
+
+This fixes the host build when warnings are treated as errors.
+
+Upstream: not submitted
+Signed-off-by: Christian Stewart <christian@aperture.us>
+---
+ btf_encoder.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/btf_encoder.c b/btf_encoder.c
+index c0a5b47..17f4435 100644
+--- a/btf_encoder.c
++++ b/btf_encoder.c
+@@ -1817,7 +1817,7 @@ static int btf_encoder__tag_kfunc(struct btf_encoder *encoder, struct gobuffer *
+ {
+ 	struct btf_func key = { .name = kfunc };
+ 	struct btf *btf = encoder->btf;
+-	struct btf_func *target;
++	const struct btf_func *target;
+ 	const void *base;
+ 	unsigned int cnt;
+ 	int err;
+-- 
+2.49.0
