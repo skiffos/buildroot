@@ -197,4 +197,12 @@ define NETWORK_MANAGER_INSTALL_INIT_SYSTEMD
 
 endef
 
+define NETWORK_MANAGER_REMOVE_INITRD_UNITS
+	rm -f \
+		$(TARGET_DIR)/usr/lib/systemd/system/NetworkManager-config-initrd.service \
+		$(TARGET_DIR)/usr/lib/systemd/system/NetworkManager-initrd.service \
+		$(TARGET_DIR)/usr/lib/systemd/system/NetworkManager-wait-online-initrd.service
+endef
+NETWORK_MANAGER_POST_INSTALL_TARGET_HOOKS += NETWORK_MANAGER_REMOVE_INITRD_UNITS
+
 $(eval $(meson-package))
