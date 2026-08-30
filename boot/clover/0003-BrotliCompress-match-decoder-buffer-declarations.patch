@@ -1,0 +1,38 @@
+From: Christian Stewart <christian@aperture.us>
+Subject: [PATCH] BrotliCompress: match buffer declarations
+
+Use the same bounded array declarations in the implementations and public
+headers. GCC 16 diagnoses the mismatched declarations.
+
+Signed-off-by: Christian Stewart <christian@aperture.us>
+Upstream: https://github.com/CloverHackyColor/CloverBootloader/pull/TODO
+---
+--- a/BaseTools/Source/C/BrotliCompress/dec/decode.c
++++ b/BaseTools/Source/C/BrotliCompress/dec/decode.c
+@@ -1942,8 +1942,10 @@
+ }
+ 
+ BrotliDecoderResult BrotliDecoderDecompress(
+-    size_t encoded_size, const uint8_t* encoded_buffer, size_t* decoded_size,
+-    uint8_t* decoded_buffer) {
++    size_t encoded_size,
++    const uint8_t encoded_buffer[BROTLI_ARRAY_PARAM(encoded_size)],
++    size_t* decoded_size,
++    uint8_t decoded_buffer[BROTLI_ARRAY_PARAM(*decoded_size)]) {
+   BrotliDecoderState s;
+   BrotliDecoderResult result;
+   size_t total_out = 0;
+--- a/BaseTools/Source/C/BrotliCompress/enc/encode.c
++++ b/BaseTools/Source/C/BrotliCompress/enc/encode.c
+@@ -1432,8 +1432,9 @@
+ 
+ BROTLI_BOOL BrotliEncoderCompress(
+     int quality, int lgwin, BrotliEncoderMode mode, size_t input_size,
+-    const uint8_t* input_buffer, size_t* encoded_size,
+-    uint8_t* encoded_buffer) {
++    const uint8_t input_buffer[BROTLI_ARRAY_PARAM(input_size)],
++    size_t* encoded_size,
++    uint8_t encoded_buffer[BROTLI_ARRAY_PARAM(*encoded_size)]) {
+   BrotliEncoderState* s;
+   size_t out_size = *encoded_size;
+   const uint8_t* input_start = input_buffer;
