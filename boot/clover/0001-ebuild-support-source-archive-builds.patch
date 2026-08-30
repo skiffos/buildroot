@@ -1,0 +1,94 @@
+From 4435598401a0e9fafb9739a7e6e097adbb0e3c1a Mon Sep 17 00:00:00 2001
+From: Buildroot
+Subject: [PATCH] ebuild: support source archive builds
+
+Use supplied Buildroot tools and deterministic source-archive metadata.
+This avoids Git and network-dependent tool bootstrap paths.
+
+Signed-off-by: Buildroot
+Upstream: N/A (specific to Buildroot)
+---
+--- a/ebuild.sh
++++ b/ebuild.sh
+@@ -440,7 +440,7 @@
+     esac
+ 
+   if [[ "$SYSNAME" == Linux ]]; then
+-    export GCC161_BIN="$TOOLCHAIN_DIR/bin/"
++    export GCC161_BIN="${GCC161_BIN:-$TOOLCHAIN_DIR/bin/}"
+     if [[ ! -x "${GCC161_BIN}gcc" ]]; then
+         echo "No clover toolchain for Linux found !" >&2
+         echo "Install on your system or define the TOOLCHAIN_DIR variable." >&2
+@@ -455,7 +455,9 @@
+     fi
+   fi
+ 
+-  if [[ -x "/opt/local/bin/nasm" ]]; then
++  if [[ -n "${NASM_PREFIX:-}" ]]; then
++    :
++  elif [[ -x "/opt/local/bin/nasm" ]]; then
+     export NASM_PREFIX="/opt/local/bin/"
+   elif [[ -x "${TOOLCHAIN_DIR}/bin/nasm" ]]; then
+     # using $TOOLCHAIN_DIR here should allow Clover source to be
+@@ -529,7 +531,7 @@
+ echo "BUILD_DIR_ARCH: $BUILD_DIR_ARCH"
+ 
+  #   local repoRev=$(git describe --tags $(git rev-list --tags --max-count=1﻿))
+-	local repoRev=$(git describe --tags --abbrev=0)
++	local repoRev="${CLOVER_REVISION:-5174}"
+ 
+     #
+     # we are building the same rev as before?
+@@ -598,7 +600,7 @@
+         echo "Building tools as they are not found"
+       if [[ "$SYSNAME" == Linux ]]; then
+         echo "Linux"   
+-        make -C "$WORKSPACE"/BaseTools "BUILD_CC=clang"
++        make -C "$WORKSPACE"/BaseTools "BUILD_CC=${BUILD_CC:-cc}"
+       else     
+         make -C "$WORKSPACE"/BaseTools CC="gcc -Wno-deprecated-declarations"
+       fi
+@@ -634,36 +636,28 @@
+ 
+  #     local clover_revision=$(cat "${CLOVERROOT}/${VERSTXT}")     
+  #     local clover_revision=$(git describe --tags $(git rev-list --tags --max-count=1))
+-      local clover_revision=$(git describe --tags --abbrev=0)
+-      local clover_build_date=$(date '+%Y-%m-%d %H:%M:%S')
++      local clover_revision="${CLOVER_REVISION:-5174}"
++      local clover_build_date="${CLOVER_BUILD_DATE:-$(date -u -d "@${SOURCE_DATE_EPOCH:-0}" '+%Y-%m-%d %H:%M:%S')}"
+       #echo "#define FIRMWARE_VERSION \"2.31\"" > "$CLOVERROOT"/Version.h
+ 
+       echo "#define FIRMWARE_BUILDDATE \"${clover_build_date}\"" > "$CLOVERROOT"/Version.h
+       echo "#define FIRMWARE_REVISION L\"${clover_revision}\""   >> "$CLOVERROOT"/Version.h
+ 
+-      local sha1="(github unknown)"
+-      if [[ -d "${CLOVERROOT}"/.git ]]; then
+-        sha1="($(git rev-parse --abbrev-ref HEAD), commit $(git rev-parse --short HEAD))"
+-      fi
++      local sha1="(source archive, commit ${CLOVER_COMMIT_HASH:-4435598401a0e9fafb9739a7e6e097adbb0e3c1a})"
+       echo "#define REVISION_STR \"Clover revision: ${clover_revision} $sha1\"" >> "$CLOVERROOT"/Version.h
+ 
+-      rev_date=$(git show -s --format=%ci $(git rev-parse HEAD))
++      rev_date="${CLOVER_REVISION_DATE:-$(date -u -d "@${SOURCE_DATE_EPOCH:-0}" '+%Y-%m-%d %H:%M:%S +0000')}"
+       echo "#define REVISION_DATE \"${rev_date}\"" >> "$CLOVERROOT"/Version.h
+-      COMMIT_HASH="$(git rev-parse HEAD)"
++      COMMIT_HASH="${CLOVER_COMMIT_HASH:-4435598401a0e9fafb9739a7e6e097adbb0e3c1a}"
+       echo "#define COMMIT_HASH \"$COMMIT_HASH\"" >> "$CLOVERROOT"/Version.h
+-      #build_id_date="$(date +%Y%m%d%H%M%S)"
+-      build_id_date="$(git show -s --format=%cd --date=format:%Y%m%d%H%M%S)"
+-      number_of_commit="$(git rev-list tags/$(git describe --tags --abbrev=0)..HEAD --count)"
++      build_id_date="$(date -u -d "@${SOURCE_DATE_EPOCH:-0}" '+%Y%m%d%H%M%S')"
++      number_of_commit=0
+       if [ $number_of_commit -gt 0 ]
+       then
+         build_id="$build_id_date"-"${COMMIT_HASH::7}"
+       else
+         build_id="$build_id_date"-"${COMMIT_HASH::7}"-"$clover_revision"
+       fi
+-      if [[ -n $(git status -s) ]]
+-      then
+-        build_id="$build_id"-dirty
+-      fi
+       echo "#define BUILD_ID \"$build_id\"" >> "$CLOVERROOT"/Version.h
+ 
+       local clover_build_info="Args: "

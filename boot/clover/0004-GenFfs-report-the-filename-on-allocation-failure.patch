@@ -1,0 +1,48 @@
+From: Christian Stewart <christian@aperture.us>
+Subject: [PATCH] BaseTools: report filenames on allocation failure
+
+The GenFfs and GenSec allocation errors pass closed FILE pointers to %s
+conversions. Pass the input filenames and release the PE buffers on the
+adjacent error paths.
+
+Signed-off-by: Christian Stewart <christian@aperture.us>
+Upstream: https://github.com/CloverHackyColor/CloverBootloader/pull/TODO
+---
+--- a/BaseTools/Source/C/GenFfs/GenFfs.c
++++ b/BaseTools/Source/C/GenFfs/GenFfs.c
+@@ -542,7 +542,7 @@
+   PeFileBuffer = (UINT8 *) malloc (PeFileSize);
+   if (PeFileBuffer == NULL) {
+     fclose (InFileHandle);
+-    Error(NULL, 0, 4001, "Resource", "memory cannot be allocated  of %s", InFileHandle);
++    Error(NULL, 0, 4001, "Resource", "memory cannot be allocated for %s", InFile);
+     return EFI_OUT_OF_RESOURCES;
+   }
+   fread (PeFileBuffer, sizeof (UINT8), PeFileSize, InFileHandle);
+@@ -554,6 +554,7 @@
+   Status               = PeCoffLoaderGetImageInfo(&ImageContext);
+   if (EFI_ERROR (Status)) {
+     Error (NULL, 0, 3000, "Invalid PeImage", "The input file is %s and return status is %x", InFile, (int) Status);
++    free (PeFileBuffer);
+     return Status;
+    }
+   *Alignment = ImageContext.SectionAlignment;
+--- a/BaseTools/Source/C/GenSec/GenSec.c
++++ b/BaseTools/Source/C/GenSec/GenSec.c
+@@ -1062,7 +1062,7 @@
+   PeFileBuffer = (UINT8 *) malloc (PeFileSize);
+   if (PeFileBuffer == NULL) {
+     fclose (InFileHandle);
+-    Error(NULL, 0, 4001, "Resource", "memory cannot be allocated  of %s", InFileHandle);
++    Error(NULL, 0, 4001, "Resource", "memory cannot be allocated for %s", InFile);
+     return EFI_OUT_OF_RESOURCES;
+   }
+   fread (PeFileBuffer, sizeof (UINT8), PeFileSize, InFileHandle);
+@@ -1074,6 +1074,7 @@
+   Status               = PeCoffLoaderGetImageInfo(&ImageContext);
+   if (EFI_ERROR (Status)) {
+     Error (NULL, 0, 3000, "Invalid PeImage", "The input file is %s and return status is %x", InFile, (int) Status);
++    free (PeFileBuffer);
+     return Status;
+    }
+   *Alignment = ImageContext.SectionAlignment;
