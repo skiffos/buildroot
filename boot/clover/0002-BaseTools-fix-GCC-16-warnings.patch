@@ -1,0 +1,66 @@
+From: Christian Stewart <christian@aperture.us>
+Subject: [PATCH] BaseTools: fix GCC 16 warnings
+
+GCC 16 diagnoses the intentionally bounded string appends as possible
+truncation and detects an unused loop counter. Use snprintf for the appends
+and remove the unused counter without changing the parser behavior.
+
+Signed-off-by: Christian Stewart <christian@aperture.us>
+Upstream: https://github.com/CloverHackyColor/CloverBootloader/pull/TODO
+---
+--- a/BaseTools/Source/C/Common/EfiUtilityMsgs.c
++++ b/BaseTools/Source/C/Common/EfiUtilityMsgs.c
+@@ -460,7 +460,7 @@
+       strncat (Line, Cptr, MAX_LINE_LEN - strlen (Line) - 1);
+       if (LineNumber != 0) {
+         snprintf (Line2, MAX_LINE_LEN, "(%u)", (unsigned) LineNumber);
+-        strncat (Line, Line2, MAX_LINE_LEN - strlen (Line) - 1);
++        snprintf (Line + strlen (Line), MAX_LINE_LEN - strlen (Line), "%s", Line2);
+       }
+     }
+   } else {
+@@ -475,7 +475,7 @@
+       Line[MAX_LINE_LEN - 1] = 0;
+       if (LineNumber != 0) {
+         snprintf (Line2, MAX_LINE_LEN, "(%u)", (unsigned) LineNumber);
+-        strncat (Line, Line2, MAX_LINE_LEN - strlen (Line) - 1);
++        snprintf (Line + strlen (Line), MAX_LINE_LEN - strlen (Line), "%s", Line2);
+       }
+     } else {
+       if (mUtilityName[0] != '\0') {
+@@ -502,7 +502,7 @@
+   strncat (Line, Type, MAX_LINE_LEN - strlen (Line) - 1);
+   if (MessageCode != 0) {
+     snprintf (Line2, MAX_LINE_LEN, " %04u", (unsigned) MessageCode);
+-    strncat (Line, Line2, MAX_LINE_LEN - strlen (Line) - 1);
++    snprintf (Line + strlen (Line), MAX_LINE_LEN - strlen (Line), "%s", Line2);
+   }
+   fprintf (stdout, "%s", Line);
+   //
+--- a/BaseTools/Source/C/Common/StringFuncs.c
++++ b/BaseTools/Source/C/Common/StringFuncs.c
+@@ -136,7 +136,6 @@
+   CHAR8       *EndOfSubString;
+   CHAR8       *EndOfString;
+   STRING_LIST *Output;
+-  UINTN       Item;
+ 
+   String = CloneString (String);
+   if (String == NULL) {
+@@ -146,7 +145,7 @@
+ 
+   Output = NewStringList ();
+ 
+-  for (Pos = String, Item = 0; Pos < EndOfString; Item++) {
++  for (Pos = String; Pos < EndOfString; Pos = EndOfSubString + 1) {
+     while (isspace ((int)*Pos)) {
+       Pos++;
+     }
+@@ -165,7 +164,6 @@
+ 
+     AppendCopyOfStringToList (&Output, Pos);
+ 
+-    Pos = EndOfSubString + 1;
+   }
+ 
+   free (String);
