@@ -1,0 +1,24 @@
+config BR2_TARGET_CLOVER
+	bool "clover"
+	depends on BR2_x86_64
+	depends on BR2_INSTALL_LIBSTDCPP
+	depends on !BR2_TARGET_CLOVER_BIN
+	help
+	  Clover is a graphical UEFI boot manager built from source.
+
+	  https://github.com/CloverHackyColor/CloverBootloader
+
+if BR2_TARGET_CLOVER
+
+config BR2_TARGET_CLOVER_INSTALL_FALLBACK
+	bool "install Clover as the fallback bootloader"
+	help
+	  Install Clover as EFI/BOOT/BOOTX64.efi. Do not enable this
+	  when another package, such as GRUB, supplies that path.
+
+endif
+
+comment "clover needs a toolchain w/ C++"
+	depends on BR2_x86_64
+	depends on !BR2_INSTALL_LIBSTDCPP
+	depends on !BR2_TARGET_CLOVER_BIN
