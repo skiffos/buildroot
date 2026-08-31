@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-LIBLDNS_VERSION = 1.8.4
+LIBLDNS_VERSION = 1.9.2
 LIBLDNS_SOURCE = ldns-$(LIBLDNS_VERSION).tar.gz
 LIBLDNS_SITE = https://www.nlnetlabs.nl/downloads/ldns
 LIBLDNS_LICENSE = BSD-3-Clause
@@ -44,5 +44,12 @@ endif
 # the linktest make target fails with static linking, and we are only
 # interested in the lib target anyway
 LIBLDNS_MAKE_OPTS = lib
+
+ifeq ($(BR2_PACKAGE_LIBLDNS_DRILL),y)
+LIBLDNS_CONF_OPTS += --with-drill
+LIBLDNS_MAKE_OPTS += drill
+else
+LIBLDNS_CONF_OPTS += --without-drill
+endif
 
 $(eval $(autotools-package))

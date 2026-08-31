@@ -4,8 +4,8 @@
 #
 ################################################################################
 
-ESP_HOSTED_VERSION = 1.0.4.0.0
-ESP_HOSTED_SITE = $(call github,espressif,esp-hosted,release/ng-v$(ESP_HOSTED_VERSION))
+ESP_HOSTED_VERSION = 1.0.6
+ESP_HOSTED_SITE = $(call github,espressif,esp-hosted,release/ng-$(ESP_HOSTED_VERSION))
 ESP_HOSTED_SOURCE = ng-v$(ESP_HOSTED_VERSION).tar.gz
 ESP_HOSTED_DEPENDENCIES = linux
 ESP_HOSTED_LICENSE = GPL-2.0
@@ -29,11 +29,7 @@ else
 ESP_HOSTED_MODULE_MAKE_OPTS = target=sdio
 endif
 
-ifeq ($(BR2_PACKAGE_ESP_HOSTED_TARGET_ESP32),y)
-ESP_HOSTED_MODULE_MAKE_OPTS += ESP_SLAVE=CONFIG_TARGET_ESP32=y
-else
-ESP_HOSTED_MODULE_MAKE_OPTS += ESP_SLAVE=CONFIG_TARGET_ESP32C6=y
-endif
+ESP_HOSTED_MODULE_MAKE_OPTS += KCFLAGS="-Wno-error"
 
 $(eval $(kernel-module))
 $(eval $(generic-package))

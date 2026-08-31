@@ -14,14 +14,14 @@ source "toolchain/toolchain-external/toolchain-external-arm-aarch64/Config.in"
 # Aarch64 big-endian
 source "toolchain/toolchain-external/toolchain-external-arm-aarch64-be/Config.in"
 
-# ARC
-source "toolchain/toolchain-external/toolchain-external-synopsys-arc/Config.in"
-
 # ARM (use ARM toolchain by default)
 source "toolchain/toolchain-external/toolchain-external-arm-arm/Config.in"
 
 # Bootlin toolchains, available for virtually all architectures
 source "toolchain/toolchain-external/toolchain-external-bootlin/Config.in"
+
+# WebAssembly (wasi-sdk)
+source "toolchain/toolchain-external/toolchain-external-wasi-sdk/Config.in"
 
 # Kept last, so it remains the non-default choice, unless there isn't
 # any available toolchain profile for the currently selected
@@ -102,14 +102,14 @@ source "toolchain/toolchain-external/toolchain-external-arm-aarch64/Config.in.op
 # Aarch64 big-endian
 source "toolchain/toolchain-external/toolchain-external-arm-aarch64-be/Config.in.options"
 
-# ARC
-source "toolchain/toolchain-external/toolchain-external-synopsys-arc/Config.in.options"
-
 # ARM
 source "toolchain/toolchain-external/toolchain-external-arm-arm/Config.in.options"
 
 # Bootlin toolchains
 source "toolchain/toolchain-external/toolchain-external-bootlin/Config.in.options"
+
+# WebAssembly (wasi-sdk)
+source "toolchain/toolchain-external/toolchain-external-wasi-sdk/Config.in.options"
 
 # Custom toolchains
 source "toolchain/toolchain-external/toolchain-external-custom/Config.in.options"

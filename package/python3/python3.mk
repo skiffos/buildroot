@@ -4,8 +4,8 @@
 #
 ################################################################################
 
-PYTHON3_VERSION_MAJOR = 3.13
-PYTHON3_VERSION = $(PYTHON3_VERSION_MAJOR).9
+PYTHON3_VERSION_MAJOR = 3.14
+PYTHON3_VERSION = $(PYTHON3_VERSION_MAJOR).7
 PYTHON3_SOURCE = Python-$(PYTHON3_VERSION).tar.xz
 PYTHON3_SITE = https://python.org/ftp/python/$(PYTHON3_VERSION)
 PYTHON3_LICENSE = Python-2.0, others
@@ -28,7 +28,6 @@ HOST_PYTHON3_CONF_OPTS += \
 # Make sure that LD_LIBRARY_PATH overrides -rpath.
 # This is needed because libpython may be installed at the same time that
 # python is called.
-# TODO: nis and ossaudiodev modules will be dropped in 3.13: https://peps.python.org/pep-0594/
 HOST_PYTHON3_CONF_ENV += \
 	LDFLAGS="$(HOST_LDFLAGS) -Wl,--enable-new-dtags" \
 	py_cv_module_unicodedata=yes \
@@ -38,9 +37,7 @@ HOST_PYTHON3_CONF_ENV += \
 	py_cv_module__codecs_jp=n/a \
 	py_cv_module__codecs_kr=n/a \
 	py_cv_module__codecs_tw=n/a \
-	py_cv_module__uuid=n/a \
-	py_cv_module_nis=n/a \
-	py_cv_module_ossaudiodev=n/a
+	py_cv_module__uuid=n/a
 
 PYTHON3_DEPENDENCIES = host-python3 libffi
 
@@ -170,8 +167,10 @@ else
 PYTHON3_CONF_ENV += py_cv_module_zlib=n/a
 endif
 
-ifneq ($(BR2_PACKAGE_PYTHON3_OSSAUDIODEV),y)
-PYTHON3_CONF_ENV += py_cv_module_ossaudiodev=n/a
+ifeq ($(BR2_PACKAGE_PYTHON3_ZSTD),y)
+PYTHON3_DEPENDENCIES += zstd
+else
+PYTHON3_CONF_ENV += py_cv_module__zstd=n/a
 endif
 
 PYTHON3_CONF_ENV += \
@@ -179,8 +178,7 @@ PYTHON3_CONF_ENV += \
 	ac_cv_buggy_getaddrinfo=no \
 	ac_cv_file__dev_ptmx=yes \
 	ac_cv_file__dev_ptc=yes \
-	ac_cv_working_tzset=yes \
-	py_cv_module_nis=n/a
+	ac_cv_working_tzset=yes
 
 # GCC is always compliant with IEEE754
 ifeq ($(BR2_ENDIAN),"LITTLE")
@@ -191,8 +189,8 @@ endif
 
 PYTHON3_CFLAGS = $(TARGET_CFLAGS)
 
-ifeq ($(BR2_TOOLCHAIN_HAS_GCC_BUG_121567),y)
-PYTHON3_CFLAGS += -O1
+ifeq ($(BR2_TOOLCHAIN_HAS_GCC_BUG_81426),y)
+PYTHON3_CFLAGS += -O0
 endif
 
 PYTHON3_CONF_ENV += \
@@ -206,7 +204,6 @@ PYTHON3_CONF_OPTS += \
 	--without-ensurepip \
 	--without-cxx-main \
 	--with-build-python=$(HOST_DIR)/bin/python3 \
-	--with-system-ffi \
 	--disable-pydoc \
 	--disable-test-modules \
 	--disable-tk \

@@ -144,7 +144,866 @@ endif
 
 ###############################################################################
 
+comment "Legacy options removed in 2026.08"
+
+config BR2_PACKAGE_FLUIDSYNTH_SDL2
+	bool "fluidsynth sdl2 audio support removed"
+	select BR2_LEGACY
+	help
+	  FluidSynth SDL2 audio support was removed in v2.5.0.
+
+config BR2_PACKAGE_HOSTAPD_DRIVER_HOSTAP
+	bool "hostapd hostap driver removed"
+	select BR2_LEGACY
+	help
+	  The hostap driver was removed from hostapd.
+
+config BR2_GDB_VERSION_ARC
+	bool "ARC-specific gdb version removed"
+	select BR2_LEGACY
+	help
+	  Support for the ARC-specific gdb version was removed, as it
+	  was no longer maintained in Buildroot.
+
+config BR2_BINUTILS_VERSION_ARC
+	bool "ARC-specific binutils version removed"
+	select BR2_LEGACY
+	help
+	  Support for the ARC-specific binutils version was removed,
+	  as it was no longer maintained in Buildroot.
+
+config BR2_GCC_VERSION_ARC
+	bool "ARC-specific gcc version removed"
+	select BR2_LEGACY
+	help
+	  Support for the ARC-specific gcc version was removed, as it
+	  was no longer maintained in Buildroot.
+
+config BR2_TOOLCHAIN_EXTERNAL_SYNOPSYS_ARC
+	bool "Synopsys ARC toolchain removed"
+	select BR2_LEGACY
+	help
+	  The Synopsys ARC external toolchain has been removed, as it
+	  was no longer maintained in Buildroot.
+
+config BR2_PACKAGE_TS4900_FPGA
+	bool "ts4900-fpga removed"
+	select BR2_LEGACY
+	help
+	  The ts4900 defconfig was removed, so ts4900-fpga package
+	  has been dropped.
+
+config BR2_GDB_VERSION_14
+	bool "gdb 14.x has been removed"
+	select BR2_LEGACY
+	help
+	  GDB 14.x support has been removed, a newer version should be
+	  used instead.
+
+config BR2_PACKAGE_ARGPARSE
+	bool "argparse has been removed"
+	select BR2_LEGACY
+	select BR2_PACKAGE_LUA_ARGPARSE
+	help
+	  Package argparse duplicates the package lua-argparse.
+
+config BR2_KERNEL_HEADERS_7_0
+	bool "kernel headers version 7.0.x are no longer supported"
+	select BR2_LEGACY
+	help
+	  Version 7.0.x of the Linux kernel headers are no longer
+	  maintained upstream and are now removed.
+
+config BR2_PACKAGE_BLUEZ5_UTILS_PLUGINS_SAP
+	bool "bluez sap plugin removed"
+	select BR2_LEGACY
+	help
+	  Build plugin for SAP profile.
+
+config BR2_PACKAGE_BLUEZ5_UTILS_PLUGINS_HEALTH
+	bool "bluez health plugin removed"
+	select BR2_LEGACY
+	help
+	  Build plugin for health profiles.
+
+config BR2_GCC_VERSION_13_X
+	bool "gcc 13.x support removed"
+	select BR2_LEGACY
+	help
+	  Support for building a toolchain based on GCC 13.x has been
+	  removed, chose a newer GCC version instead.
+
+config BR2_PACKAGE_QEMU_TARGET_MICROBLAZEEL
+	bool "qemu target microblazeel removed"
+	select BR2_PACKAGE_QEMU_TARGET_MICROBLAZE
+	select BR2_LEGACY
+	help
+	  Version 11.0.0 of qemu folded microblazeel support into
+	  the microblaze target.
+
+comment "Legacy options removed in 2026.05"
+
+config BR2_PACKAGE_PTPD2
+	bool "ptpd2 removed"
+	select BR2_LEGACY
+	help
+	  ptpd2 was no longer maintained upstream, so it has been
+	  dropped.
+
+config BR2_PACKAGE_LIBHDHOMERUN
+	bool "libhdhomerun"
+	select BR2_LEGACY
+	help
+	  libhdhomerun was removed from Buildroot as it was
+	  insufficiently maintained. It can be re-added if someone
+	  volunteers to  maintain it.
+
+config BR2_PACKAGE_KODI_PVR_HDHOMERUN
+	bool "kodi-pvr-hdhomerun"
+	select BR2_LEGACY
+	help
+	  kodi-pvr-hdhomerun was removed from Buildroot as it was
+	  insufficiently maintained. It can be re-added if someone
+	  volunteers to maintain it.
+
+config BR2_PACKAGE_ZEEK
+	bool "zeek removed"
+	select BR2_LEGACY
+	help
+	  The zeek package was not maintained, with numerous build
+	  issues and severely lagging behind upstream. so it has been
+	  dropped.
+
+config BR2_PACKAGE_PIGPIO
+	bool "pigpio removed"
+	select BR2_LEGACY
+	help
+	  pigpio was no longer maintained upstream, so it has been
+	  dropped.
+
+config BR2_PACKAGE_XML_SECURITY_C
+	bool "xml-security-c removed"
+	select BR2_LEGACY
+	help
+	  xml-security-c was no longer maintained upstream, so it has
+	  been dropped.
+
+config BR2_PACKAGE_LIBPHIDGET
+	bool "libphidget"
+	select BR2_LEGACY
+	help
+	  libphidget was removed from Buildroot as it was
+	  insufficiently maintained. It can be re-added if someone
+	  volunteers to maintain it.
+
+config BR2_PACKAGE_PHIDGETWEBSERVICE
+	bool "phidgetwebservice"
+	select BR2_LEGACY
+	help
+	  phidgetwebservice was removed from Buildroot as it was
+	  insufficiently maintained. It can be re-added if someone
+	  volunteers to maintain it.
+
+config BR2_PACKAGE_DAQ
+	bool "daq removed"
+	select BR2_LEGACY
+	help
+	  The only dependee, snort, has been removed. Look at daq3
+	  for an alternative.
+
+config BR2_PACKAGE_FWTS_EFI_RUNTIME_MODULE
+	bool "fwts efi_runtime kernel module removed"
+	select BR2_LEGACY
+	help
+	  The fwts efi_runtime module has been removed in V26.01.00.
+	  The Kernel efi_test (Kernel CONFIG_EFI_TEST) should be used
+	  instead.
+
+config BR2_KERNEL_HEADERS_6_19
+	bool "kernel headers version 6.19.x are no longer supported"
+	select BR2_LEGACY
+	help
+	  Version 6.19.x of the Linux kernel headers are no longer
+	  maintained upstream and are now removed.
+
+config BR2_PACKAGE_PCRE
+	bool "pcre removed"
+	select BR2_LEGACY
+	help
+	  pcre was no longer maintained upstream, so it has been
+	  dropped. Look at pcre2 for an alternative.
+
+config BR2_PACKAGE_SNORT
+	bool "snort removed"
+	select BR2_LEGACY
+	help
+	  snort was no longer maintained upstream, so it has been
+	  dropped. Look at snort3 for an alternative.
+
+config BR2_PACKAGE_CEGUI
+	bool "cegui"
+	select BR2_LEGACY
+	help
+	  cegui was removed from Buildroot as it was insufficiently
+	  maintained. It can be re-added if someone volunteers to
+	  maintain it.
+
+config BR2_PACKAGE_SPHINXBASE
+	bool "sphinxbase removed"
+	select BR2_LEGACY
+	help
+	  sphinxbase was no longer maintained upstream, so it has
+	  been dropped.
+
+config BR2_PACKAGE_OPENSWAN
+	bool "openswan removed"
+	select BR2_LEGACY
+	help
+	  Openswan was no longer maintained upstream, so it has
+	  been dropped.
+
+config BR2_PACKAGE_RUBIX
+	bool "rubix removed"
+	select BR2_LEGACY
+	help
+	  Rubix was no longer maintained upstream, so it has
+	  been dropped.
+
+config BR2_PACKAGE_LLAMA_CPP_SERVER
+	bool "llama-cpp option removed"
+	select BR2_PACKAGE_LLAMA_CPP_TOOLS
+	select BR2_LEGACY
+	help
+	  Several tools (server, cli) now require building both
+	  tools and server, so enable both with the same config
+	  BR2_PACKAGE_LLAMA_CPP_TOOLS
+
+config BR2_PACKAGE_PYTHON3_OSSAUDIODEV
+	bool "python3 ossaudiodev module removed"
+	select BR2_LEGACY
+	help
+	  The ossaudiodev module was removed in Python 3.13.
+
+config BR2_TARGET_EDK2_PLATFORM_OVMF_I386
+	bool "EDK2 OVMF IA32 removed"
+	select BR2_LEGACY
+	help
+	  EDK2 OVMF IA32 support was removed in upstream version
+	  202511, so it has been dropped.
+
+config BR2_BINUTILS_VERSION_2_43_X
+	bool "binutils 2.43 has been removed"
+	select BR2_LEGACY
+	help
+	  binutils 2.43 has been removed, select a newer version
+	  instead.
+
+config BR2_parisc10
+	bool "PA-RISC architecture version 1.0 support removed"
+	select BR2_LEGACY
+	help
+	  Following the build issues with glibc 2.43, Buildroot has
+	  removed support for this architecture version.
+
+comment "Legacy options removed in 2026.02"
+
+config BR2_PACKAGE_QEMU_TARGET_CRIS
+	bool "qemu cris support has been removed"
+	select BR2_LEGACY
+	help
+	  CRIS support has been removed since Qemu 9.2.0.
+
+config BR2_PACKAGE_DVDRW_TOOLS
+	bool "dvdrw-tools removed"
+	select BR2_LEGACY
+	help
+	  dvdrw-tools was no longer maintained upstream, so it has
+	  been dropped.
+
+config BR2_PACKAGE_PHP_ZMQ
+	bool "php-zmq removed"
+	select BR2_LEGACY
+	help
+	  php-zmq was no longer maintained upstream, broken with php
+	  8.5, so it has been dropped.
+
+config BR2_PACKAGE_LOCKDEV
+	bool "lockdev removed"
+	select BR2_LEGACY
+	help
+	  lockdev was no longer maintained upstream, so it has been
+	  dropped.
+
+config BR2_PACKAGE_DBUS_TRIGGERD
+	bool "dbus-triggerd removed"
+	select BR2_LEGACY
+	help
+	  dbus-triggerd was no longer maintained upstream, so it has
+	  been dropped.
+
+config BR2_PACKAGE_CVS
+	bool "cvs has been removed"
+	select BR2_LEGACY
+	help
+	  The cvs project was no longer maintained upstream, broken
+	  with GCC 14.x, so it was removed.
+
+config BR2_PACKAGE_CRIU
+	bool "criu has been removed"
+	select BR2_LEGACY
+	help
+	  criu was removed from Buildroot as it was insufficiently
+	  maintained. It can be re-added if someone volunteers to
+	  maintain it.
+
+config BR2_PACKAGE_GCONF
+	bool "gconf package removed"
+	select BR2_LEGACY
+	help
+	  gconf was no longer maintained upstream, so it has been
+	  dropped.
+
+config BR2_PACKAGE_LIBSVG
+	bool "libsvg package removed"
+	select BR2_LEGACY
+	help
+	  The libsvg package has been removed. Its latest upstream
+	  release was from 2005, it was incompatible with recent
+	  libxml2 versions, and it wasn't used by any other Buildroot
+	  package except libsvg-cairo, also removed.
+
+config BR2_PACKAGE_LIBSVG_CAIRO
+	bool "libsvg-cairo package removed"
+	select BR2_LEGACY
+	help
+	  The libsvg-cairo package has been removed. Its latest
+	  upstream release was from 2005, and it wasn't used by any
+	  other Buildroot package.
+
+config BR2_PACKAGE_XDRIVER_XF86_INPUT_MOUSE
+	bool "xf86-input-mouse removed"
+	select BR2_LEGACY
+	help
+	  Linux support was removed upstream in version
+	  2.0.0. Upstream recommends to switch to xf86-input-evdev or
+	  xf86-input-libinput.
+
+config BR2_PACKAGE_HOST_JSMIN
+	bool "host-jsmin has been removed"
+	select BR2_LEGACY
+	help
+	  JSMin is no longer maintained and better alternative
+	  exists since then.
+
+config BR2_PACKAGE_JSMIN
+	bool "jsmin has been removed"
+	select BR2_LEGACY
+	help
+	  JSMin is no longer maintained and better alternative
+	  exists since then.
+
+config BR2_PACKAGE_VUEJS_ROUTER
+	bool "vuejs-router has been removed"
+	select BR2_LEGACY
+	help
+	  JS libraries are no longer part of Buildroot packages.
+
+config BR2_PACKAGE_VUEJS
+	bool "vuejs has been removed"
+	select BR2_LEGACY
+	help
+	  JS libraries are no longer part of Buildroot packages.
+
+config BR2_PACKAGE_VIS_NETWORK
+	bool "vis-network has been removed"
+	select BR2_LEGACY
+	help
+	  JS libraries are no longer part of Buildroot packages.
+
+config BR2_PACKAGE_OPENLAYERS
+	bool "openlayers has been removed"
+	select BR2_LEGACY
+	help
+	  JS libraries are no longer part of Buildroot packages.
+
+config BR2_PACKAGE_JSZIP
+	bool "jszip has been removed"
+	select BR2_LEGACY
+	help
+	  JS libraries are no longer part of Buildroot packages.
+
+config BR2_PACKAGE_JSON_JAVASCRIPT
+	bool "json-javascript has been removed"
+	select BR2_LEGACY
+	help
+	  JS libraries are no longer part of Buildroot packages.
+
+config BR2_PACKAGE_JQUERY_VALIDATION
+	bool "jquery-validation has been removed"
+	select BR2_LEGACY
+	help
+	  JS libraries are no longer part of Buildroot packages.
+
+config BR2_PACKAGE_JQUERY_UI_THEMES
+	bool "jquery-ui-themes has been removed"
+	select BR2_LEGACY
+	help
+	  JS libraries are no longer part of Buildroot packages.
+
+config BR2_PACKAGE_JQUERY_UI
+	bool "jquery-ui has been removed"
+	select BR2_LEGACY
+	help
+	  JS libraries are no longer part of Buildroot packages.
+
+config BR2_PACKAGE_JQUERY_SPARK
+	bool "jquery-spark has been removed"
+	select BR2_LEGACY
+	help
+	  JS libraries are no longer part of Buildroot packages.
+
+config BR2_PACKAGE_JQUERY_SIDEBAR
+	bool "jquery-sidebar has been removed"
+	select BR2_LEGACY
+	help
+	  JS libraries are no longer part of Buildroot packages.
+
+config BR2_PACKAGE_JQUERY_MOBILE
+	bool "jquery-mobile has been removed"
+	select BR2_LEGACY
+	help
+	  JS libraries are no longer part of Buildroot packages.
+
+config BR2_PACKAGE_JQUERY_KEYBOARD
+	bool "jquery-keyboard has been removed"
+	select BR2_LEGACY
+	help
+	  JS libraries are no longer part of Buildroot packages.
+
+config BR2_PACKAGE_JQUERY_DATETIMEPICKER
+	bool "jquery-datetimepicker has been removed"
+	select BR2_LEGACY
+	help
+	  JS libraries are no longer part of Buildroot packages.
+
+config BR2_PACKAGE_JQUERY
+	bool "jquery has been removed"
+	select BR2_LEGACY
+	help
+	  JS libraries are no longer part of Buildroot packages.
+
+config BR2_PACKAGE_FORGE
+	bool "forge has been removed"
+	select BR2_LEGACY
+	help
+	  JS libraries are no longer part of Buildroot packages.
+
+config BR2_PACKAGE_FLOT
+	bool "flot has been removed"
+	select BR2_LEGACY
+	help
+	  JS libraries are no longer part of Buildroot packages.
+
+config BR2_PACKAGE_EXPLORERCANVAS
+	bool "explorercanvas has been removed"
+	select BR2_LEGACY
+	help
+	  JS libraries are no longer part of Buildroot packages.
+
+config BR2_PACKAGE_DATATABLES_RESPONSIVE
+	bool "datatables-responsive has been removed"
+	select BR2_LEGACY
+	help
+	  JS libraries are no longer part of Buildroot packages.
+
+config BR2_PACKAGE_DATATABLES_FIXEDCOLUMNS
+	bool "datatables-fixedcolumns has been removed"
+	select BR2_LEGACY
+	help
+	  JS libraries are no longer part of Buildroot packages.
+
+config BR2_PACKAGE_DATATABLES_BUTTONS
+	bool "datatables-buttons has been removed"
+	select BR2_LEGACY
+	help
+	  JS libraries are no longer part of Buildroot packages.
+
+config BR2_PACKAGE_DATATABLES
+	bool "datatables has been removed"
+	select BR2_LEGACY
+	help
+	  JS libraries are no longer part of Buildroot packages.
+
+config BR2_PACKAGE_CHARTJS
+	bool "chartjs has been removed"
+	select BR2_LEGACY
+	help
+	  JS libraries are no longer part of Buildroot packages.
+
+config BR2_PACKAGE_BOOTSTRAP
+	bool "bootstrap has been removed"
+	select BR2_LEGACY
+	help
+	  JS libraries are no longer part of Buildroot packages.
+
+config BR2_PACKAGE_SOFTETHER
+	bool "softether has been removed"
+	select BR2_LEGACY
+	help
+	  The version packaged in Buildroot version was outdated
+	  compared to upstream and no longer maintained by anyone
+	  listed in the DEVELOPERS file.
+
+config BR2_PACKAGE_RPI_USERLAND
+	bool "rpi-userland has been removed"
+	select BR2_LEGACY
+	help
+	  According to https://github.com/raspberrypi/userland, "This
+	  repo is ancient and deprecated. [...] If you are using code
+	  from here you should rethink your solution.".
+
+config BR2_PACKAGE_GST1_PLUGINS_BASE_LIB_OPENGL_DISPMANX
+	bool "gst1-plugins-base dispmanx option removed"
+	select BR2_LEGACY
+	help
+	  Due to the removal of the rpi-userland package, the dispmanx
+	  OpenGL plug-in from GStreamer plugin base has been removed.
+
+config BR2_PACKAGE_RPI_FIRMWARE_INSTALL_VCDBG
+	bool "rpi-firmware vcdbg option removed"
+	select BR2_LEGACY
+	help
+	  rpi-firmware upstream has dropped the vcdbg tool
+
+config BR2_PACKAGE_LIBDNET_PYTHON
+	bool "libdnet python module removed"
+	select BR2_LEGACY
+	help
+	  The libdnet Python module is no longer compatible with
+	  Python >= 3.13, so it had to be removed.
+
+config BR2_PACKAGE_LIBFREEIMAGE
+	bool "libfreeimage"
+	select BR2_LEGACY
+	help
+	  libfreeimage is unmaintained and has been removed
+
+config BR2_PACKAGE_OPENCV3
+	bool "opencv3"
+	select BR2_LEGACY
+	help
+	  opencv3 is unmaintained and has been removed
+
+config BR2_PACKAGE_VLC_OPENCV3_BACKEND
+	bool "opencv3 support in vlc has been removed"
+	select BR2_LEGACY
+	help
+	  OpenCV3 support in VLC has been reported, as OpenCV has been
+	  removed.
+
+config BR2_PACKAGE_CPPDB
+	bool "cppdb has been removed"
+	select BR2_LEGACY
+	help
+	  cppdb was no longer maintained upstream, and therefore was
+	  removed.
+
+config BR2_PACKAGE_PYTHON_AIOREDIS
+	bool "python-aioredis has been removed"
+	select BR2_LEGACY
+	select BR2_PACKAGE_PYTHON_REDIS
+	help
+	  python-aioredis was abandoned upstream and replaced by
+	  python-redis
+
+config BR2_PACKAGE_LIBCUEFILE
+	bool "libcuefile has been removed"
+	select BR2_LEGACY
+	help
+	  libcuefile is unmaintained and has been removed
+
+config BR2_PACKAGE_MPD_MUSEPACK
+	bool "musepack support in mpd has been removed"
+	select BR2_LEGACY
+	help
+	  musepack package is unmaintained and has been removed
+
+config BR2_PACKAGE_GST1_PLUGINS_BAD_PLUGIN_MUSEPACK
+	bool "musepack support in gst1-plugins-bad has been removed"
+	select BR2_LEGACY
+	help
+	  musepack package is unmaintained and has been removed
+
+config BR2_PACKAGE_MUSEPACK
+	bool "musepack has been removed"
+	select BR2_LEGACY
+	help
+	  musepack is unmaintained and has been removed
+
+config BR2_PACKAGE_RACEHOUND
+	bool "racehound has been removed"
+	select BR2_LEGACY
+	help
+	  racehound is unmaintained and has been removed
+
+config BR2_PACKAGE_TASKD
+	bool "taskd has been removed"
+	select BR2_LEGACY
+	help
+	  taskd was deprecated upstream and has been removed
+
+config BR2_PACKAGE_SCONESERVER
+	bool "sconeserver has been removed"
+	select BR2_LEGACY
+	help
+	  sconeserver is unmaintained and has been removed
+
+config BR2_PACKAGE_QJSON
+	bool "qjson has been removed"
+	select BR2_LEGACY
+	help
+	  qjson was deprecated upstream and has been removed
+
+config BR2_PACKAGE_OPENTRACING_CPP
+	bool "opentracing-cpp has been removed"
+	select BR2_LEGACY
+	help
+	  opentracing-cpp was deprecated upstream and has been removed
+
+config BR2_PACKAGE_OPENPOWERLINK
+	bool "openpowerlink has been removed"
+	select BR2_LEGACY
+	help
+	  openpowerlink is unmaintained and has been removed
+
+config BR2_PACKAGE_ALURE
+	bool "alure has been removed"
+	select BR2_LEGACY
+	help
+	  alure is unmaintained and has been removed
+
+config BR2_PACKAGE_LIBUWSC
+	bool "libuwsc has been removed"
+	select BR2_LEGACY
+	help
+	  libuwsc is unmaintained and has been removed
+
+config BR2_PACKAGE_LIBIQRF
+	bool "libiqrf has been removed"
+	select BR2_LEGACY
+	help
+	  libiqrf is unmaintained and has been removed
+
+config BR2_PACKAGE_LIBCGI
+	bool "libcgi has been removed"
+	select BR2_LEGACY
+	help
+	  libcgi is unmaintained and has been removed
+
+config BR2_PACKAGE_LET_ME_CREATE
+	bool "let-me-create has been removed"
+	select BR2_LEGACY
+	help
+	  let-me-create is unmaintained and has been removed
+
+config BR2_PACKAGE_HAWKTRACER
+	bool "hawktracer has been removed"
+	select BR2_LEGACY
+	help
+	  hawktracer is unmaintained and has been removed
+
+config BR2_PACKAGE_CONNMAN_GTK
+	bool "connman-gtk has been removed"
+	select BR2_LEGACY
+	help
+	  connman-gtk is unmaintained and has been removed
+
+config BR2_PACKAGE_LIBMHASH
+	bool "libmhash has been removed"
+	select BR2_LEGACY
+	help
+	  libmhash is unmaintained and has been removed
+
+config BR2_PACKAGE_DMRAID
+	bool "dmraid has been removed"
+	select BR2_LEGACY
+	help
+	  dmraid is unmaintained and has been removed
+
+config BR2_PACKAGE_LIBNIDS
+	bool "libnids has been removed"
+	select BR2_LEGACY
+	help
+	  libnids is unmaintained and has been removed
+
+config BR2_TARGET_S500_BOOTLOADER
+	bool "s500-bootloader"
+	select BR2_LEGACY
+	help
+	  s500-bootloader package has been removed
+
+config BR2_PACKAGE_OPENCV3_WITH_FFMPEG
+	bool "opencv3 ffmpeg support removed"
+	select BR2_LEGACY
+	help
+	  Support for OpenCV 3 ffmpeg support has been removed as it
+	  was no longer compatible with recent versions of ffmpeg.
+
+config BR2_PACKAGE_OPENCV3_WITH_PROTOBUF
+	bool "opencv3 protobuf support removed"
+	select BR2_LEGACY
+	help
+	  Support for OpenCV 3 protobuf support has been removed as it
+	  was no longer compatible with recent versions of protobuf.
+
+config BR2_PACKAGE_RESIPROCATE_APPS
+	bool "resiprocate apps support option removed"
+	select BR2_LEGACY
+	help
+	  The build system does not contain an apps-specific option
+	  anymore.
+
+config BR2_PACKAGE_WATCHDOGD_TEST_SUITE
+	bool "The watchdogd test mode option has been removed."
+	select BR2_LEGACY
+	help
+	  watchdogd v4.1 removes the test mode and test suite.
+
+config BR2_KERNEL_HEADERS_6_17
+	bool "kernel headers version 6.17.x are no longer supported"
+	select BR2_LEGACY
+	help
+	  Version 6.17.x of the Linux kernel headers are no longer
+	  maintained upstream and are now removed.
+
+config BR2_PACKAGE_MESA3D_VDPAU
+	bool "mesa3d Gallium VDPAU state tracker support removed"
+	select BR2_LEGACY
+	help
+	  Mesa3d removed the Gallium VDPAU state tracker.
+
+config BR2_BINUTILS_VERSION_2_42_X
+	bool "binutils 2.42 has been removed"
+	select BR2_LEGACY
+	help
+	  binutils 2.42 has been removed, select a newer version
+	  instead.
+
+config BR2_arceb
+	bool "ARC big endian support removed"
+	select BR2_LEGACY
+	help
+	  Synopsys' DesignWare ARC Processor Cores are a family of
+	  32-bit CPUs that can be used from deeply embedded to high
+	  performance host applications. The big endian support was
+	  not used nor maintained, so it was removed.
+
 comment "Legacy options removed in 2025.11"
+
+config BR2_KERNEL_HEADERS_5_4
+	bool "kernel headers version 5.4.x are no longer supported"
+	select BR2_LEGACY
+	help
+	  Version 5.4.x of the Linux kernel headers are no longer
+	  maintained upstream and are now removed.
+
+config BR2_PACKAGE_LIBARGTABLE2
+	bool "libargtable2 has been removed"
+	select BR2_LEGACY
+	help
+	  libargtable2 is unmaintained and has been removed
+
+config BR2_PACKAGE_OLA
+	bool "ola has been removed"
+	select BR2_LEGACY
+	help
+	  ola is incompatible with current versions of protobuf
+
+config BR2_PACKAGE_BATMAN_ADV_NC
+	bool "batman-adv removed network coding"
+	select BR2_LEGACY
+	help
+	  batman-adv removed B.A.T.M.A.N. network coding
+
+config BR2_PACKAGE_DVBSNOOP
+	bool "dvbsnoop has been removed"
+	select BR2_LEGACY
+	help
+	  dvbsnoop is unmaintained and has been removed
+
+config BR2_PACKAGE_PROCRANK_LINUX
+	bool "procrank_linux has been removed"
+	select BR2_LEGACY
+	help
+	  procrank_linux is unmaintained and has been removed
+
+config BR2_PACKAGE_MONGREL2
+	bool "mongrel2 has been removed"
+	select BR2_LEGACY
+	help
+	  mongrel2 is incompatible with MbedTLS 3.6 and has been removed
+
+config BR2_PACKAGE_EXPECT
+	bool "expect has been removed"
+	select BR2_LEGACY
+	help
+	  expect is unmaintained and has been removed
+
+config BR2_PACKAGE_BCTOOLBOX
+	bool "bctoolbox has been removed"
+	select BR2_LEGACY
+	help
+	  This package has been removed as part of the linphone
+	  removal. In addition, newer version of linphone directly
+	  bundle bctoolbox making a separate package unnecessary.
+
+config BR2_PACKAGE_ORTP
+	bool "ortp has been removed"
+	select BR2_LEGACY
+	help
+	  This package has been removed as part of the linphone
+	  removal. In addition, newer version of linphone directly
+	  bundle ortp making a separate package unnecessary.
+
+config BR2_PACKAGE_MEDIASTREAMER
+	bool "mediastreamer has been removed"
+	select BR2_LEGACY
+	help
+	  This package has been removed as part of the linphone
+	  removal. In addition, newer version of linphone directly
+	  bundle mediastreamer making a separate package unnecessary.
+
+config BR2_PACKAGE_BELR
+	bool "belr has been removed"
+	select BR2_LEGACY
+	help
+	  This package has been removed as part of the linphone
+	  removal. In addition, newer version of linphone directly
+	  bundle belr making a separate package unnecessary.
+
+config BR2_PACKAGE_BELLE_SIP
+	bool "belle-sip has been removed"
+	select BR2_LEGACY
+	help
+	  This package has been removed as part of the linphone
+	  removal. In addition, newer version of linphone directly
+	  bundle belle-sip making a separate package unnecessary.
+
+config BR2_PACKAGE_LINPHONE
+	bool "linphone has been removed"
+	select BR2_LEGACY
+	help
+	  This package was no longer maintained in Buildroot and was
+	  no longer building. It can be re-added if someone volunteers
+	  to fix the issues, update the package and maintain it.
+
+config BR2_PACKAGE_LIBJWT
+	bool "libjwt has been removed"
+	select BR2_LEGACY
+	help
+	  The only dependee of libjwt, asterisk, is incompatible with
+	  version 3 so the version bundled with asterisk is used and
+	  this package has been removed.
 
 config BR2_PACKAGE_RAMSPEED
 	bool "ramspeed has been removed"
@@ -2866,12 +3725,12 @@ config BR2_PACKAGE_KODI_LIBTHEORA
 	  Kodi does not need libtheora
 
 config BR2_PACKAGE_CEGUI06
-	bool "BR2_PACKAGE_CEGUI06 was renamed"
-	select BR2_PACKAGE_CEGUI
+	bool "BR2_PACKAGE_CEGUI06 was removed"
 	select BR2_LEGACY
 	help
-	  The BR2_PACKAGE_CEGUI06 config symbol was renamed to
-	  BR2_PACKAGE_CEGUI.
+	  cegui06 was removed from Buildroot as it was insufficiently
+	  maintained. It can be re-added if someone volunteers to
+	  maintain it.
 
 config BR2_GCC_VERSION_5_X
 	bool "gcc 5.x support removed"
@@ -5443,8 +6302,6 @@ config BR2_GCC_VERSION_4_8_ARC
 	help
 	  The option that selects the gcc version for the ARC
 	  architecture has been renamed to BR2_GCC_VERSION_ARC.
-# Note: BR2_GCC_VERSION_4_8_ARC is still referenced from
-# package/gcc/Config.in.host
 
 config BR2_KERNEL_HEADERS_4_0
 	bool "kernel headers version 4.0.x are no longer supported"
@@ -5787,8 +6644,6 @@ config BR2_PACKAGE_OPENPOWERLINK_KERNEL_MODULE
 	help
 	  openpowerlink kernel modules are built if the
 	  kernel stack library is selected.
-# Note: BR2_PACKAGE_OPENPOWERLINK_KERNEL_MODULE is still referenced from
-# package/openpowerlink/Config.in
 
 config BR2_PACKAGE_OPENPOWERLINK_LIBPCAP
 	bool "openpowerlink package has been updated"
@@ -5797,8 +6652,6 @@ config BR2_PACKAGE_OPENPOWERLINK_LIBPCAP
 	  The user space support has been split in two part:
 	  - a monolithic user space library
 	  - a user space daemon driver
-# Note: BR2_PACKAGE_OPENPOWERLINK_LIBPCAP is still referenced from
-# package/openpowerlink/Config.in
 
 config BR2_LINUX_KERNEL_SAME_AS_HEADERS
 	bool "using the linux headers version for the kernel has been removed"

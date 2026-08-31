@@ -1,0 +1,13 @@
+config BR2_PACKAGE_HOST_UGETTY
+	bool "host ugetty"
+	depends on BR2_TOOLCHAIN_GCC_AT_LEAST_8  # std=c17
+	help
+	  A minimal getty for embedded Linux that auto-detects the
+	  client and dispatches incoming serial connections to a login
+	  prompt, a PPP session, or the local SSH server as
+	  appropriate.
+
+	  The host package builds only the "proxycommand" binary for
+	  use with SSH clients to connect to ugetty over serial.
+
+	  https://github.com/ryancdotorg/ugetty

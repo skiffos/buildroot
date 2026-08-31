@@ -15,6 +15,10 @@ config BR2_HAVE_DOT_CONFIG
 config BR2_BROKEN
 	bool
 
+config BR2_HIDE_SECONDARY_TARGET_OPTIONS
+	bool
+	option env="BR2_HIDE_SECONDARY_TARGET_OPTIONS"
+
 config BR2_VERSION
 	string
 	option env="BR2_VERSION_FULL"
@@ -96,11 +100,6 @@ config BR2_HOST_GCC_AT_LEAST_15
 
 # When adding new entries above, be sure to update
 # the HOSTCC_MAX_VERSION variable in the Makefile.
-
-# Hidden boolean selected by packages in need of Java in order to build
-# (example: kodi)
-config BR2_NEEDS_HOST_JAVA
-	bool
 
 # Hidden boolean selected by pre-built packages for x86, when they
 # need to run on x86-64 machines (example: pre-built external
@@ -297,6 +296,16 @@ config BR2_BACKUP_SITE
 	  buildroot will fall back to download package sources from here
 	  if the normal location fails.
 
+config BR2_SKIFFOS_BACKUP_SITE
+	string "SkiffOS backup download site"
+	default "https://github.com/skiffos/mirror/raw/master"
+	help
+	  Backup site to download from. If this option is set then
+	  buildroot will fall back to download package sources from here
+	  if the normal location fails.
+
+	  This is an additional mirror used by SkiffOS.
+
 config BR2_KERNEL_MIRROR
 	string "Kernel.org mirror"
 	default "https://cdn.kernel.org/pub"
@@ -326,6 +335,21 @@ config BR2_GNU_MIRROR
 
 	     http://ftp.gnu.org/pub/gnu
 	     http://mirror.aarnet.edu.au/pub/gnu
+
+config BR2_GOPROXY
+	string "Go module proxy"
+	default "https://proxy.golang.org,direct"
+	depends on BR2_PACKAGE_HOST_GO_TARGET_ARCH_SUPPORTS
+	help
+	  The Go module proxy URL used to download Go modules. By
+	  default, it uses the official Go module mirror, falling
+	  back to direct downloads if the module is not found in the
+	  mirror. The value can be one of:
+	    - Comma-separated list of proxy URLs
+	    - "off" to disable all downloads
+	    - "direct" to download directly from source repositories
+
+	  See https://go.dev/ref/mod#module-proxy
 
 config BR2_LUAROCKS_MIRROR
 	string "LuaRocks mirror"

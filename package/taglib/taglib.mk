@@ -4,13 +4,19 @@
 #
 ################################################################################
 
-TAGLIB_VERSION = 2.1.1
+TAGLIB_VERSION = 2.3.1
 TAGLIB_SITE = https://taglib.org/releases
 TAGLIB_INSTALL_STAGING = YES
 TAGLIB_DEPENDENCIES = utfcpp
 TAGLIB_LICENSE = LGPL-2.1 or MPL-1.1
 TAGLIB_LICENSE_FILES = COPYING.LGPL COPYING.MPL
 TAGLIB_CPE_ID_VENDOR = taglib
+
+ifeq ($(BR2_TOOLCHAIN_HAS_THREADS),y)
+TAGLIB_CONF_OPTS += -DWITH_MP4=ON
+else
+TAGLIB_CONF_OPTS += -DWITH_MP4=OFF
+endif
 
 ifeq ($(BR2_PACKAGE_ZLIB),y)
 TAGLIB_DEPENDENCIES += zlib

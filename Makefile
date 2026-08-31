@@ -92,9 +92,9 @@ all:
 .PHONY: all
 
 # Set and export the version string
-export BR2_VERSION := 2025.11-git
+export BR2_VERSION := 2026.08-rc3
 # Actual time the release is cut (for reproducible builds)
-BR2_VERSION_EPOCH = 1757278000
+BR2_VERSION_EPOCH = 1788030000
 
 # Save running make version since it's clobbered by the make package
 RUNNING_MAKE_VERSION := $(MAKE_VERSION)
@@ -125,7 +125,8 @@ endif
 noconfig_targets := menuconfig nconfig gconfig xconfig config oldconfig randconfig \
 	defconfig %_defconfig allyesconfig allnoconfig alldefconfig syncconfig release \
 	randpackageconfig allyespackageconfig allnopackageconfig \
-	print-version olddefconfig distclean manual manual-% check-package
+	print-version olddefconfig distclean manual manual-% check-package \
+	check-package-external show-info-all
 
 # Some global targets do not trigger a build, but are used to collect
 # metadata, or do various checks. When such targets are triggered,
@@ -141,7 +142,7 @@ nobuild_targets := source %-source \
 	clean distclean help show-targets graph-depends \
 	%-graph-depends %-show-depends %-show-version \
 	graph-build graph-size list-defconfigs \
-	savedefconfig update-defconfig printvars show-vars
+	savedefconfig update-defconfig printvars show-vars show-info-all
 ifeq ($(MAKECMDGOALS),)
 BR_BUILDING = y
 else ifneq ($(filter-out $(nobuild_targets),$(MAKECMDGOALS)),)
@@ -235,6 +236,13 @@ BR2_CONFIG = $(CONFIG_DIR)/.config
 ifeq ($(filter $(noconfig_targets),$(MAKECMDGOALS)),)
 -include $(BR2_CONFIG)
 endif
+# show-info-all needs to access the PACKAGES_ALL variable. This variable
+# contains a reference to every package present in Buildroot.
+# Since the 'show-info-all' command might be used without actually having a
+# dotconfig this condition is forced to be set true.
+ifeq ($(MAKECMDGOALS),show-info-all)
+BR2_HAVE_DOT_CONFIG = y
+endif
 
 ifeq ($(BR2_PER_PACKAGE_DIRECTORIES),)
 # Disable top-level parallel build if per-package directories is not
@@ -249,6 +257,13 @@ export TZ = UTC
 export LANG = C
 export LC_ALL = C
 endif
+
+# we set a default value here to avoid a Kconfig warning about unset
+# environment varilable. This option is passed as an environment
+# variable to be controlled by autobuilders. The purpose is to test
+# less frequently some uncommon configurations which tend to generate
+# more build failures.
+export BR2_HIDE_SECONDARY_TARGET_OPTIONS ?= n
 
 # To put more focus on warnings, be less verbose as default
 # Use 'make V=1' to see the full commands
@@ -601,6 +616,16 @@ prepare-sdk: world
 	@$(call MESSAGE,"Preparing the SDK")
 	$(INSTALL) -m 755 $(TOPDIR)/support/misc/relocate-sdk.sh $(HOST_DIR)/relocate-sdk.sh
 	mkdir -p $(HOST_DIR)/share/buildroot
+	(\
+		export LC_ALL=C; \
+		grep -lr '$(HOST_DIR)' '$(HOST_DIR)' | while read -r FILE; do \
+			if file -b --mime-type "$$FILE" | grep -q '^text/' && \
+			   [ "$$FILE" != '$(HOST_DIR)/share/buildroot/sdk-location' ] && \
+			   [ "$$FILE" != '$(HOST_DIR)/share/buildroot/sdk-relocs' ]; then \
+				echo "$$FILE"; \
+			fi; \
+		done \
+	) | sed -e 's|^$(HOST_DIR)|.|g' > $(HOST_DIR)/share/buildroot/sdk-relocs
 	echo $(HOST_DIR) > $(HOST_DIR)/share/buildroot/sdk-location
 
 BR2_SDK_PREFIX ?= $(GNU_TARGET_NAME)_sdk-buildroot
@@ -781,19 +806,12 @@ endif
 
 # For a merged /usr, ensure that /lib, /bin and /sbin and their /usr
 # counterparts are appropriately setup as symlinks ones to the others.
-ifeq ($(BR2_ROOTFS_MERGED_USR),y)
-
-	$(foreach d, $(call qstrip,$(BR2_ROOTFS_OVERLAY)), \
-		@$(call MESSAGE,"Sanity check in overlay $(d)")$(sep) \
-		$(Q)not_merged_dirs="$$(support/scripts/check-merged-usr.sh $(d))"; \
-		test -n "$$not_merged_dirs" && { \
-			echo "ERROR: The overlay in $(d) is not" \
-				"using a merged /usr for the following directories:" \
-				$$not_merged_dirs; \
-			exit 1; \
-		} || true$(sep))
-
-endif # merged /usr
+	@$(call MESSAGE,"Sanity check in overlays $(call qstrip,$(BR2_ROOTFS_OVERLAY))")
+	support/scripts/check-merged \
+		-t overlay \
+		$(if $(BR2_ROOTFS_MERGED_USR),-u) \
+		$(if $(BR2_ROOTFS_MERGED_BIN),-b) \
+		$(call qstrip,$(BR2_ROOTFS_OVERLAY))
 
 	$(foreach d, $(call qstrip,$(BR2_ROOTFS_OVERLAY)), \
 		@$(call MESSAGE,"Copying overlay $(d)")$(sep) \
@@ -923,15 +941,22 @@ check-dependencies:
 	$(TOPDIR)/support/scripts/graph-depends -C
 
 .PHONY: show-info
-show-info:
+show-info: show-info-inner
+show-info: SHOW_INFO_PACKAGES = \
+	$(foreach i,$(PACKAGES) $(TARGETS_ROOTFS), \
+		$(i) $($(call UPPERCASE,$(i))_FINAL_RECURSIVE_DEPENDENCIES) \
+	)
+
+.PHONY: show-info-all
+show-info-all: show-info-inner
+show-info-all: SHOW_INFO_PACKAGES = $(PACKAGES_ALL)
+
+.PHONY: show-info-inner
+show-info-inner:
 	@:
 	$(info $(call clean-json, \
 			{ $(foreach p, \
-				$(sort $(foreach i,$(PACKAGES) $(TARGETS_ROOTFS), \
-						$(i) \
-						$($(call UPPERCASE,$(i))_FINAL_RECURSIVE_DEPENDENCIES) \
-					) \
-				), \
+				$(sort $(SHOW_INFO_PACKAGES)), \
 				$(call json-info,$(call UPPERCASE,$(p)))$(comma) \
 			) } \
 		) \
@@ -1202,6 +1227,8 @@ help:
 	@echo '  external-deps          - list external packages used'
 	@echo '  legal-info             - generate info about license compliance'
 	@echo '  show-info              - generate info about packages, as a JSON blurb'
+	@echo '  show-info-all          - generate info about all packages in Buildroot,'
+	@echo '                           regardless of configuration or target architecture'
 	@echo '  pkg-stats              - generate info about packages as JSON and HTML'
 	@echo '  printvars              - dump internal variables selected with VARS=...'
 	@echo '  show-vars              - dump all internal variables as a JSON blurb; use VARS=...'
@@ -1262,9 +1289,28 @@ release:
 print-version:
 	@echo $(BR2_VERSION_FULL)
 
+# $(1): br2-external path
+# $(2): br2-external description
+define check-package-external
+	@$(call MESSAGE,"Checking packages in $(2)")
+	$(Q)if [ -r "$(1)/.checkpackageignore" ]; then \
+		ignore="--ignore-list=$(1)/.checkpackageignore" ; \
+	else \
+		ignore=""; \
+	fi ; \
+	$(TOPDIR)/utils/check-package \
+		--br2-external $${ignore} \
+		`git -C $(1) ls-tree -r --format='$(1)/%(path)' HEAD`
+endef
+
 check-package:
 	$(Q)./utils/check-package `git ls-tree -r --name-only HEAD` \
 		--ignore-list=$(TOPDIR)/.checkpackageignore
+
+check-package-external:
+	$(foreach name,$(BR2_EXTERNAL_NAMES),\
+		$(call check-package-external,$(BR2_EXTERNAL_$(name)_PATH),\
+			$(BR2_EXTERNAL_$(name)_DESC))$(sep))
 
 .PHONY: .checkpackageignore
 .checkpackageignore:

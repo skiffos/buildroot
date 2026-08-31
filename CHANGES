@@ -1,3 +1,1257 @@
+2026.08-rc3, released August 29th, 2026
+
+	Fixes all over the tree.
+
+	Updated/fixed packages: avro-c, bind, bpftrace, collectd,
+	dahdi-linux, expat, fetchmail, flex, fluidsynth, gdb, glibc,
+	haproxy, jpeg-turbo, libbpf, libheif, libopenssl,
+	libxml-parser-perl, localedef, mesa3d, nodejs, olsr, perl,
+	php, python-avro, python-gobject, qt6, qt6declarative, redis,
+	rsyslog, taglib, uclibc, unbound, weston
+
+2026.08-rc2, released August 23th, 2026
+
+	Fixes all over the tree.
+
+        Infrastructure:
+        - Correct <pkg>_FLAT_STACKSIZE handling for nommu
+
+        Defconfigs: QEMU x86-64 EFI: Fix build issue after grub2 bump.
+
+	Updated/fixed packages: clamav, distribution-registry, dracut,
+	drogon, enscript, fluidsynth, gdb, igh-ethercat, kodi,
+	libgpiod2, libssh2, linux-tools, mesa3d, mtools, netsnmp,
+	putty, python-scp, uclibc, udisks, uhttpd, webkitgtk, wget,
+	wireshark, xilinx-embeddedsw
+
+2026.08-rc1, released August 18th, 2026
+
+	Fixes all over the tree and new features.
+
+        Architectures:
+        - Support for M68K nommu
+        - Support for IBM Power 10/11 variants
+
+        Toolchain:
+	- Support for Linux 7.1.x headers
+        - Binutils 2.46.1, GCC 16.2.0, now defaults to GCC 15
+        - Glibc 2.44, uClibc-ng 1.0.59
+        - Support for ARC-specific GCC version and external toolchain
+          dropped
+
+        Infrastructure:
+        - Support for building packages written in the hare
+          programming language
+        - Libudev virtual package, similar to jpeg or openssl.
+	- generate-cyclonedx: fixup scp-style git sites
+
+        New defconfigs: QEMU PPC64LE Powernv10 / Powernv11
+
+	Removed defconfigs: Acmesystems aria/arietta g25, Avnet S6LX9
+	Microboard, Technologic TS-4900 / TS-5500
+
+	New packages: agec, cpp-argparse, drogon, dtui, hare, harec,
+	hare-dbus, hare-ev, hare-xml, libcppconnman, liblc3, libudev,
+	libudev-zero, perl-cgi, perl-cgi-session, perl-log-message,
+	perl-log-message-simple, perl-switch, python-libyang,
+	python-sysv-ipc, qbe, qemu-xen, qt6grpc, qt6positioning,
+	scdoc, sdl3, sdl3_gfx, sdl3_image, sdl3_ttf, sigsum-c,
+	virglrenderer, wget2
+
+	Removed packages: argparse, ts4900-fpga
+
+2026.05.2, released August 23, 2026
+
+	Important / security related fixes:
+
+	apr-util: CVE-2025-49506, CVE-2026-32327, CVE-2026-34191,
+	  CVE-2026-34501, CVE-2026-34502
+	bind: CVE-2026-10723, CVE-2026-10822, CVE-2026-11331, CVE-2026-11605,
+	  CVE-2026-11622, CVE-2026-11721, CVE-2026-12617, CVE-2026-13204,
+	  CVE-2026-13321
+	botan: CVE-2026-32877, CVE-2026-32883, CVE-2026-32884, CVE-2026-34580,
+	  CVE-2026-34582
+	busybox: CVE-2024-58251
+	clamav: CVE-2025-8088, CVE-2026-20337, CVE-2026-20338, CVE-2026-20339,
+	  CVE-2026-20345, CVE-2026-20346, CVE-2026-20347, CVE-2026-20348
+	containerd: CVE-2026-35469, CVE-2026-46680, CVE-2026-47262,
+	  CVE-2026-53488
+	dracut: CVE-2026-6893
+	dropbear: (no CVE assigned)
+	exim: GCVE-25-2026-07-45-1, CVE-2026-66140, CVE-2026-66141
+	expat: CVE-2026-72522
+	glibc: CVE-2026-6368
+	go: CVE-2026-39822
+	intel-microcode: CVE-2025-31936, CVE-2025-31938, CVE-2025-35973,
+	  CVE-2026-20707, CVE-2026-20713, CVE-2026-20716, CVE-2026-20760,
+	  CVE-2026-20917
+	libarchive: (no CVE assigned)
+	libass: CVE-2026-61626, CVE-2026-61627
+	libgit2: CVE-2026-53583, CVE-2026-53584, CVE-2026-53585,
+	  CVE-2026-53586, CVE-2026-53587
+	libglib2: CVE-2025-13601, CVE-2025-14087, CVE-2025-14512,
+	  CVE-2026-1484, CVE-2026-1485, CVE-2026-1489, CVE-2026-15588,
+	  CVE-2026-58010, CVE-2026-58011, CVE-2026-58012, CVE-2026-58013,
+	  CVE-2026-58014, CVE-2026-58015
+	libheif: CVE-2026-62289, CVE-2026-62291, CVE-2026-62292,
+	  CVE-2026-62377, GHSA-46rp-pcq2-rpmr, GHSA-73p7-m7gg-w2jv,
+	  GHSA-9ww4-9v47-m7pj, GHSA-jc8f-p23p-5hjg, GHSA-xpw3-9rhw-482x
+	libmodsecurity: CVE-2026-52747, CVE-2026-52761
+	libssh: CVE-2026-15370, CVE-2026-59843, CVE-2026-59844, CVE-2026-59845,
+	  CVE-2026-59846, CVE-2026-59847, CVE-2026-59848, CVE-2026-59849,
+	  CVE-2026-59850
+	localedef: CVE-2026-6368
+	memcached: (no CVE assigned)
+	ntfs-3g: CVE-2026-42616, CVE-2026-42617, CVE-2026-42618,
+	  CVE-2026-46569, CVE-2026-46570, CVE-2026-46571, CVE-2026-46572,
+	  CVE-2026-56135, CVE-2026-56136
+	openssh: (no CVE assigned)
+	openvpn: CVE-2026-63649, CVE-2026-63650
+	perl: CVE-2026-13221, CVE-2026-57432, CVE-2026-8376
+	php: CVE-2026-17543, CVE-2026-17544, CVE-2026-7260, CVE-2026-9672
+	postgresql: CVE-2026-14662, CVE-2026-14663, CVE-2026-14664,
+	  CVE-2026-14666, CVE-2026-14668, CVE-2026-14669, CVE-2026-14670,
+	  CVE-2026-14671, CVE-2026-14672, CVE-2026-14673, CVE-2026-14676,
+	  CVE-2026-14677, CVE-2026-14678, CVE-2026-14679, CVE-2026-14680,
+	  CVE-2026-14681, CVE-2026-15741, CVE-2026-15742, CVE-2026-16238,
+	  CVE-2026-16239, CVE-2026-16241, CVE-2026-18024, CVE-2026-18408,
+	  CVE-2026-19385, CVE-2026-6464, CVE-2026-6469, CVE-2026-6470,
+	  CVE-2026-6471
+	python3: CVE-2026-0864, CVE-2026-11972, CVE-2026-12003, CVE-2026-15308,
+	  CVE-2026-4360
+	rsync: CVE-2026-53783, CVE-2026-53784, CVE-2026-53785, CVE-2026-53786,
+	  CVE-2026-53788, CVE-2026-53789, CVE-2026-53790, CVE-2026-53791,
+	  CVE-2026-53792, CVE-2026-53793, CVE-2026-53794, CVE-2026-53795,
+	  CVE-2026-53796, CVE-2026-53797, CVE-2026-53798, CVE-2026-53799,
+	  CVE-2026-53800, CVE-2026-53801, CVE-2026-53802, CVE-2026-53803,
+	  CVE-2026-70452, CVE-2026-70453, CVE-2026-70454, CVE-2026-70455,
+	  CVE-2026-70456, CVE-2026-70457, CVE-2026-70458, CVE-2026-70459,
+	  CVE-2026-70460, CVE-2026-70461, CVE-2026-70462, CVE-2026-70463,
+	  CVE-2026-70464
+	samba4: CVE-2026-58216, CVE-2026-58218, CVE-2026-58221, CVE-2026-58222,
+	  CVE-2026-58224, CVE-2026-6949
+	screen: (no CVE assigned)
+	ser2net: GHSA-cgh5-39mg-vhfr
+	socat: CVE-2026-56123
+	stunnel: CVE-2026-70367, CVE-2026-70368
+	syslog-ng: CVE-2026-39879
+	vim: CVE-2026-28417, CVE-2026-28418, CVE-2026-28419, CVE-2026-28420,
+	  CVE-2026-28421, CVE-2026-28422, CVE-2026-32249, CVE-2026-33412,
+	  CVE-2026-34714, CVE-2026-34982, CVE-2026-35177, CVE-2026-39881,
+	  CVE-2026-41411, CVE-2026-42307, CVE-2026-44656, CVE-2026-45130,
+	  CVE-2026-46483, CVE-2026-47162, CVE-2026-47167, CVE-2026-52858,
+	  CVE-2026-52859, CVE-2026-52860, CVE-2026-55693, CVE-2026-55892,
+	  CVE-2026-55895, CVE-2026-57451, CVE-2026-57452, CVE-2026-57453,
+	  CVE-2026-57455, CVE-2026-57456, CVE-2026-59856, CVE-2026-59857,
+	  CVE-2026-59858
+	wpa_supplicant: (no CVE assigned)
+	xlib_libXfont2: CVE-2026-56001, CVE-2026-56002, CVE-2026-56003
+	xserver_xorg-server: CVE-2026-55999, CVE-2026-56000
+	xwayland: CVE-2026-55999, CVE-2026-56000
+
+	Toolchain:
+
+	- gcc: fix mips/glibc build issue
+	- glibc: bump to 2.43-49-g8017bcfc4d
+	- linux-headers: bump to 5.10.265, 5.15.216, 6.1.183, 6.6.152,
+	  6.12.104, 6.18.45, 7.0.14
+	- toolchain-buildroot: drop Synopsys ARC specific versions
+	- toolchain-external: drop Synopsys ARC toolchain
+
+	Infrastructure updates/fixes:
+
+	- Add license information for skeleton packages
+	- Make docker image reproducible again
+	- New runtime tests for guile, libgpiod2, mdnsd, php, python-pydal
+
+	Updated defconfigs: freescale_imx91frdm, freescale_imx93frdm
+
+	Removed defconfigs: acmesystems_aria_g25_{128mb, 256mb},
+	  acmesystems_arietta_g25_{128mb, 256mb}, s6lx9_microboard, ts4900,
+	  ts5500
+
+	Removed packages: argparse, ts4900-fpga
+
+	Updated / fixed packages: amazon-ecr-credential-helper, apache,
+	  apr-util, arm-trusted-firmware, armadillo, at-spi2-core, atop, bind,
+	  binutils, bitcoin, botan, busybox, cantarell, cifs-utils, clamav,
+	  containerd, cramfs, dbus-broker, docker-credential-acr-env,
+	  docker-credential-gcr, dracut, dropbear, environment-setup, exim,
+	  expat, gcc, glibc, go, guile, gvfs, ifupdown-scripts, igt-gpu-tools,
+	  initscripts, intel-microcode, libarchive, libass, libcamera, libgee,
+	  libgit2, libglib2, libgpg-error, libgtk4, libgudev, libheif,
+	  libmicrohttpd, libmodsecurity, libnpupnp, libpeas, librsvg,
+	  libsecret, libsoup, libsoup3, libssh, libvpl, linux, linux-headers,
+	  localedef, mbedtls, memcached, mini-snmpd, mosquitto, nettle,
+	  network-manager, ntfs-3g, ogre, open62541, openblas, openssh,
+	  openvpn, optee-os, p11-kit, pahole, perl, php, postgresql,
+	  python-paho-mqtt, python-pydal, python-web2py, python3, quickjs,
+	  redis, rsync, rygel, samba4, screen, ser2net, socat, stunnel,
+	  syslog-ng, toolchain-external, uboot-tools, uclibc, ugetty,
+	  urandom-scripts, usbutils, vim, wpa_supplicant, xlib_libXfont2,
+	  xserver_xorg-server, xwayland, xz
+
+2026.05.1, released July 15, 2026
+
+	Important / security related fixes:
+
+	apache: CVE-2026-29167, CVE-2026-29170, CVE-2026-34355, CVE-2026-34356,
+	  CVE-2026-42535, CVE-2026-42536, CVE-2026-43951, CVE-2026-44119,
+	  CVE-2026-44185, CVE-2026-44186, CVE-2026-44631, CVE-2026-48913,
+	  CVE-2026-49975
+	asterisk: GHSA-3g56-cgrh-95p5, GHSA-3rhj-hhw7-m6fw,
+	  GHSA-4pgv-j3mr-3rcp, GHSA-589g-qgf8-m6mx, GHSA-746q-794h-cc7f,
+	  GHSA-8jhw-m2hg-vp3h, GHSA-8jw3-ccr9-xrmf, GHSA-g8q2-p36q-94f6,
+	  GHSA-h5hv-jmgj-92q2, GHSA-j2mm-57pq-jh94, GHSA-mxgm-8c6f-5p8f,
+	  GHSA-ph27-3m5q-mj5m, GHSA-q9fr-m7g8-6ph5, GHSA-qf8j-jp7h-c5hx,
+	  GHSA-r6c2-hwc2-j4mp, GHSA-vfhr-r9x9-c687, GHSA-vrfp-mg3q-3959,
+	  GHSA-wcvv-g26m-wx5c, GHSA-x348-j6c9-77f3, GHSA-xgj6-2gc5-5x9c
+	avahi: CVE-2026-34933
+	bind: (no CVE assigned), CVE-2026-3593
+	clamav: CVE-2026-20213, CVE-2026-20214, CVE-2026-20215, CVE-2026-20216,
+	  CVE-2026-20217, CVE-2026-20243, CVE-2026-20244, CVE-2026-41676
+	cpp-httplib: CVE-2026-45352, CVE-2026-45372, CVE-2026-46527
+	cups-filters: CVE-2025-64503
+	expat: CVE-2026-50219, CVE-2026-56131, CVE-2026-56132, CVE-2026-56403,
+	  CVE-2026-56404, CVE-2026-56405, CVE-2026-56406, CVE-2026-56407,
+	  CVE-2026-56408, CVE-2026-56409, CVE-2026-56410, CVE-2026-56411,
+	  CVE-2026-56412
+	fetchmail: (no CVE assigned)
+	ghostscript: (no CVE assigned)
+	gnupg2: CVE-2026-34182
+	imagemagick: CVE-2026-48724, CVE-2026-48733, CVE-2026-48734,
+	  CVE-2026-48994, CVE-2026-49218, CVE-2026-49219, CVE-2026-53460,
+	  CVE-2026-53461, CVE-2026-53462, CVE-2026-53463, CVE-2026-53464,
+	  CVE-2026-53465
+	jq: CVE-2026-32316, CVE-2026-33947, CVE-2026-33948, CVE-2026-39979,
+	  CVE-2026-40164, CVE-2026-40612, CVE-2026-41256, CVE-2026-41257,
+	  CVE-2026-43894, CVE-2026-43896, CVE-2026-44777, CVE-2026-49839,
+	  CVE-2026-54679, GHSA-gf4g-95wj-4q4r, GHSA-hj52-j2c9-r8r4
+	libarchive: (no CVE assigned)
+	libcurl: CVE-2026-10536, CVE-2026-11352, CVE-2026-11564,
+	  CVE-2026-11586, CVE-2026-11856, CVE-2026-12064, CVE-2026-8286,
+	  CVE-2026-8458, CVE-2026-8924, CVE-2026-8925, CVE-2026-8926,
+	  CVE-2026-8927, CVE-2026-8932, CVE-2026-9079, CVE-2026-9080,
+	  CVE-2026-9545, CVE-2026-9546, CVE-2026-9547
+	libevent: (no CVE assigned)
+	libgsasl: CVE-2026-48829
+	libopenssl: CVE-2026-34180, CVE-2026-34181, CVE-2026-34182,
+	  CVE-2026-34183, CVE-2026-42764, CVE-2026-42766, CVE-2026-42767,
+	  CVE-2026-42768, CVE-2026-42769, CVE-2026-42770, CVE-2026-45445,
+	  CVE-2026-45446, CVE-2026-45447, CVE-2026-7383, CVE-2026-9076
+	libssh2: CVE-2026-55199, CVE-2026-55200
+	mariadb: CVE-2026-48163, CVE-2026-48165, CVE-2026-49261
+	mongoose: (no CVE assigned yet)
+	nginx: CVE-2026-42055, CVE-2026-48142
+	openjpeg: CVE-2026-6192
+	openvpn: CVE-2026-11771, CVE-2026-12932, CVE-2026-12996,
+	  CVE-2026-13117, CVE-2026-13122, CVE-2026-13379, CVE-2026-13698
+	php: CVE-2026-14355
+	python-django: CVE-2026-35192, CVE-2026-35193, CVE-2026-48587,
+	  CVE-2026-5766, CVE-2026-6873, CVE-2026-6907, CVE-2026-7666,
+	  CVE-2026-8404
+	python3: CVE-2026-11940, CVE-2026-9669
+	redis: CVE-2026-23479, CVE-2026-23631, CVE-2026-25243
+	ruby: CVE-2026-46727
+	rust: CVE-2025-15661, CVE-2026-55199, CVE-2026-55200
+	squid: CVE-2026-47729, CVE-2026-50012
+	sudo: CVE-2026-35535
+	tiff: CVE-2026-36849
+	tmux: CVE-2026-11623
+	tor: TROVE-2026-025, TROVE-2026-026.
+	util-linux: CVE-2026-27456, CVE-2026-53612, CVE-2026-53613,
+	  CVE-2026-53614
+	webkitgtk: CVE-2026-28847, CVE-2026-28883, CVE-2026-28901,
+	  CVE-2026-28902, CVE-2026-28903, CVE-2026-28904, CVE-2026-28905,
+	  CVE-2026-28907, CVE-2026-28942, CVE-2026-28946, CVE-2026-28947,
+	  CVE-2026-28953, CVE-2026-28955, CVE-2026-28958, CVE-2026-43658,
+	  CVE-2026-43660
+	wolfssl: CVE-2026-10097, CVE-2026-10098, CVE-2026-10512,
+	  CVE-2026-10592, CVE-2026-11310, CVE-2026-11703, CVE-2026-11999,
+	  CVE-2026-12340, CVE-2026-55958, CVE-2026-55960, CVE-2026-55961,
+	  CVE-2026-55962, CVE-2026-55964, CVE-2026-55967, CVE-2026-6091,
+	  CVE-2026-6092, CVE-2026-6094, CVE-2026-6291, CVE-2026-6325,
+	  CVE-2026-6329, CVE-2026-6330, CVE-2026-6331, CVE-2026-6412,
+	  CVE-2026-6450, CVE-2026-6678, CVE-2026-6681, CVE-2026-6731,
+	  CVE-2026-7511, CVE-2026-7531, CVE-2026-7532, CVE-2026-8720
+
+	Toolchain:
+
+	- gcc: bump 15.x series to 15.3.0
+	- gcc:: bump 14.x series to 14.4.0
+
+	Infrastructure updates/fixes:
+
+	- support/testing: various internal refactorings
+	- support/testing Improve TestPythonPy3NetworkmanagerGoi
+	- support/testing: improve iptables package test
+	- generate-cyclonedx: fixup scp-style git sites
+	- support/testing: Fix test_gnupg2
+
+	Updated / fixed packages: apache, asterisk, avahi, bind, bind, clamav,
+	  cpp-httplib, cups-filters, expat, fetchmail, gcc, gcc:, ghostscript,
+	  gnupg2, hwdata, imagemagick, iptables, jq, jq, kodi-screensaver-rsxs,
+	  libarchive, libcurl, libepoxy, libevent, libglib2,
+	  libglib2-bootstrap, libgsasl, libopenssl, libssh2, libssh2, linux,
+	  mariadb, mdnsd, mongoose, mosquitto, mpd, nginx, ntp, openjpeg,
+	  openrc, openvpn, passt, php, python-django, python3, python3, redis,
+	  rsync, ruby, rust, shadow, shim, squid, strongswan, sudo, tiff, tmux,
+	  tor, util-linux, util-linux, util-linux, webkitgtk, wolfssl
+
+2026.05, released June 8th, 2026
+
+	Various fixes.
+
+	Defconfigs: Correct legal-info for at91sam9x5ek*
+	(at91bootstrap3) and Arcturus ucp1020 (Linux)
+
+	Updated/fixed packages: jailhouse, libde265, libinput, libusb,
+	php, python3, runc
+
+2026.05-rc4, released June 4th, 2026
+
+	Fixes all over the tree.
+
+        Infrastructure:
+
+        - dependencies: detect and reject buggy uutils 'install'
+          program as used in Ubuntu 26.04
+
+        - pkg-generic: Cleanup /usr/share/info/dir in the target
+
+        - generate-cyclonedx / cve-check: Various fixes for better
+          CycloneDX / BSI TR-03183-2 compliance
+
+        - linux: No longer forcibly disable CONFIG_WERROR
+
+        - 'make show-info-all' added, which works like 'make
+          show-info' but for all packages. The package hash files are
+          now also included in the show-info{,-all} output.
+
+        Architectures:
+
+        - Drop support for the (rare) PA-RISC 1.0 variant
+
+	Updated/fixed packages: aardvark-dns, arm-trusted-firmware,
+	asterisk, babeld, bpftrace, busybox, ca-certificates, cairo,
+	capnproto, collectd, cppdb, crucible, cups-filters,
+	docker-cli, docker-engine, drm-info, efl, esp-hosted, exim,
+	faad2, freeipmi, freeswitch, gcc-bare-metal, gdb, gerbera,
+	glibc, graphene, gst1-plugins-bad, gst1-plugins-good,
+	gstreamer1, harfbuzz, heirloom-mailx, hiredis, hplip, icu,
+	jemalloc, jq, kodi, lcms2, libbpf, libdill, libdrm, libenca,
+	libgit2, libheif, libks, libmad, libmicrohttpd,
+	libmodsecurity, libpthsem, libssh2, liburing, llvm-project,
+	lrzip, lrzsz, lua-sdl2, mesa3d, mpd, mrp, ndctl, netatalk,
+	netavark, odhcp6c, openblas, opencv4, opendoas, openscap, php,
+	podman, poppler, powerpc-utils, privoxy, python-ecdsa,
+	python-gymnasium, python3, qt53d, qt5webengine-chromium,
+	qt6base, readline, redis, rpcbind, rtl8188eu,
+	rtl8812au-aircrack-ng, rtl8822cs, runc, rust, rust-bin,
+	samba4, sane-airscan, sane-backends, sdl2_image, sqlite,
+	sshfs, stellarium, suricata, sway, sysrepo, tor, unzip,
+	ustream-ssl, util-linux, vlc, vorbis-tools, weston,
+	wireless-regdb, xdriver_xf86-video-nv, xen, xerces,
+	xserver_xorg-server, xwayland, zsh
+
+        Removed packages: daq, kodi-pvr-hdhomerun, libhdhomerun,
+        libphidget, phidgetwebservice, pigpio, ptpd2, xml-security-c,
+        zeek
+
+2026.05-rc3, released May 29th, 2026
+
+	Fixes all over the tree.
+
+	Updated/fixed packages: kexec, libde265, libheif,
+	llvm-project, mariadb, mesa3d, mpd, nginx, putty,
+	python-urllib3, radvd, samba4, unbound
+
+2026.05-rc2, released May 21th, 2026
+
+	Fixes all over the tree.
+
+	Updated/fixed packages: bind, cog, exim, fwts, gnupg2,
+	haveged, htop, imagemagick, intel-microcode, libabseil-cpp,
+	libargon2, libblockdev, libde265, libgphoto2, libheif, libks,
+	libmodsecurity, libnfs, libnss, liburiparser, libvncserver,
+	memcached, mongoose, mpd, openvmtools, postgresql,
+	python-cbor2, python-google-api-core,
+	python-sdbus-modemmanager, rsync, samba4, sed,
+	shadowsocks-libev, supertux, tzdata, weston, wireshark,
+	wpewebkit, zic, zlib-ng
+
+2026.05-rc1, released May 12th, 2026
+
+	Fixes all over the tree and new features.
+
+	Architecture:
+	- ARM Neoverse-V1/V2/V3/V3AE cores added
+	- Default x86 CPU variant is now i686 (from i586)
+
+	Toolchain:
+	- Support for Linux 7.0.x headers
+	- ARM external toolchains bumped to 15.2.rel1
+
+	Filesystem:
+	- Support for XFS rootfs generation.
+
+	Misc:
+	- generate-cyclonedx now adds source attribute to known
+	  CVEs for better compatibility with Dependency-Track.
+
+	New defconfigs: AMD Versal VPK120, TI j721e starter kit (TDA4VM-SK)
+
+	New packages: cxxopts, drm-info, ftxui, go-bootstrap-stage5,
+	iniparser, libnss-ato, libzippp, ndctl, opendoas,
+	python-cloudpickle, python-deprecation,
+	python-farama-notifications, python-gymnasium,
+	python-humanfriendly, python-isodate, python-transitions,
+	sbctl, ugetty, zix
+
+	Removed packages: cegui, openswan, pcre, rubix, snort,
+	spinxbase
+
+2026.02.3, released June 16, 2026
+
+	Important / security related fixes:
+
+	asterisk: GHSA-8fj4-fv9f-hjpc, GHSA-g88q-c2hm-q7p7,
+	  GHSA-j29p-pvh2-pvqp, GHSA-x5pq-qrp4-fmrj
+	bind: CVE-2026-3039, CVE-2026-3592, CVE-2026-5946, CVE-2026-5950
+	capnproto: CVE-2026-322, CVE-2026-32239, CVE-2026-32240
+	cups-filters: CVE-2025-64524
+	dnsmasq: CVE-2026-2291, CVE-2026-4890, CVE-2026-4891, CVE-2026-4892,
+	  CVE-2026-4893, CVE-2026-5172
+	docker-engine: CVE-2025-54388
+	dropbear: CVE-2019-6111, CVE-2026-35385
+	exim: (no CVE assigned), CVE-2026-48840
+	expat: CVE-2026-45186
+	freeipmi: CVE-2026-50031
+	glibc: CVE-2026-4046, CVE-2026-4437, CVE-2026-4438, CVE-2026-5450,
+	  CVE-2026-5928
+	gnupg2: (no CVE assigned)
+	haveged: CVE-2026-41054
+	imagemagick: CVE-2026-42326, CVE-2026-45031, CVE-2026-45358,
+	  CVE-2026-45359, CVE-2026-45624, CVE-2026-45664, CVE-2026-46520,
+	  CVE-2026-46521, CVE-2026-46522, CVE-2026-46523, CVE-2026-46557,
+	  CVE-2026-46559
+	intel-microcode: CVE-2025-35979
+	libde265: CVE-2026-45382, CVE-2026-45383, GHSA-ccfw-29x7-rrx3,
+	  GHSA-j2qq-x2xq-g9wr
+	libgpg-error: T8239
+	libheif: CVE-2026-32738, CVE-2026-32739, CVE-2026-32740,
+	  CVE-2026-32741, CVE-2026-32814, CVE-2026-32882, CVE-2026-3949,
+	  CVE-2026-41069, CVE-2026-41071, CVE-2026-47178, CVE-2026-47247,
+	  CVE-2026-47251, CVE-2026-47254, CVE-2026-47709, CVE-2026-47714,
+	  GHSA-5hqq-636x-r3cr, GHSA-6x5f-qchq-cxqv, GHSA-jvmp-j3cw-84mh,
+	  GHSA-r7qj-cg5r-r6vf
+	libmad: CVE-2017-837, CVE-2017-8372, CVE-2017-8373, CVE-2017-8374
+	libmodsecurity: CVE-2026-30923, CVE-2026-42268
+	libssh2: CVE-2026-7598
+	liburiparser: CVE-2026-44927, CVE-2026-44928
+	libusb: CVE-2026-23679, CVE-2026-47104
+	libvncserver: CVE-2026-3285, CVE-2026-32853, CVE-2026-32854
+	mariadb: CVE-2026-34303, CVE-2026-3494, CVE-2026-44168, CVE-2026-44169,
+	  CVE-2026-44170, CVE-2026-44171, CVE-2026-44172, CVE-2026-44173
+	memcached: (no CVE assigned)
+	nginx: CVE-2026-40460, CVE-2026-40701, CVE-2026-42926, CVE-2026-42934,
+	  CVE-2026-42945, CVE-2026-42946, CVE-2026-9256
+	php: CVE-2026-44927, CVE-2026-44928
+	postgresql: CVE-2026-6472, CVE-2026-6473, CVE-2026-6474, CVE-2026-6475,
+	  CVE-2026-6476, CVE-2026-6477, CVE-2026-6478, CVE-2026-6479,
+	  CVE-2026-6575, CVE-2026-6637, CVE-2026-6638
+	privoxy: OVE-20260515-0001, OVE-20260515-0002
+	putty: (no CVE assigned)
+	python-urllib3: CVE-2026-44431, CVE-2026-44432
+	python3: CVE-2026-3276, CVE-2026-7774, CVE-2026-8328, gh-146211,
+	  gh-146333, gh-148169, gh-148178, gh-148395, gh-149017, gh-149254,
+	  gh-90309
+	radvd: CVE-2026-48715
+	rsync: CVE-2026-29518, CVE-2026-43617, CVE-2026-43618, CVE-2026-43619,
+	  CVE-2026-43620, CVE-2026-45232
+	runc: CVE-2025-31133, CVE-2025-52565, CVE-2025-52881
+	samba4: CVE-2026-1933, CVE-2026-2340, CVE-2026-3012, CVE-2026-3238,
+	  CVE-2026-4408, CVE-2026-4480
+	sdl2_image: CVE-2026-35444
+	sed: CVE-2026-5958
+	sshfs: CVE-2026-47187, CVE-2026-48711
+	tor: TROVE-2026-013, TROVE-2026-014, TROVE-2026-015, TROVE-2026-016,
+	  TROVE-2026-017, TROVE-2026-018, TROVE-2026-019, TROVE-2026-020,
+	  TROVE-2026-021, TROVE-2026-022
+	unbound: CVE-2026-32792, CVE-2026-33278, CVE-2026-40622,
+	  CVE-2026-41292, CVE-2026-42534, CVE-2026-42923, CVE-2026-42944,
+	  CVE-2026-42959, CVE-2026-42960, CVE-2026-44390, CVE-2026-44608
+	unzip: CVE-2021-4217
+	xserver_xorg-server: (no CVE assigned)
+	xwayland: (no CVE assigned)
+
+	Toolchain:
+
+	- linux-headers: bump to 5.10.257, 5.15.208, 6.1.174, 6.6.141, 6.12.91,
+	  6.18.33
+
+	Infrastructure updates/fixes:
+
+	- cve-check: fix vulnerabilities with different analysis
+	- generate-cyclonedx: add hashes from .hash files to externalReferences
+	- generate-cyclonedx: hint at missing Buildroot host package on a
+	  specific error
+	- bump-stable-kernel-versions: update for split hash file
+	- kconfig: fix compiler warnings
+	- cve-check: add indication how to run
+	- Remove /usr/share/info/dir from target
+	- generate-cyclonedx: remove indirect dependencies from root component
+	- replicate IGNORE_CVES to host packages
+	- cve-check: remove 'bom-ref' for vulnerabilities
+	- generate-cyclonedx: generate externalReferences with
+	  source-distribution
+	- cve-check: fix vulnerability timestamp to RFC 3339
+	- generate-cyclonedx: generate vcs externalReferences for source repos
+	- gitlab-ci: use larger shared runners where necessary
+	- add 'make show-info-all'
+	- dependencies.sh: reject buggy uutils "install" on Ubuntu 26.04
+
+	Updated defconfigs: arcturus_ucp1020, at91sam9x5ek*
+
+	Updated / fixed packages: kexec, zsh, cups-filters, python-cbor2,
+	  haveged, lrzsz, ustream-ssl, expat, xwayland, libvncserver, liburing,
+	  sysrepo, qt53d, collectd, mariadb, gstreamer1, jemalloc, libks,
+	  lua-sdl2, util-linux, vlc, xfsprogs, kodi, bind, libde265,
+	  docker-cli, libabseil-cpp, wpewebkit, libpthsem, heirloom-mailx, icu,
+	  libheif, podman, unbound, dropbear, vorbis-tools, crucible, unzip,
+	  libssh2, python3, imagemagick, libbpf, gdb, capnproto, esp-hosted,
+	  freeipmi, asterisk, wireless-regdb, intel-microcode, weston,
+	  util-linux-libs, linux-headers, qt6base, zlib-ng, libgphoto2, hplip,
+	  bpftrace, postgresql, babeld, sed, libdrm, lrzip, odhcp6c, linux,
+	  efl, libusb, jq, sane-airscan, libmad, faad2, dnsmasq, privoxy,
+	  libgit2, mrp, putty, sshfs, gcc-bare-metal, graphene, mongoose,
+	  rsync, redis, hiredis, cairo, zic, dos2unix, libargon2,
+	  docker-engine, sane-backends, arm-trusted-firmware, libnss, openscap,
+	  opencv4, liburiparser, libdill, radvd, poppler, tzdata,
+	  gst1-plugins-bad, python-ecdsa, php, stellarium, python-aiodns,
+	  nginx, gnupg2, tor, xerces, gst1-plugins-good, libmodsecurity,
+	  sdl2_image, readline, libgpg-error, samba4, runc,
+	  xserver_xorg-server, glibc, memcached, libmicrohttpd, supertux, exim,
+	  python-urllib3, qt5webengine-chromium
+
+2026.02.2, released May 20, 2026
+
+	Changes with potentially large impact:
+
+	- ficl was downgraded to version 3.065 because ficl4 is no longer
+	  maintained.
+
+	Important / security related fixes:
+
+	apache: CVE-2026-23918, CVE-2026-24072, CVE-2026-28780, CVE-2026-29168,
+	  CVE-2026-29169, CVE-2026-33006, CVE-2026-33007, CVE-2026-33523,
+	  CVE-2026-33857, CVE-2026-34032, CVE-2026-34059
+	bubblewrap: CVE-2026-41163
+	cups: CVE-2026-27447, CVE-2026-34978, CVE-2026-34979, CVE-2026-34980,
+	  CVE-2026-34990, CVE-2026-39314, CVE-2026-39316, CVE-2026-41079
+	dash: CVE-2026-31323
+	dropbear: CVE-2019-6111, CVE-2026-35385
+	exim: CVE-2026-40684, CVE-2026-40685, CVE-2026-40686, CVE-2026-40687
+	expat: CVE-2026-7210, CVE-2026-41080
+	ffmpeg: CVE-2026-30997
+	ghostscript: (no CVE assigned)
+	gnutls: CVE-2026-33845, CVE-2026-33846, CVE-2026-3832, CVE-2026-3833,
+	  CVE-2026-42009, CVE-2026-42010, CVE-2026-42011, CVE-2026-42012,
+	  CVE-2026-42013, CVE-2026-42014, CVE-2026-42015, CVE-2026-5260,
+	  CVE-2026-5419
+	go: CVE-2026-33811, CVE-2026-33814, CVE-2026-39817, CVE-2026-39819,
+	  CVE-2026-39820, CVE-2026-39823, CVE-2026-39825, CVE-2026-39826,
+	  CVE-2026-39836, CVE-2026-42499, CVE-2026-42501
+	go-bootstrap-stage5: CVE-2026-33811, CVE-2026-33814, CVE-2026-39817,
+	  CVE-2026-39819, CVE-2026-39820, CVE-2026-39823, CVE-2026-39825,
+	  CVE-2026-39826, CVE-2026-39836, CVE-2026-42499, CVE-2026-42501
+	imagemagick: CVE-2026-28493, CVE-2026-28494, CVE-2026-28686,
+	  CVE-2026-28687, CVE-2026-28688, CVE-2026-28689, CVE-2026-28690,
+	  CVE-2026-28691, CVE-2026-28692, CVE-2026-28693, CVE-2026-30883,
+	  CVE-2026-30929, CVE-2026-30931, CVE-2026-30935, CVE-2026-30936,
+	  CVE-2026-30937, CVE-2026-31853, CVE-2026-32259, CVE-2026-32636,
+	  CVE-2026-33535, CVE-2026-33536, CVE-2026-33899, CVE-2026-33900,
+	  CVE-2026-33901, CVE-2026-33902, CVE-2026-33905, CVE-2026-33908,
+	  CVE-2026-34238, CVE-2026-40169, CVE-2026-40183, CVE-2026-40310,
+	  CVE-2026-40311, CVE-2026-40312
+	lcms2: CVE-2026-41254
+	libarchive: (no CVE assigned)
+	libcurl: CVE-2026-7168, CVE-2026-7009, CVE-2026-6429, CVE-2026-6276,
+	  CVE-2026-6253, CVE-2026-5773, CVE-2026-5545, CVE-2026-4873
+	libexif: CVE-2026-40386, CVE-2026-40385, CVE-2026-32775
+	libjxl: CVE-2025-12474, CVE-2026-1837
+	libmicrohttpd: (no CVE assigned)
+	libpcap: CVE-2025-11961
+	libpjsip: CVE-2025-65102, CVE-2026-25994, CVE-2026-26203,
+	  CVE-2026-26967, CVE-2026-29068, CVE-2026-28799, CVE-2026-32942,
+	  CVE-2026-32945, CVE-2026-33069, CVE-2026-34235, CVE-2026-40614,
+	  CVE-2026-40892, CVE-2026-41416, CVE-2026-41415, CVE-2026-42225
+	libsodium: (no CVE assigned)
+	libspdm: GHSA-m4wc-xmvg-369f, GHSA-j54w-759w-xj3m
+	liburiparser: CVE-2026-42371
+	libxml2: CVE-2026-6732
+	linux-pam: CVE-2025-6020
+	log4cxx: CVE-2025-54812, CVE-2025-54813, CVE-2026-40023
+	mbedtls: CVE-2025-66442, CVE-2026-25833, CVE-2026-25834,
+	  CVE-2026-25835, CVE-2026-34871, CVE-2026-34872, CVE-2026-34873,
+	  CVE-2026-34874, CVE-2026-34875, CVE-2026-34876, CVE-2026-34877
+	musl: CVE-2026-6042, CVE-2026-40200
+	nginx: CVE-2026-27654, CVE-2026-27784, CVE-2026-32647, CVE-2026-27651,
+	  CVE-2026-28753, CVE-2026-28755
+	opensc: CVE-2025-13763, CVE-2025-49010, CVE-2025-66215, CVE-2025-66038,
+	  CVE-2025-66037
+	openvpn: CVE-2026-40215, CVE-2026-35058
+	p11-kit: CVE-2026-2100
+	p7zip: CVE-2021-3520
+	php: CVE-2026-7263, CVE-2026-6735, CVE-2026-29078, CVE-2026-29079,
+	  CVE-2026-7259, CVE-2026-6104, CVE-2025-14179, CVE-2026-6722,
+	  CVE-2026-7261, CVE-2026-7262, CVE-2026-7568, CVE-2026-7258,
+	  CVE-2026-42371
+	proftpd: CVE-2026-42167
+	python-cbor2: CVE-2026-26209
+	python-django: CVE-2026-5766, CVE-2026-35192, CVE-2026-6907,
+	  CVE-2026-3902, CVE-2026-4277, CVE-2026-4292, CVE-2026-33033,
+	  CVE-2026-33034
+	python-lmdb: CVE-2019-16224, CVE-2019-16225, CVE-2019-16226,
+	  CVE-2019-16227, CVE-2019-16228
+	python-magic-wormhole: CVE-2026-32116
+	python-pyasn1: CVE-2026-30922
+	python-pyopenssl: CVE-2026-40475, CVE-2026-27459, CVE-2026-27448
+	python-requests: CVE-2026-25645
+	rsync: (no CVE assigned)
+	ruby: CVE-2026-41316
+	squid: CVE-2026-32748, CVE-2026-33515, CVE-2026-33526
+	strongswan: CVE-2026-25075
+	systemd: CVE-2026-29111, CVE-2026-40226
+	thrift: CVE-2025-48431, CVE-2026-41602, CVE-2026-41603, CVE-2026-41604,
+	  CVE-2026-41605, CVE-2026-41606, CVE-2026-41607, CVE-2026-41636,
+	  CVE-2026-43868, CVE-2026-43869, CVE-2026-43870
+	tor: CVE-2026-44597, CVE-2026-44599, CVE-2026-44600, CVE-2026-44601,
+	  CVE-2026-44602, CVE-2026-44603
+	util-linux: CVE-2026-27456
+	webkitgtk: CVE-2026-20643, CVE-2026-20664, CVE-2026-20665,
+	  CVE-2026-20691, CVE-2026-28857, CVE-2026-28859, CVE-2026-28861,
+	  CVE-2026-28871, CVE-2025-43457, CVE-2025-46299, CVE-2026-20608,
+	  CVE-2026-20635, CVE-2026-20636, CVE-2026-20644, CVE-2026-20652,
+	  CVE-2026-20676
+	wireshark: CVE-2026-5409, CVE-2026-5408, CVE-2026-5406, CVE-2026-5407,
+	  CVE-2026-5299, CVE-2026-5401, CVE-2026-5404, CVE-2026-5403,
+	  CVE-2026-5405, CVE-2026-5654, CVE-2026-5657, CVE-2026-5656,
+	  CVE-2026-5653, CVE-2026-6538, CVE-2026-6537, CVE-2026-6535,
+	  CVE-2026-6534, CVE-2026-6533, CVE-2026-6532, CVE-2026-6531,
+	  CVE-2026-6530, CVE-2026-6529, CVE-2026-6527, CVE-2026-6524,
+	  CVE-2026-6523, CVE-2026-6521, CVE-2026-6520, CVE-2026-6519,
+	  CVE-2026-6522, CVE-2026-6870, CVE-2026-6869, CVE-2026-6868
+	wolfssl: CVE-2026-5264, CVE-2026-5263, CVE-2026-5295, CVE-2026-5466,
+	  CVE-2026-5477, CVE-2026-5447, CVE-2026-5500, CVE-2026-5501,
+	  CVE-2026-5503, CVE-2026-5187, CVE-2026-5188, CVE-2026-5448,
+	  CVE-2026-5772, CVE-2026-5778, CVE-2026-3548, CVE-2026-3549,
+	  CVE-2026-3547, CVE-2026-0819, CVE-2026-1005, CVE-2026-2645,
+	  CVE-2026-3230, CVE-2025-12888, CVE-2025-11936, CVE-2025-11935,
+	  CVE-2025-11934, CVE-2025-11933, CVE-2025-11931, CVE-2025-11932,
+	  CVE-2025-12889, CVE-2025-13912, CVE-2025-7395, CVE-2025-7394,
+	  CVE-2025-7396
+	wolftpm: CVE-2025-7844
+	xdg-dbus-proxy: (no CVE assigned)
+	xlib_libXpm: CVE-2026-4367
+	xserver_xorg-server: CVE-2026-33999, CVE-2026-34000, CVE-2026-34001,
+	  CVE-2026-34002, CVE-2026-34003
+	xwayland: CVE-2026-33999, CVE-2026-34000, CVE-2026-34001,
+	  CVE-2026-34002, CVE-2026-34003
+
+	Toolchain:
+
+	- gcc: fix GCC 13, 14 and 15 build with host GCC 16
+	- linux-headers: bump to 5.10.256, 5.15.207, 6.1.173, 6.6.140, 6.12.90,
+	  6.18.32, 6.19.14
+
+	Infrastructure updates/fixes:
+
+	- Various improvements to pkg-stats.
+
+	Updated / fixed packages: apache, bat, btrfs-progs, bubblewrap,
+	  c-icap, ca-certificates, cups, dash, dropbear, eudev, exim, expat,
+	  ffmpeg, ficl, frr, gcc, ghostscript, gnutls, go, go-bootstrap-stage5,
+	  haproxy, imagemagick, kmod, lcms2, libarchive, libcurl, libexif,
+	  libjxl, libmicrohttpd, libpcap, libpjsip, libpng, libsodium, libspdm,
+	  liburiparser, libxml2, linux, linux-headers, linux-pam, log4cxx,
+	  make, mbedtls, mkpasswd, musl, mutt, neon, netsnmp, network-manager,
+	  nginx, opensc, openssh, openvpn, p11-kit, p7zip, php, proftpd,
+	  python-cbor2, python-certifi, python-django, python-lmdb,
+	  python-magic-wormhole, python-pyasn1, python-pyopenssl,
+	  python-requests, python3, rsync, ruby, squid, strongswan, sudo,
+	  systemd, thrift, tor, util-linux, watchdogd, webkitgtk,
+	  wireless-regdb, wireshark, wolfssl, wolftpm, xdg-dbus-proxy,
+	  xlib_libXpm, xserver_xorg-server, xwayland
+
+2026.02.1, released April 21, 2026
+
+	Changes with potentially large impact:
+
+	- openssl was updated to 3.5.0 which has a few incompatible changes.
+	  See https://github.com/openssl/openssl/releases/tag/openssl-3.5.0
+
+	Important / security related fixes:
+
+	asterisk: CVE-2026-23739, CVE-2026-23741, CVE-2026-23738,
+	  CVE-2026-23740
+	bind: CVE-2026-1519
+	clamav: CVE-2026-20031
+	cpp-httplib: CVE-2026-21428, CVE-2026-22776, CVE-2026-28434,
+	  CVE-2026-28435, CVE-2026-29076, CVE-2026-31870, CVE-2026-32627,
+	  CVE-2026-33745, CVE-2026-34441
+	exiv2: CVE-2026-25884, CVE-2026-27596, CVE-2026-27631
+	expat: CVE-2026-32776, CVE-2026-32777, CVE-2026-32778
+	freetype: [No CVE tracking], CVE-2026-23865
+	giflib: CVE-2021-40633, CVE-2025-31344
+	go: CVE-2026-32289, CVE-2026-33810, CVE-2026-27144, CVE-2026-27143,
+	  CVE-2026-32288, CVE-2026-32283, CVE-2026-27140, CVE-2026-32280,
+	  CVE-2026-32281
+	libarchive: [No CVE tracking]
+	libcap: CVE-2026-4878
+	libcurl: CVE-2026-3805, CVE-2026-3784, CVE-2026-3783, CVE-2026-1965
+	libde265: CVE-2026-33164, CVE-2026-33165
+	libglib2: CVE-2025-13601, CVE-2026-1484, CVE-2026-1485, CVE-2026-1489
+	libgpiod2: [No CVE tracking]
+	libinput: CVE-2026-35093, CVE-2026-35094
+	libmicrohttpd: CVE-2025-59777, CVE-2025-62689
+	libopenssl: CVE-2026-31790, CVE-2026-28386, CVE-2026-28387,
+	  CVE-2026-28388, CVE-2026-28389, CVE-2026-28390, CVE-2026-31789
+	libpng: CVE-2026-33416, CVE-2026-33636, CVE-2026-34757
+	libsoup3: CVE-2025-14523
+	libtpms: CVE-2026-21444
+	libxml2: CVE-2026-1757, CVE-2026-0990, CVE-2026-0992, CVE-2025-10911,
+	  CVE-2026-0989
+	musl: CVE-2025-26519
+	nfs-utils: CVE-2025-12801
+	nghttp2: CVE-2026-27135
+	perl: CVE-2026-4176
+	python-django: CVE-2026-25673, CVE-2026-25674
+	python-flask: CVE-2026-27205
+	python-gpiod: [No CVE tracking]
+	python-pyasn1: CVE-2026-23490
+	python-pyjwt: CVE-2026-32597
+	python-wheel: CVE-2026-24049
+	python3: CVE-2026-4224, CVE-2026-3644, CVE-2026-2297
+	quickjs: CVE-2025-62490, CVE-2025-62491, CVE-2025-62492,
+	  CVE-2025-62493, CVE-2025-62494, CVE-2025-62495, CVE-2025-62496
+	rauc: CVE-2026-34155
+	redis: [No CVE tracking]
+	tor: TROVE-2026-003, TROVE-2026-004
+	wireshark: CVE-2026-3201, CVE-2026-3203
+	xz: CVE-2026-34743
+
+	Toolchain:
+
+	- linux-headers: bump to 6.19.12, 6.18.22, 6.12.81, 6.6.134, 6.1.168,
+	  5.15.202, 5.10.252
+	- uclibc: bump to 1.0.57
+
+	Infrastructure updates/fixes:
+
+	- cve-check: fix CVE URL format
+	- generate-cyclonedx: add source attribute with NVD reference for CVEs
+	- Add SECURITY.md
+	- Fix error handling in br2-external
+	- New runtime test for memcached
+	- Remove 32-bit EFI from runtime tests
+	- New runtime test for connman
+	- Added support for "secondary" target that are less often tested in
+	  autobuilders
+	- Update kernel and toolchain for some tests
+
+	Updated defconfigs: aarch64_efi, nitrogen*, stm32mp135f_dk,
+	versal2_vek385
+
+	Updated / fixed packages: asterisk, bind, bind, bootgen, clamav, cpp-
+	httplib, cpp-httplib, docker, edk2, exiv2, expat, faketime, freeradius-
+	server, freetype, freetype, giflib, giflib, go, igh-ethercat, jasper,
+	kodi, leafnode2, libarchive, libcap, libcurl, libde265, libftdi1,
+	libglib2, libgpiod2, libgpiod2, libheif, libinput, libmicrohttpd,
+	libopenssl, libpng, libpng, libsoup3, libtpms, libtpms, libvips,
+	libxml2, linux, linux-headers, ltp-testsuite, luvi, mesa3d, mpd, musl,
+	nfs-utils, nfs-utils, nghttp2, perl, php, postgresql, python-django,
+	python-flask, python-gpiod, python-pyasn1, python-pyjwt, python-tornado,
+	python-wheel, python3, python3, quickjs, rauc, redis, sqlite, sway, tor,
+	uboot, uclibc, wireshark, wpebackend-fdo, xen, xz, xz, zfs
+
+2026.02, released March 4th, 2026
+
+	Various fixes.
+
+	Updated/fixed packages: freerdp, graphicsmagick, ruby, nsquid,
+	vim
+
+2026.02-rc3, released March 2nd, 2026
+
+	Fixes all over the tree.
+
+	support/testing/run-tests: Work around a node2 patch in Debian
+	testing/unstable:
+	https://bugs.debian.org/cgi-bin/bugreport.cgi?bug=1129350
+
+	Updated/fixed packages: bind, botan, containerd, cups, gpsd,
+	flashbench, igmpproxy, imagemagick, libssh, libunistring,
+	libvirt, mesa3d, mupdf, openscap, patch, poco,
+	python-multipart, rtl_433, safeclib, samba4, tinyproxy,
+	udisks, webkitgtk, wireshark, wlroots, wpewebkit
+
+2026.02-rc2, released February 24th, 2026
+
+	Fixes all over the tree.
+
+	Updated/fixed packages: bind, c-ares, libzlib, mpir, netsnmp,
+	python-anyio, python-fastapi, python-jsonschema,
+	python-pybind, python-starlette, qemu, ruby, snort, systemd,
+	wmctrl, wpewebkit
+
+2026.02-rc1, released February 17th, 2026
+
+	Fixes all over the tree and new features.
+
+	Arch:
+	- Add HPPA architecture support
+	- Drop ARC big-endian support
+
+	Toolchain:
+	- Kernel headers: use 6.19.x by default, removed 6.17.x, added
+	  6.19.x support.
+
+	- Binutils: use 2.44 by default, removed 2.42.x, added 2.45.x series.
+
+	Misc:
+	- Various tweaks to utils/generate-cyclonedx for better SBOM
+	  compatibility and more detailed annotations for CVEs fixed
+	  by patches in Buildroot.
+
+	New defconfigs: AMD Versal2 VEK385, HP-9000, QEMU HPPA B160L,
+	STM32h747i-disco
+
+	Removed defconfigs: Raspberrypi3 qt5we
+
+	New packages: adsp-ldr, aichat, k3conf, kibi, libplacebo,
+	libxmlsec1, libyang-cpp, nqptp, openscap,
+	python-annotated-doc, python-base58, python-coherent-licensed,
+	python-diskcache, python-gpiod,
+	python-ipython-pygments-lexers, python-librt,
+	python-markdown-it-py, python-mdit-py-plugins, python-mdurl,
+	python-memray, python-platformdirs, python-rich,
+	python-sdbus-systemd, python-textual, python-varlink,
+	qoriq-restool, rasdaemon, sigsum-go, sysrepo-cpp, yq, zellij
+
+	Removed packages: alure, bootstrap, chartjs, connman-gtk,
+	cppdb, criu, cvs, datatables-buttons, datatables-fixedcolumns,
+	datatables-responsive, datatables, dbus-triggerd, dmraid,
+	dvdrw-tools, explorercanvas, flot, forge, gconf, hawktracer,
+	jquery-datetimepicker, jquery-keyboard, jquery-mobile,
+	jquery-sidebar, jquery-sparkline, jquery-ui-themes, jquery-ui,
+	jquery-validation, jquery, jsmin, json-javascript, jszip,
+	let-me-create, libcgi, libcuefile, libfreeimage, libiqrf,
+	libmhash, libnids, libsvg-cairo, libsvg, libuwsc, lockdev,
+	musepack, opencv3, openlayers, openpowerlink, opentracing-cpp,
+	php-zmq, python-aioredis, qjson, racehound, rpi-userland,
+	sconeserver, softether, taskd, vis-network, vuejs-router,
+	vuejs, xdriver_xf86-input-mouse
+
+	Issues resolved:
+	- GNU GRUB (BIOS) with f2fs filesystem failed
+	  https://gitlab.com/buildroot.org/buildroot/-/issues/61
+
+	- The shadow package does not correctly configure the ENCRYPT_METHOD..
+	  https://gitlab.com/buildroot.org/buildroot/-/issues/134
+
+	- EGL not found when building libWPE from buildroot base folder
+	  https://gitlab.com/buildroot.org/buildroot/-/issues/144
+
+	- Awkward error message: "Fix you path"
+	  https://gitlab.com/buildroot.org/buildroot/-/issues/151
+
+	- Detected presence of version control tool artifacts
+	  https://gitlab.com/buildroot.org/buildroot/-/issues/154
+
+	- run-tests tool broken with Python 3.14
+	  https://gitlab.com/buildroot.org/buildroot/-/issues/156
+
+	- Moving away from bminor Github mirrors
+	  https://gitlab.com/buildroot.org/buildroot/-/issues/160
+
+	- How can I make the 'en_US' locale by default?
+	  https://gitlab.com/buildroot.org/buildroot/-/issues/161
+
+2025.11.3, released March 17, 2026
+
+	Important / security related fixes:
+
+	botan: CVE-2024-50382, CVE-2024-50383
+	c-ares: CVE-2025-62408
+        clamav: CVE-2026-20031
+	containerd: CVE-2024-25621, CVE-2024-40635, CVE-2025-47291,
+	  CVE-2025-64329
+	cups: CVE-2025-58436, CVE-2025-61915
+	exiv2: CVE-2026-25884, CVE-2026-27596, CVE-2026-27631
+	fluidsynth: CVE-2025-56225
+	freerdp: CVE-2024-32661, CVE-2026-23530, CVE-2026-23531,
+	  CVE-2026-23532, CVE-2026-23533, CVE-2026-23534, CVE-2026-23948,
+	  CVE-2026-24675, CVE-2026-24676, CVE-2026-24679, CVE-2026-24681,
+	  CVE-2026-24682, CVE-2026-24683
+	freetype: CVE-2026-23865
+	graphicsmagick, CVE-2025-27796
+	igmpproxy: CVE-2025-50681
+	imagemagick: CVE-2026-22770, CVE-2026-23874, CVE-2026-23876,
+	  CVE-2026-24481, CVE-2026-25638, CVE-2026-25794, CVE-2026-25795,
+	  CVE-2026-25796, CVE-2026-25798, CVE-2026-25799, CVE-2026-25897,
+	  CVE-2026-25989, CVE-2026-26066, CVE-2026-26283, CVE-2026-26284,
+	  CVE-2026-26983
+	jasper: CVE-2025-8836, CVE-2025-8837
+	libsoup3: CVE-2025-14523
+	libssh: CVE-2025-14821, CVE-2026-0964, CVE-2026-0965, CVE-2026-0966,
+	  CVE-2026-0967, CVE-2026-0968
+	libtpms: CVE-2026-21444
+	mupdf: CVE-2026-25556
+	netsnmp: CVE-2025-68615
+	patch: CVE-2018-6952, CVE-2019-20633
+	postgresql: CVE-2026-2003, CVE-2026-2004, CVE-2026-2005, CVE-2026-2006
+	python-multipart: CVE-2026-24486
+	rtl_433: CVE-2025-34450
+	squid: CVE-2025-62168
+	tinyproxy: CVE-2025-63938
+	vim: CVE-2026-25749, CVE-2026-26269
+	wpewebkit: CVE-2025-31273, CVE-2025-31278, CVE-2025-43211,
+	  CVE-2025-43212, CVE-2025-43216, CVE-2025-43227, CVE-2025-43228,
+	  CVE-2025-43240, CVE-2025-43265, CVE-2025-43272, CVE-2025-43342,
+	  CVE-2025-43343, CVE-2025-43356, CVE-2025-43368, CVE-2025-6558
+
+	Infrastructure updates/fixes:
+
+	linux: make license option visible for _CUSTOM_VERSION as well
+	support/testing/run-tests: fix Debian testing/unstable
+
+	Updated / fixed packages: botan, c-ares, clamav, containerd, cups,
+	  docker, dtc, exiv2, faketime, flashbench, freerdp, freetype,
+	  graphicsmagick, igmpproxy, imagemagick, jasper, libsoup3, libssh,
+	  libtpms, libvips, libvirt, libzlib, mpir, mupdf, netsnmp, patch, poco,
+	  postgresql, python3, python-multipart, qemu, rtl_433, samba4, snort,
+	  squid, tinyproxy, util-linux, vim, webkitgtk, wireshark, wmctrl,
+	  wpewebkit
+
+	Removed packages: qemu (cris target), python3 (ossaudiodev)
+
+2025.11.2, released February 20, 2026
+
+	avahi: CVE-2021-3468, CVE-2023-38469, CVE-2023-38470, CVE-2023-38471,
+	  CVE-2023-38472, CVE-2023-38473, CVE-2024-52615, CVE-2024-52616,
+	  CVE-2025-68276, CVE-2025-68468, CVE-2025-68471, CVE-2026-24401
+	bind: CVE-2025-13878
+	busybox: CVE-2025-46394, CVE-2025-60876
+	expat: CVE-2026-24515, CVE-2026-25210
+	glibc: CVE-2025-15281, CVE-2026-0861, CVE-2026-0915
+	gnutls: CVE-2025-14831, CVE-2026-1584
+	go: CVE-2025-61732, CVE-2025-68121, CVE-2025-61728, CVE-2025-61726,
+	  CVE-2025-68121, CVE-2025-61731, CVE-2025-61730
+	gpsd: CVE-2025-67268, CVE-2025-67268
+	haproxy: CVE-2025-11230
+	intel-microcode: CVE-2024-24853, CVE-2025-31648
+	libopenssl: CVE-2025-11187, CVE-2025-15467, CVE-2025-15468,
+	  CVE-2025-66199, CVE-2025-68160, CVE-2025-69418, CVE-2025-69419,
+	  CVE-2025-69420, CVE-2025-69421, CVE-2026-22795, CVE-2026-22796
+	libpng: CVE-2026-22695, CVE-2026-22801, CVE-2026-25646
+	libtasn1: CVE-2025-13151
+	libvpx
+	linux-pam: CVE-2024-10963
+	nginx: CVE-2025-53859
+	nodejs: CVE-2025-27210, CVE-2025-55130, CVE-2025-55131, CVE-2025-55132,
+	  CVE-2025-59465, CVE-2025-59466, CVE-2026-21637
+	python3: gh-144125, gh-143935, gh-143925, gh-143919, gh-143916
+	python-django: CVE-2025-13473, CVE-2025-14550, CVE-2026-1207,
+	  CVE-2026-1285, CVE-2026-1287, CVE-2026-1312
+	python-urllib3: CVE-2026-21441
+	strongswan: CVE-2025-62291
+	tor: TROVE-2025-016
+	vim: CVE-2025-66476
+	webkitgtk
+
+	Infrastructure updates/fixes:
+
+	arm-trusted-firmware, at91bootstrap3, barebox, linux, opensbi, optee-os,
+	  uboot: Add support for custom license files
+	config-fragments/autobuild: drop a number of duplicated toolchains
+	generate-cyclonedx: fix dependencies
+	Makefile: add check-package-external target
+	pkg-stats: add -N/--needs-update option
+	pkg-stats: fix RuntimeError with python 3.14 asyncio
+	relocate-sdk.sh: pre-calculate files in need of relocation
+	system/Config.in: do not reference md5 for sha256 option
+	testing/run-tests: specify multiprocessing method
+	testing: fix SdbusModemmanager/SdbusNetworkmanager duplicate test name
+	testing: python-requests: new runtime test
+	testing: test_python.py: disable interpreter colors
+	testing: test_python_sdbus_modemmanager: remove unneeded systemd vconsole
+	testing/tests/package/test_firewalld: use ext2 instead of cpio
+
+	Updated / fixed packages: aardvark-dns, asterisk, at91bootstrap3, avahi,
+	berkeleydb, bind, bitcoin, blake3, brltty, brotli, busybox cryptsetup,
+	dash, dc3dd, docker-engine, easy-rsa, efl, ell, expat, frr, glibc,
+	gnutls, go, gpsd, grub2, haproxy, igmpproxy, intel-microcode,
+	kvm-unit-tests, libcec, libbsd, libcdio-paranoia, libcurl, libgphoto2,
+	libgpiod2, libite, libopenssl, libpng, libtasn1, libucl, libvpx,
+	libwebsockets, linux, linux-headers, linux-pam, localedef, lockdev,
+	m4, manual, mcelog, mesa3d, mp4v2, mpg123, mpir, mupdf, netdata,
+	netsniff-ng, nginx, nodejs, parprouted, php, php-lua, pkg-utils, podman,
+	python3, python-django, python-jinja2, python-urllib3, qemu, rp-pppoe,
+	rust-bindgen, safeclib, samba4, sane-airscan, screen, shadow, shapelib,
+	spandsp, squeezelite, strongswan, swig, syslog-ng, systemd, tor, uboot,
+	uclibc, uftp, util-linux, vim, vsftpd, webkitgtk, wireless-regdb,
+	xmlstarlet, zeek
+
+	Removed packages: criu, cvs, dbus-triggerd, dvdrw-tools, libsvg, libsvg-cairo, lockdev, gconf,
+
+2025.11.1, released January 20, 2026
+
+	Important / security related fixes:
+
+	apache: CVE-2025-55753, CVE-2025-58098, CVE-2025-59775, CVE-2025-65082,
+	  CVE-2025-66200
+	cryptsetup
+	dropbear: CVE-2025-14282, CVE-2019-6111
+	exim: CVE-2025-67896
+	gnupg2
+	imagemagick: CVE-2025-66628
+	libarchive
+	libcoap: CVE-2025-59391, CVE-2025-65493, CVE-2025-65494
+	  CVE-2025-65495, CVE-2025-65496, CVE-2025-65497, CVE-2025-65498,
+	  CVE-2025-65499, CVE-2025-65500, CVE-2025-65501
+	libcurl: CVE-2025-13034, CVE-2025-14017, CVE-2025-14524,
+	  CVE-2025-14819, CVE-2025-15079, CVE-2025-15224
+	libfcgi: CVE-2025-23016.
+	libfreeimage: CVE-2019-12211, CVE-2019-12213, CVE-2020-24292,
+	  CVE-2020-24293, CVE-2020-24295, CVE-2021-33367, CVE-2021-40263,
+	  CVE-2021-40266, CVE-2023-47995, CVE-2023-47997
+	libpng: CVE-2025-66293
+	liburiparser: CVE-2025-67899
+	libxslt: CVE-2025-7424, CVE-2025-9714, CVE-2025-11731
+	linenoise: CVE-2025-9810
+	perl: CVE-2025-40909
+	php: CVE-2025-14177, CVE-2025-14178, CVE-2025-14180
+	python-django: CVE-2025-13372, CVE-2025-64460
+	python-filelock: CVE-2025-68146
+	python-fonttools: CVE-2025-66034
+	python-urllib3: CVE-2025-66471, CVE-2025-66418
+	unbound: CVE-2025-11411
+	vlc
+	xserver_xorg-server: CVE-2025-62229, CVE-2025-62230,
+	  CVE-2025-62231
+	xwayland: CVE-2025-62229, CVE-2025-62230, CVE-2025-62231
+
+	Infrastructure updates/fixes:
+
+	- pkg-stats use HEAD request & unique HTTP user-agent
+	- cve-check: don't fail with unknown CVE
+	- generate-cyclonedx: support 'resolved_with_pedigree'
+	- testing: add host bin dir to PATH
+	- testing: add tests for FIT hash support in package/uboot-tools
+	- testing: add libiio python bindings runtime test
+	- testing: ddrescue: use dmsetup from lvm2
+	- testing: ddrescue: use f-string for test config
+	- testing: add tio runtime test
+	- add 'CVE:' trailer in various patches
+	- add md5 hash and update tarball url to various python packages
+	- testing: ltp-testsuite: replace runltp by kirk
+	- testing: new kvmtool runtime test
+	- gitignore: ignore utils/brmake log output named `br.log`
+	- testing: add opus-tools runtime test
+	- testing: add flac runtime test
+	- testing: test_xen: add block
+
+	Updated / fixed packages: apache, arm-trusted-firmware, atf, audit,
+	bitcoin, boost, busybox, cage, cmake, collectl, cppcms, cpulimit,
+	cryptsetup, dbus, dmraid, dropbear, efl, embiggen-disk, evilwm, exim,
+	ficl, fio, fluent-bit, fontconfig, glibc, gnupg2, grpc, gvfs, icu,
+	imagemagick, irqbalance, iwd, kvmtool, ledmon, libarchive, libcoap,
+	libconfig, libcpprestsdk, libcurl, libdill, libdnet, libfcgi, libfreeimage,
+	libgit2, libgtk3, libgtk4, libiio, libmbus, libpng, libselinux, libtirpc,
+	libupnp, liburiparser, libvncserver, libxslt, linenoise, linux-tools,
+	lttng-modules, lugaru, matchbox-fakekey, matchbox-keyboard, matchbox-lib,
+	matchbox-panel, mender-update-modules, mesa3d, mosh, nfs-utils, open-lldp,
+	opencv4, opencv4-contrib, openjdk, perl, perl-dbd-mysql, perl-mozilla-ca,
+	php, pigz, pixman, python-brotli, python-can, python-certifi, python-django,
+	python-filelock, python-fonttools, python-pyqt5, python-urllib3, python3,
+	qt5enginio, qt5webkit, qt6base, racehound, rdesktop, rpcbind, rpi-firmware,
+	rtl8192eu, rtl8723bu, rtl8723ds, rtl8821au, rtl8821cu, rtl8822cs, samba4,
+	skopeo, softether, softhsm2, spice, ssdp-responder, sway, tio, trinity,
+	tzdata, uboot, uboot-tools, uclibc, unbound, utfcpp, v4l2loopback, vim, vlc,
+	xdriver_xf86-video-intel, xen, xinetd, xlib_libxshmfence,
+	xserver_xorg-server, xvkbd, xwayland, zic, zxing-cpp
+
+	Removed packages: opencv3 'protobuf', opencv3 'ffmpeg',
+	   libdnet 'python', rpi-firmware 'vcdbg'
+
+2025.11, released December 11th, 2025
+
+	Fixes all over the tree.
+
+	linux: Default to 6.18 for runtime kernel and kernel headers,
+	drop the now EOL 5.4.x series.
+
+	Updated/fixed packages: apache, audit, cryptodev-linux,
+	dmraid, ficl, glibc, go, intel-mediadriver, intel-vpl-gpu-rt,
+	kbd, libcap, libdbi, libgit2, libpng, libtirpc, libxslt,
+	lugaru, mosh, pigz, podman, python-fonttools, python-urllib3,
+	python3, racehound, rdesktop, rtl8188eu, softhsm, sqlite,
+	strace, unbound, unzip, xapp_xkbutils,
+	xdriver_xf86-video-intel, xl2tp, xserver_xorg-server, xwayland
+
+2025.11-rc2, released November 30th, 2025
+
+	Fixes all over the tree.
+
+	Infrastructure: support/scripts/check-merged (introduced in
+	2025.11-rc1) no longer relies on getopt from util-linux
+
+	Defconfigs: pine64 star: Update U-Boot and Linux kernel to fix
+	builds with GCC 14.x
+
+	Updated/fixed packages: 18xx-ti-utils, depot-tools, e2fsprogs,
+	enscript, fio, gnutls, intel-mediadriver, intel-vpl-gpu-rt,
+	ledmon, libpng, libteam, lmbench, mongoose, netsnmp,
+	nss-pam-ldapd, open-plc-utils, oprofile, pdmenu, php-apcu,
+	php-pecl-dbus, php-xdebug, php-yaml, python-flask-restx,
+	python-pysocks, python-starlette, sane-backends, sbc, sdl,
+	stress-ng, swipl, syslinux, time, tmux, tor, uboot-tools,
+	woff2, xfsprogs, yaml-cpp
+
+	Removed packages: libargtable2, starfive-spltool
+
+2025.11-rc1, released November 20th, 2025
+
+	Fixes all over the tree and new features.
+
+	Infrastructure:
+
+	- Support merged /usr/sbin/ (E.G. sbin a symlink to bin rather
+	  than separate directories), which is required by systemd
+	  256+
+
+	- support/scripts/cve-check can now be used to enrich a SBOM
+	  in CycloneDX format (as generated by
+	  utils/generate-cyclonedx) with vulnerability analysis from
+	  the NVD database.
+
+	Dropped a number of old and unmaintained packages and external
+	toolchains.
+
+	New defconfigs: Compulab IOT-GATE-iMX8 EBBR, QEMU x86-64 EFI
+
+	Removed defconfigs: at91sam9260eknf, atmel_sama5d3xek,
+	roseapplepi
+
+	New packages: broot, bvi, go-bootstrap-stage4, libpam-pkcs11,
+	llama-cpp, nnn, python-crccheck, python-fs, python-patch-ng,
+	python-pyfatfs, python-scp, python-whitenoise, snapboot, wmenu
+
+	Removed packages: aufs, aufs-util, axfsutils, bctoolbox,
+	belle-sip, belr, dmenu-wayland, dvbsnoop,
+	ev3dev-linux-drivers, expect, fbtft, gtk2-engines, gtkperf,
+	leafpad, lesstif, libbson, libglade, libgtk2, libjwt, libsexy,
+	linphone, logsurfer, mediastreamer, metacity, mongrel2, ola,
+	ortp, procrank_linux, ramspeed, sylpheed
+
+2025.08.3, released December 11, 2025
+
+	Important / security related fixes:
+
+	- asterisk: CVE-2025-1131, CVE-2025-57767, CVE-2025-49832,
+	            CVE-2025-47780, CVE-2025-47779
+	- gnutls: CVE-2025-9820
+	- libpng: CVE-2025-64505, CVE-2025-64506, CVE-2025-64720, CVE-2025-65018
+	- luksmeta: CVE-2025-11568
+	- mariadb: CVE-2025-30693, CVE-2025-30722, CVE-2023-52969,
+	           CVE-2023-52970, CVE-2023-52971
+	- openvpn: CVE-2025-13086
+	- postgresql: CVE-2025-12817, CVE-2025-12818
+	- python-django: CVE-2025-64458, CVE-2025-64459
+	- python-startlette: GHSA-7f5h-v6xp-fcq8
+
+	Infrastructure updates/fixes:
+
+	- New script support/scripts/cve-check to enricht CycloneDX SBoM with
+	  CVE information from NVD database.
+
+	Updated / fixed packages: 18xx-ti-utils, asterisk, enscript, gnutls,
+	libpng, libroxml, libteam, linux-headers, luksmeta, mariadb, nbd, neard,
+	nss-pam-ldapd, open-plc-utils, openjdk, openjdk-bin, openvpn, oprofile,
+	pdmenu, perl-net-ssleay, postgresql, python-django, python-starlette,
+	redis, sane-bacends, sbc, sdbusplus, sdl, swipl, tailscale, thermald,
+	tmux, tor
+
+	Removed packages: bctoolbox, belle-sip, belr, linphone, mediastreamer,
+	mongrel2, ortp
+
+2025.08.2, released November 20, 2025
+
+    Important / security related fixes:
+
+	- bind: CVE-2025-8677, CVE-2025-40778, CVE-2025-40780
+	- dante: CVE-2024-54662
+	- erlang: CVE-2024-53846, CVE-2025-4748, CVE-2025-26618, CVE-2025-30211,
+	          CVE-2025-32433, CVE-2025-46712, CVE-2025-48038,
+	          CVE-2025-48039, CVE-2025-48040, CVE-2025-48041
+	- hostapd: CVE-2025-24912
+	- imagemagick: CVE-2025-62171
+	- iptraf-ng: CVE-2024-52949
+	- libarchive: CVE-2025-25724
+	- libglib2: CVE-2024-54662
+	- libvips: CVE-2025-29769, CVE-2025-59933
+	- libvpx: CVE-2025-5283
+	- libxslt: CVE-2025-24855, CVE-2024-55549
+	- mbedtls: CVE-2025-54764, CVE-2025-59438
+	- modsecurity2: CVE-2025-52891, CVE-2025-54571
+	- netdata: CVE-2023-22496, CVE-2023-22497
+	- podman: CVE-2025-9566
+	- poppler: CVE-2024-6239, CVE-2024-56378, CVE-2025-32364,
+	           CVE-2025-32365, CVE-2025-43903, CVE-2025-50420,
+	           CVE-2025-52886
+	- python3: gh-139312, gh-139700, gh-139400, gh-135661, gh-135661,
+	           gh-102555, gh-135462, gh-118350, gh-86155
+	- python-webpy: CVE-2025-3818
+	- redis: CVE-2025-46817, CVE-2025-46818, CVE-2025-46819, CVE-2025-49844
+	- samba: CVE-2025-3818, CVE-2025-10230
+	- shairport-sync: Upstream security fixes without CVE
+	- squid: CVE-2025-59362
+	- suricata: CVE-2024-37151, CVE-2024-38535
+	- tpm2-tss: CVE-2024-29040
+	- xerces: CVE-2024-23807
+	- zabbix: CVE-2025-27231, CVE-2025-27236, CVE-2025-27238, CVE-2025-49641
+	- zip: CVE-2018-13410
+
+	Infrastructure updates/fixes:
+
+	- Improved matching of CPE ID with NVD database, resulting in more accurate
+	  identification of CVEs.
+	- brmake: avoid garbled output with top-level parallel build
+
+	Updated / fixed packages: 4th, audit, bind, cmake, crun, dante,
+	ebtables, erlang, freeradius-server, freerdp, gpsd, gstd, hostapd,
+	imagemagick, iptraf-ng, ledmon, libarchive, libcurl, libdbi-drivers,
+	libdisplay-info, libglib2, libgphoto2, libgtk3, libheif, libiconv,
+	libsemanage, libshout, libsolv, libtpms, libvips, libvpx, libwpe,
+	libxslt, linux, linux-headers, live555, mbedtls, micropython,
+	mjpg-streamer, modsecurity2, netdata, podman, poppler, python3,
+	python-flask-cors, python-webpy, quota, qt6multimedia, redis, refpolicy,
+	samba4, shairport-sync, selinux-python, sexpect, siproxd, sqlite, squid,
+	suricata, tor, tpm2-tss, waffle, webkitgtk, wireless-regdb, wpewebkit,
+	xerces, zabbix, zip
+
+	Removed package: ramspeed
+
+	Boards updated / fixed: andes_ae350_45, beaglebone, beagleboneai,
+	cubieboard1, cubieboard2, imx6ulz_bsh_smm_m2, imx8mn_bsh_smm_s2,
+	imx8mn_bsh_smm_s2_pro, olimex_a20_olinuxino_lime*, stm32f429_disco_xip,
+	stm32f746_disco_sd, stm32f769_disco_sd, stm32mp1*_dk*, ti_am62x_sk
+
+	Test Improvements:
+
+	- Capture output of failing commands on host.
+
 2025.08.1, released October 11, 2025
 
     Important / security related fixes:
@@ -511,6 +1765,868 @@
 
 	- netsnmp: unexpected header length in /proc/net/snmp...
 	  https://gitlab.com/buildroot.org/buildroot/-/issues/110
+
+2025.02.17, released August 23, 2026
+
+	Important / security related fixes:
+
+	apr-util: CVE-2025-49506, CVE-2026-32327, CVE-2026-34191,
+	  CVE-2026-34501, CVE-2026-34502
+	bind: CVE-2026-10723, CVE-2026-10822, CVE-2026-11331, CVE-2026-11605,
+	  CVE-2026-11622, CVE-2026-11721, CVE-2026-12617, CVE-2026-13204,
+	  CVE-2026-13321
+	botan: CVE-2026-32877, CVE-2026-32883, CVE-2026-32884, CVE-2026-34580,
+	  CVE-2026-34582
+	busybox: CVE-2023-39810, CVE-2024-58251, CVE-2026-26157,
+	  CVE-2026-26158, CVE-2026-29004
+	containerd: CVE-2026-35469, CVE-2026-46680, CVE-2026-47262,
+	  CVE-2026-53488
+	dracut: CVE-2026-6893
+	dropbear: (no CVE assigned)
+	exim: GCVE-25-2026-07-45-1, CVE-2026-66140, CVE-2026-66141
+	expat: CVE-2026-72522
+	go: CVE-2026-39822
+	intel-microcode: CVE-2025-31936, CVE-2025-31938, CVE-2025-35973,
+	  CVE-2026-20707, CVE-2026-20713, CVE-2026-20716, CVE-2026-20760,
+	  CVE-2026-20917
+	libarchive: (no CVE assigned)
+	libass: CVE-2026-61626, CVE-2026-61627
+	libgcrypt: CVE-2026-41989
+	libgit2: CVE-2026-53583, CVE-2026-53584, CVE-2026-53585,
+	  CVE-2026-53586, CVE-2026-53587
+	libheif: CVE-2026-62289, CVE-2026-62291, CVE-2026-62292,
+	  CVE-2026-62377, GHSA-46rp-pcq2-rpmr, GHSA-73p7-m7gg-w2jv,
+	  GHSA-9ww4-9v47-m7pj, GHSA-jc8f-p23p-5hjg, GHSA-xpw3-9rhw-482x
+	libmodsecurity: CVE-2026-52747, CVE-2026-52761
+	libssh: CVE-2026-15370, CVE-2026-59843, CVE-2026-59844, CVE-2026-59845,
+	  CVE-2026-59846, CVE-2026-59847, CVE-2026-59848, CVE-2026-59849,
+	  CVE-2026-59850
+	memcached: (no CVE assigned)
+	ntfs-3g: CVE-2026-42616, CVE-2026-42617, CVE-2026-42618,
+	  CVE-2026-46569, CVE-2026-46570, CVE-2026-46571, CVE-2026-46572,
+	  CVE-2026-56135, CVE-2026-56136
+	openssh: CVE-2026-59995, CVE-2026-59996, CVE-2026-59997,
+	  CVE-2026-59998, CVE-2026-59999, CVE-2026-60000, CVE-2026-60001,
+	  CVE-2026-60002
+	openvpn: CVE-2026-63649
+	perl: CVE-2026-13221, CVE-2026-57432, CVE-2026-8376
+	php: CVE-2026-17543, CVE-2026-7260, CVE-2026-9672
+	postgresql: CVE-2026-14662, CVE-2026-14663, CVE-2026-14664,
+	  CVE-2026-14666, CVE-2026-14668, CVE-2026-14669, CVE-2026-14670,
+	  CVE-2026-14671, CVE-2026-14672, CVE-2026-14673, CVE-2026-14676,
+	  CVE-2026-14677, CVE-2026-14678, CVE-2026-14679, CVE-2026-14680,
+	  CVE-2026-14681, CVE-2026-15741, CVE-2026-15742, CVE-2026-16238,
+	  CVE-2026-16239, CVE-2026-16241, CVE-2026-18024, CVE-2026-18408,
+	  CVE-2026-19385, CVE-2026-6464, CVE-2026-6469, CVE-2026-6470,
+	  CVE-2026-6471
+	python3: CVE-2025-13462, CVE-2026-15308, CVE-2026-2297, CVE-2026-3644,
+	  CVE-2026-4224, CVE-2026-4519, CVE-2026-7210
+	redis: (no CVE assigned)
+	rsync: CVE-2026-53783, CVE-2026-53784, CVE-2026-53785, CVE-2026-53786,
+	  CVE-2026-53788, CVE-2026-53789, CVE-2026-53790, CVE-2026-53791,
+	  CVE-2026-53792, CVE-2026-53793, CVE-2026-53794, CVE-2026-53795,
+	  CVE-2026-53796, CVE-2026-53797, CVE-2026-53798, CVE-2026-53799,
+	  CVE-2026-53800, CVE-2026-53801, CVE-2026-53802, CVE-2026-53803,
+	  CVE-2026-70452, CVE-2026-70453, CVE-2026-70454, CVE-2026-70455,
+	  CVE-2026-70456, CVE-2026-70457, CVE-2026-70458, CVE-2026-70459,
+	  CVE-2026-70460, CVE-2026-70461, CVE-2026-70462, CVE-2026-70463,
+	  CVE-2026-70464
+	samba4: CVE-2026-58216, CVE-2026-58218, CVE-2026-58221, CVE-2026-58222,
+	  CVE-2026-58224, CVE-2026-6949
+	screen: (no CVE assigned)
+	ser2net: GHSA-cgh5-39mg-vhfr
+	socat: CVE-2026-56123
+	sqlite: CVE-2026-1182, CVE-2026-11822, CVE-2026-11824
+	stunnel: CVE-2026-70367, CVE-2026-70368
+	syslog-ng: CVE-2026-39879
+	util-linux: CVE-2026-13595
+	vim: CVE-2026-28417, CVE-2026-28418, CVE-2026-28419, CVE-2026-28420,
+	  CVE-2026-28421, CVE-2026-28422, CVE-2026-32249, CVE-2026-33412,
+	  CVE-2026-34714, CVE-2026-34982, CVE-2026-35177, CVE-2026-39881,
+	  CVE-2026-41411, CVE-2026-42307, CVE-2026-44656, CVE-2026-45130,
+	  CVE-2026-46483, CVE-2026-47162, CVE-2026-47167, CVE-2026-52858,
+	  CVE-2026-52859, CVE-2026-52860, CVE-2026-55693, CVE-2026-55892,
+	  CVE-2026-55895, CVE-2026-57451, CVE-2026-57452, CVE-2026-57453,
+	  CVE-2026-57455, CVE-2026-57456, CVE-2026-59856, CVE-2026-59857,
+	  CVE-2026-59858
+	wpa_supplicant: (no CVE assigned)
+	xlib_libXfont2: CVE-2026-56001, CVE-2026-56002, CVE-2026-56003
+	xserver_xorg-server: CVE-2026-55999, CVE-2026-56000
+	xwayland: CVE-2026-55999, CVE-2026-56000
+
+	Toolchain:
+
+	- toolchain-buildroot: drop Synopsys ARC specific GCC, binutils and gdb
+	- toolchain-external: drop Synopsys ARC toolchain
+	- linux-headers:: bump to 5.10.265, 5.15.216, 6.1.183, 6.6.152,
+	  6.12.104
+
+	Infrastructure updates/fixes:
+
+	- Add license information for skeleton packages
+	- Make docker image reproducible again
+	- New runtime tests for guile, libgpiod2, mdnsd, php, python-pydal
+
+	Updated defconfigs: acmesystems_acqua_a5_*
+
+	Removed defconfigs: acmesystems_aria_g25_{128mb, 256mb},
+	  acmesystems_arietta_g25_{128mb, 256mb}, s6lx9_microboard, ts4900,
+	  ts5500
+
+	Removed packages: argparse, ts4900-fpga
+
+	Updated / fixed packages: apache, apr-util, arm-trusted-firmware,
+	  at-spi2-core, bind, binutils, botan, busybox, cantarell, cifs-utils,
+	  containerd, cramfs, dbus-broker, dracut, drop, dropbear,
+	  environment-setup, exim, expat, glibc, go, guile, gvfs,
+	  ifupdown-scripts, initscripts, intel-microcode, libarchive, libass,
+	  libcamera, libgcrypt, libgee, libgit2, libglib2, libgpg-error,
+	  libgtk4, libgudev, libheif, libmicrohttpd, libmodsecurity, libpeas,
+	  librsvg, libsecret, libsoup, libsoup3, libssh, linux, linux-headers:,
+	  localedef, mbedtls, memcached, mini-snmpd, nettle, ntfs-3g, ogre,
+	  open62541, openblas, openssh, openvpn, optee-os, p11-kit, pahole,
+	  perl, php, postgresql, python-paho-mqtt, python-pydal, python-web2py,
+	  python3, qt6, quickjs, redis, rsync, rygel, samba4, screen, ser2net,
+	  socat, sqlite, stunnel, syslog-ng, uclibc, urandom-scripts, usbutils,
+	  util-linux, vim, wpa_supplicant, xlib_libXfont2, xserver_xorg-server,
+	  xwayland, xz
+
+2025.02.16, released July 15, 2026
+
+	Important / security related fixes:
+
+	apache: CVE-2026-29167, CVE-2026-29170, CVE-2026-34355, CVE-2026-34356,
+	  CVE-2026-42535, CVE-2026-42536, CVE-2026-43951, CVE-2026-44119,
+	  CVE-2026-44185, CVE-2026-44186, CVE-2026-44631, CVE-2026-48913,
+	  CVE-2026-49975
+	asterisk: GHSA-3g56-cgrh-95p5, GHSA-3rhj-hhw7-m6fw,
+	  GHSA-4pgv-j3mr-3rcp, GHSA-589g-qgf8-m6mx, GHSA-746q-794h-cc7f,
+	  GHSA-8jhw-m2hg-vp3h, GHSA-8jw3-ccr9-xrmf, GHSA-g8q2-p36q-94f6,
+	  GHSA-h5hv-jmgj-92q2, GHSA-j2mm-57pq-jh94, GHSA-mxgm-8c6f-5p8f,
+	  GHSA-ph27-3m5q-mj5m, GHSA-q9fr-m7g8-6ph5, GHSA-qf8j-jp7h-c5hx,
+	  GHSA-r6c2-hwc2-j4mp, GHSA-vfhr-r9x9-c687, GHSA-vrfp-mg3q-3959,
+	  GHSA-wcvv-g26m-wx5c, GHSA-x348-j6c9-77f3, GHSA-xgj6-2gc5-5x9c
+	avahi: CVE-2026-34933
+	bind: (no CVE assigned), CVE-2026-3593
+	cpp-httplib: CVE-2026-45352, CVE-2026-45372, CVE-2026-46527
+	cups-filters: CVE-2025-64503
+	expat: CVE-2026-50219, CVE-2026-56131, CVE-2026-56132, CVE-2026-56403,
+	  CVE-2026-56404, CVE-2026-56405, CVE-2026-56406, CVE-2026-56407,
+	  CVE-2026-56408, CVE-2026-56409, CVE-2026-56410, CVE-2026-56411,
+	  CVE-2026-56412
+	ghostscript: (no CVE assigned)
+	glibc: CVE-2026-5450, CVE-2026-5928
+	icu: CVE-2025-5222
+	imagemagick: CVE-2026-48724, CVE-2026-48733, CVE-2026-48734,
+	  CVE-2026-48994, CVE-2026-49218, CVE-2026-49219, CVE-2026-53460,
+	  CVE-2026-53461, CVE-2026-53462, CVE-2026-53463, CVE-2026-53464,
+	  CVE-2026-53465
+	jq: CVE-2026-32316, CVE-2026-33947, CVE-2026-33948, CVE-2026-39979,
+	  CVE-2026-40164, CVE-2026-40612, CVE-2026-41256, CVE-2026-41257,
+	  CVE-2026-43894, CVE-2026-43896, CVE-2026-44777, CVE-2026-49839,
+	  CVE-2026-54679
+	libarchive: (no CVE assigned)
+	libcurl: CVE-2026-10536, CVE-2026-11352, CVE-2026-11564,
+	  CVE-2026-11586, CVE-2026-11856, CVE-2026-12064, CVE-2026-8286,
+	  CVE-2026-8458, CVE-2026-8924, CVE-2026-8925, CVE-2026-8926,
+	  CVE-2026-8927, CVE-2026-8932, CVE-2026-9079, CVE-2026-9080,
+	  CVE-2026-9545, CVE-2026-9546, CVE-2026-9547
+	libevent: (no CVE assigned)
+	libglib2: CVE-2025-14087
+	libgsasl: CVE-2026-48829
+	libinput: CVE-2026-50292
+	libopenssl: CVE-2026-34180, CVE-2026-34181, CVE-2026-34182,
+	  CVE-2026-34183, CVE-2026-42764, CVE-2026-42766, CVE-2026-42767,
+	  CVE-2026-42768, CVE-2026-42769, CVE-2026-42770, CVE-2026-45445,
+	  CVE-2026-45446, CVE-2026-45447, CVE-2026-7383, CVE-2026-9076
+	libssh2: CVE-2026-55199, CVE-2026-55200
+	mariadb: CVE-2026-48163, CVE-2026-48165, CVE-2026-49261
+	mesa3d: CVE-2026-40393
+	mongoose: (no CVE assigned yet)
+	nginx: CVE-2026-42055, CVE-2026-48142
+	openjpeg: CVE-2026-6192
+	openvpn: CVE-2026-11771, CVE-2026-12932, CVE-2026-12996,
+	  CVE-2026-13117, CVE-2026-13122, CVE-2026-13698
+	php: CVE-2026-12184, CVE-2026-14355
+	python-django: CVE-2026-35192, CVE-2026-35193, CVE-2026-48587,
+	  CVE-2026-5766, CVE-2026-6873, CVE-2026-6907, CVE-2026-7666,
+	  CVE-2026-8404
+	python3: CVE-2026-11940, CVE-2026-9669
+	redis: CVE-2026-23479, CVE-2026-23631, CVE-2026-25243
+	squid: CVE-2026-33515, CVE-2026-33526, CVE-2026-47729, CVE-2026-50012
+	sudo: CVE-2026-35535
+	swupdate: CVE-2026-28525
+	tiff: CVE-2026-36849
+	tor: TROVE-2026-025, TROVE-2026-026.
+	util-linux: CVE-2025-14104, CVE-2026-27456, CVE-2026-53612,
+	  CVE-2026-53613, CVE-2026-53614
+	webkitgtk: CVE-2026-28847, CVE-2026-28883, CVE-2026-28901,
+	  CVE-2026-28902, CVE-2026-28903, CVE-2026-28904, CVE-2026-28905,
+	  CVE-2026-28907, CVE-2026-28942, CVE-2026-28946, CVE-2026-28947,
+	  CVE-2026-28953, CVE-2026-28955, CVE-2026-28958, CVE-2026-43658,
+	  CVE-2026-43660
+	wolfssl: CVE-2026-10097, CVE-2026-10098, CVE-2026-10512,
+	  CVE-2026-10592, CVE-2026-11310, CVE-2026-11703, CVE-2026-11999,
+	  CVE-2026-12340, CVE-2026-55958, CVE-2026-55960, CVE-2026-55961,
+	  CVE-2026-55962, CVE-2026-55964, CVE-2026-55967, CVE-2026-6091,
+	  CVE-2026-6092, CVE-2026-6094, CVE-2026-6291, CVE-2026-6325,
+	  CVE-2026-6329, CVE-2026-6330, CVE-2026-6331, CVE-2026-6412,
+	  CVE-2026-6450, CVE-2026-6678, CVE-2026-6681, CVE-2026-6731,
+	  CVE-2026-7511, CVE-2026-7531, CVE-2026-7532, CVE-2026-8720
+
+	Toolchain:
+
+	- gcc: bump 14.x series to 14.4.0
+	- glibc, localedef: security bump to version 2.41-143-gfc7a48bc9
+
+	Infrastructure updates/fixes:
+
+	- support/testing Improve TestPythonPy3NetworkmanagerGoi
+	- generate-cyclonedx: fixup scp-style git sites
+	- support/testing: Fix test_gnupg2
+	- support/testing: various internal refactorings
+
+	Updated / fixed packages: apache, asterisk, avahi, bind, bind,
+	  cpp-httplib, cpp-httplib, cups-filters, expat, gcc:, ghostscript,
+	  glibc, hwdata, icu, imagemagick, jq, kodi-screensaver-rsxs,
+	  libarchive, libcurl, libepoxy, libevent, libglib2, libglib2,
+	  libglib2-bootstrap, libgsasl, libgsasl, libinput, libopenssl,
+	  libssh2, libssh2, linux, mariadb, mdnsd, mesa3d, mongoose, mpd,
+	  nginx, ntp, openjpeg, openrc, openvpn, php, python-django, python3,
+	  python3, qt5, redis, rsync, ruby, shadow, shim, squid, squid, squid,
+	  squid, strongswan, sudo, swupdate, tiff, tor, util-linux, util-linux,
+	  util-linux, util-linux, util-linux, util-linux, webkitgtk, wolfssl
+
+2025.02.15, released June 16, 2026
+
+	Important / security related fixes:
+
+	asterisk: GHSA-8fj4-fv9f-hjpc, GHSA-g88q-c2hm-q7p7,
+	  GHSA-j29p-pvh2-pvqp, GHSA-x5pq-qrp4-fmrj
+	bind: CVE-2026-3039, CVE-2026-3592, CVE-2026-5946, CVE-2026-5950
+	capnproto: CVE-2026-322, CVE-2026-32239, CVE-2026-32240
+	cups-filters: CVE-2025-64524
+	dnsmasq: CVE-2026-2291, CVE-2026-4890, CVE-2026-4891, CVE-2026-4892,
+	  CVE-2026-4893, CVE-2026-5172
+	dropbear: CVE-2019-6111, CVE-2026-35385
+	exim: (no CVE assigned), CVE-2026-48840
+	expat: CVE-2026-45186
+	freeipmi: CVE-2026-50031
+	glibc: CVE-2026-4046, CVE-2026-4437, CVE-2026-4438, CVE-2026-5450,
+	  CVE-2026-5928
+	go: (no CVE assigned), CVE-2025-61726, CVE-2025-61728, CVE-2025-61730,
+	  CVE-2025-61731, CVE-2025-61732, CVE-2025-68121, CVE-2025-68121,
+	  CVE-2026-25679, CVE-2026-27137, CVE-2026-27138, CVE-2026-27139,
+	  CVE-2026-27140, CVE-2026-27142, CVE-2026-27143, CVE-2026-27144,
+	  CVE-2026-32280, CVE-2026-32281, CVE-2026-32283, CVE-2026-32288,
+	  CVE-2026-32289, CVE-2026-33810, CVE-2026-33811, CVE-2026-33814,
+	  CVE-2026-39817, CVE-2026-39819, CVE-2026-39820, CVE-2026-39823,
+	  CVE-2026-39825, CVE-2026-39826, CVE-2026-39836, CVE-2026-42499,
+	  CVE-2026-42501
+	go-bootstrap-stage5: CVE-2026-33811, CVE-2026-33814, CVE-2026-39817,
+	  CVE-2026-39819, CVE-2026-39820, CVE-2026-39823, CVE-2026-39825,
+	  CVE-2026-39826, CVE-2026-39836, CVE-2026-42499, CVE-2026-42501
+	haveged: CVE-2026-41054
+	imagemagick: CVE-2026-42326, CVE-2026-45031, CVE-2026-45358,
+	  CVE-2026-45359, CVE-2026-45624, CVE-2026-45664, CVE-2026-46520,
+	  CVE-2026-46521, CVE-2026-46522, CVE-2026-46523, CVE-2026-46557,
+	  CVE-2026-46559
+	intel-microcode: CVE-2025-35979
+	libde265: CVE-2026-45382, CVE-2026-45383, GHSA-ccfw-29x7-rrx3,
+	  GHSA-j2qq-x2xq-g9wr
+	libgpg-error: T8239
+	libheif: CVE-2026-32738, CVE-2026-32739, CVE-2026-32740,
+	  CVE-2026-32741, CVE-2026-32814, CVE-2026-32882, CVE-2026-3949,
+	  CVE-2026-41069, CVE-2026-41071, CVE-2026-47178, CVE-2026-47247,
+	  CVE-2026-47251, CVE-2026-47254, CVE-2026-47709, CVE-2026-47714,
+	  GHSA-5hqq-636x-r3cr, GHSA-6x5f-qchq-cxqv, GHSA-jvmp-j3cw-84mh,
+	  GHSA-r7qj-cg5r-r6vf
+	libmad: CVE-2017-837, CVE-2017-8372, CVE-2017-8373, CVE-2017-8374
+	libmodsecurity: CVE-2026-30923, CVE-2026-42268
+	libssh2: CVE-2026-7598
+	liburiparser: CVE-2026-44927, CVE-2026-44928
+	libusb: CVE-2026-23679, CVE-2026-47104
+	libvncserver: CVE-2026-3285, CVE-2026-32853, CVE-2026-32854
+	linux-pam: CVE-2025-6020
+	mariadb: CVE-2026-34303, CVE-2026-3494, CVE-2026-44168, CVE-2026-44169,
+	  CVE-2026-44170, CVE-2026-44171, CVE-2026-44172, CVE-2026-44173
+	memcached: (no CVE assigned)
+	nginx: CVE-2026-40460, CVE-2026-40701, CVE-2026-42926, CVE-2026-42934,
+	  CVE-2026-42945, CVE-2026-42946, CVE-2026-9256
+	openssh: CVE-2025-61984, CVE-2025-61985, CVE-2026-35385,
+	  CVE-2026-35386, CVE-2026-35387, CVE-2026-35388, CVE-2026-35414
+	php: CVE-2025-14179, CVE-2026-6722, CVE-2026-6735, CVE-2026-7258,
+	  CVE-2026-7259, CVE-2026-7261, CVE-2026-7262, CVE-2026-7568
+	postgresql: CVE-2026-6472, CVE-2026-6473, CVE-2026-6474, CVE-2026-6475,
+	  CVE-2026-6476, CVE-2026-6477, CVE-2026-6478, CVE-2026-6479,
+	  CVE-2026-6575, CVE-2026-6637, CVE-2026-6638
+	putty: CVE-2026-48850, CVE-2026-48851, CVE-2026-48852
+	python-urllib3: CVE-2026-44431, CVE-2026-44432
+	python3: CVE-2026-3276, CVE-2026-7774, CVE-2026-8328
+	radvd: CVE-2026-48715
+	rsync: CVE-2026-29518, CVE-2026-43617, CVE-2026-43618, CVE-2026-43619,
+	  CVE-2026-43620, CVE-2026-45232
+	runc: CVE-2025-31133, CVE-2025-52565, CVE-2025-52881
+	samba4: CVE-2026-1933, CVE-2026-2340, CVE-2026-3012, CVE-2026-3238,
+	  CVE-2026-4408, CVE-2026-4480
+	sdl2_image: CVE-2026-35444
+	sed: CVE-2026-5958
+	sshfs: CVE-2026-47187, CVE-2026-48711
+	tor: TROVE-2026-013, TROVE-2026-014, TROVE-2026-015, TROVE-2026-016,
+	  TROVE-2026-017, TROVE-2026-018, TROVE-2026-019, TROVE-2026-020,
+	  TROVE-2026-021, TROVE-2026-022
+	unbound: CVE-2026-32792, CVE-2026-33278, CVE-2026-40622,
+	  CVE-2026-41292, CVE-2026-42534, CVE-2026-42923, CVE-2026-42944,
+	  CVE-2026-42959, CVE-2026-42960, CVE-2026-44390, CVE-2026-44608
+	unzip: CVE-2021-4217
+	xserver_xorg-server: (no CVE assigned)
+	xwayland: (no CVE assigned)
+
+	Toolchain:
+
+	- linux-headers:: bump to 5.10.257, 5.15.208, 6.1.174, 6.6.141, 6.12.91
+
+	Infrastructure updates/fixes:
+
+	- generate-cyclonedx: generate externalReferences with
+	  source-distribution
+	- Remove /usr/share/info/dir from target
+	- bump-stable-kernel-versions: update for split hash file
+	- cve-check: fix vulnerability timestamp to RFC 3339
+	- cve-check: remove 'bom-ref' for vulnerabilities
+	- generate-cyclonedx: add hashes from .hash files to externalReferences
+	- dependencies.sh: reject buggy uutils "install" on Ubuntu 26.04
+	- add 'make show-info-all'
+	- cve-check: fix vulnerabilities with different analysis
+	- kconfig: fix compiler warnings
+	- generate-cyclonedx: remove indirect dependencies from root component
+	- cve-check: add indication how to run
+	- generate-cyclonedx: generate vcs externalReferences for source repos
+	- gitlab-ci: use larger shared runners where necessary
+	- replicate IGNORE_CVES to host packages
+	- generate-cyclonedx: hint at missing Buildroot host package on a
+	  specific error
+
+	Updated defconfigs: at91sam9x5ek*
+
+	Updated / fixed packages: libmicrohttpd, qt53d, crucible, libgit2, php,
+	  esp-hosted, tzdata, libabseil-cpp, collectd, redis, swupdate,
+	  libdill, zsh, samba4, haveged, arm-trusted-firmware, weston,
+	  wireless-regdb, libssh2, go-bootstrap-stage5, jq, kodi, unbound,
+	  lrzip, libgpg-error, hplip, expat, heimdal, glibc, go, imagemagick,
+	  kexec, libnss, putty, libmad, vorbis-tools, libvncserver, rsync,
+	  mongoose, intel-microcode, freeipmi, openssh, dos2unix, liburiparser,
+	  zic, cups-filters, libks, odhcp6c, libmodsecurity, memcached,
+	  graphene, vlc, capnproto, faad2, gcc-bare-metal, mariadb, qt6base,
+	  python-ecdsa, runc, heirloom-mailx, icu, systemd, unzip, dnsmasq,
+	  gst1-plugins-bad, cairo, dropbear, libusb, asterisk, hiredis,
+	  linux-pam, sed, gstreamer1, xfsprogs, python-urllib3, radvd,
+	  qt5webengine-chromium, sshfs, gdb, python3, sane-backends,
+	  linux-headers:, zlib-ng, libheif, supertux, postgresql,
+	  gst1-plugins-good, libde265, libdrm, exim, linux, lrzsz, babeld,
+	  bind, nginx, stellarium, sdl2_image, tor, libpthsem, wpewebkit,
+	  libargon2, xwayland, python-cbor2, xserver_xorg-server, poppler,
+	  jemalloc
+
+2025.02.14, released May 20, 2026
+
+	Changes with potentially large impact:
+
+	- ficl was downgraded to version 3.065 because ficl4 is no longer
+	  maintained.
+
+	Important / security related fixes:
+
+	apache: CVE-2026-23918, CVE-2026-24072, CVE-2026-28780, CVE-2026-29168,
+	  CVE-2026-29169, CVE-2026-33006, CVE-2026-33007, CVE-2026-33523,
+	  CVE-2026-33857, CVE-2026-34032, CVE-2026-34059
+	bubblewrap: CVE-2026-41163
+	cups: CVE-2026-27447, CVE-2026-34978, CVE-2026-34979, CVE-2026-34980,
+	  CVE-2026-34990, CVE-2026-39314, CVE-2026-39316, CVE-2026-41079
+	dash: CVE-2026-31323
+	dropbear: CVE-2019-6111, CVE-2026-35385
+	exim: CVE-2026-40684, CVE-2026-40685, CVE-2026-40686, CVE-2026-40687
+	expat: CVE-2026-7210, CVE-2026-41080
+	ffmpeg: CVE-2026-30997
+	freetype: CVE-2026-23865
+	ghostscript: (no CVE assigned)
+	giflib: CVE-2021-40633, CVE-2025-31344, CVE-2026-23868
+	gnutls: CVE-2026-33845, CVE-2026-33846, CVE-2026-3832, CVE-2026-3833,
+	  CVE-2026-42009, CVE-2026-42010, CVE-2026-42011, CVE-2026-42012,
+	  CVE-2026-42013, CVE-2026-42014, CVE-2026-42015, CVE-2026-5260,
+	  CVE-2026-5419
+	imagemagick: CVE-2026-28493, CVE-2026-28494, CVE-2026-28686,
+	  CVE-2026-28687, CVE-2026-28688, CVE-2026-28689, CVE-2026-28690,
+	  CVE-2026-28691, CVE-2026-28692, CVE-2026-28693, CVE-2026-30883,
+	  CVE-2026-30929, CVE-2026-30931, CVE-2026-30935, CVE-2026-30936,
+	  CVE-2026-30937, CVE-2026-31853, CVE-2026-32259, CVE-2026-32636,
+	  CVE-2026-33535, CVE-2026-33536, CVE-2026-33899, CVE-2026-33900,
+	  CVE-2026-33901, CVE-2026-33902, CVE-2026-33905, CVE-2026-33908,
+	  CVE-2026-34238, CVE-2026-40169, CVE-2026-40183, CVE-2026-40310,
+	  CVE-2026-40311, CVE-2026-40312
+	lcms2: CVE-2026-41254, CVE-2026-42798
+	libcap: CVE-2026-4878
+	libcurl: CVE-2026-7168, CVE-2026-7009, CVE-2026-6429, CVE-2026-6276,
+	  CVE-2026-6253, CVE-2026-5773, CVE-2026-5545, CVE-2026-4873
+	libexif: CVE-2026-40386, CVE-2026-40385, CVE-2026-32775
+	libjxl: CVE-2025-12474, CVE-2026-1837
+	libmicrohttpd: (no CVE assigned)
+	libpcap: CVE-2025-11961
+	libpjsip: CVE-2026-25994, CVE-2026-26203, CVE-2026-26967,
+	  CVE-2026-29068, CVE-2026-28799, CVE-2026-32942, CVE-2026-32945,
+	  CVE-2026-33069, CVE-2026-34235, CVE-2026-40614, CVE-2026-40892,
+	  CVE-2026-41416, CVE-2026-41415, CVE-2026-42225, CVE-2025-65102
+	libspdm: GHSA-m4wc-xmvg-369f, GHSA-j54w-759w-xj3m
+	liburiparser: CVE-2026-42371
+	libxml2: CVE-2026-6732
+	log4cxx: CVE-2025-54812, CVE-2025-54813, CVE-2026-40023
+	mbedtls: CVE-2025-66442, CVE-2026-25833, CVE-2026-25834,
+	  CVE-2026-25835, CVE-2026-34871, CVE-2026-34872, CVE-2026-34873,
+	  CVE-2026-34874, CVE-2026-34875, CVE-2026-34876, CVE-2026-34877
+	musl: CVE-2026-6042, CVE-2026-40200
+	nginx: CVE-2026-27654, CVE-2026-27784, CVE-2026-32647, CVE-2026-27651,
+	  CVE-2026-28753, CVE-2026-28755, CVE-2025-53859, CVE-2025-23419,
+	  CVE-2024-7347, CVE-2024-32760, CVE-2024-31079, CVE-2024-35200,
+	  CVE-2024-34161
+	opensc: CVE-2025-13763, CVE-2025-49010, CVE-2025-66215, CVE-2025-66038,
+	  CVE-2025-66037
+	openvpn: CVE-2026-40215, CVE-2026-35058
+	p11-kit: CVE-2026-2100
+	p7zip: CVE-2021-3520
+	proftpd: CVE-2026-42167
+	python-cbor2: CVE-2026-26209, CVE-2025-64076, CVE-2025-68131
+	python-django: CVE-2026-3902, CVE-2026-4277, CVE-2026-4292,
+	  CVE-2026-33033, CVE-2026-33034
+	python-pyasn1: CVE-2026-30922
+	python-pyopenssl: CVE-2026-27448, CVE-2026-27459
+	python-requests: CVE-2026-25645
+	python3: CVE-2024-6923, CVE-2025-13836, CVE-2025-59375
+	rsync: (no CVE assigned)
+	ruby: CVE-2026-41316
+	sqlite: CVE-2025-70873
+	strongswan: CVE-2026-25075
+	systemd: CVE-2026-40226
+	thrift: CVE-2025-48431, CVE-2026-41602, CVE-2026-41603, CVE-2026-41604,
+	  CVE-2026-41605, CVE-2026-41606, CVE-2026-41607, CVE-2026-41636,
+	  CVE-2026-43868, CVE-2026-43869, CVE-2026-43870
+	tor: CVE-2026-44597, CVE-2026-44599, CVE-2026-44600, CVE-2026-44601,
+	  CVE-2026-44602, CVE-2026-44603
+	util-linux: CVE-2026-27456
+	webkitgtk: CVE-2026-20643, CVE-2026-20664, CVE-2026-20665,
+	  CVE-2026-20691, CVE-2026-28857, CVE-2026-28859, CVE-2026-28861,
+	  CVE-2026-28871, CVE-2025-43457, CVE-2025-46299, CVE-2026-20608,
+	  CVE-2026-20635, CVE-2026-20636, CVE-2026-20644, CVE-2026-20652,
+	  CVE-2026-20676
+	wolfssl: CVE-2026-5264, CVE-2026-5263, CVE-2026-5295, CVE-2026-5466,
+	  CVE-2026-5477, CVE-2026-5447, CVE-2026-5500, CVE-2026-5501,
+	  CVE-2026-5503, CVE-2026-5187, CVE-2026-5188, CVE-2026-5448,
+	  CVE-2026-5772, CVE-2026-5778, CVE-2026-3548, CVE-2026-3549,
+	  CVE-2026-3547, CVE-2026-0819, CVE-2026-1005, CVE-2026-2645,
+	  CVE-2026-3230, CVE-2025-12888, CVE-2025-11936, CVE-2025-11935,
+	  CVE-2025-11934, CVE-2025-11933, CVE-2025-11931, CVE-2025-11932,
+	  CVE-2025-12889, CVE-2025-13912, CVE-2025-7395, CVE-2025-7394,
+	  CVE-2025-7396
+	wolftpm: CVE-2025-7844
+	xlib_libXpm: CVE-2026-4367
+	xserver_xorg-server: CVE-2026-33999, CVE-2026-34000, CVE-2026-34001,
+	  CVE-2026-34002, CVE-2026-34003
+	xwayland: CVE-2026-33999, CVE-2026-34000, CVE-2026-34001,
+	  CVE-2026-34002, CVE-2026-34003
+	xz: CVE-2025-31115, CVE-2026-34743
+
+	Toolchain:
+
+	- gcc: fix GCC 12, 13 and 14 build with host gcc 16, bump 12.x series
+	  to 12.5.0
+	- linux-headers: bump to 6.12.90, 6.6.140, 6.1.173, 5.15.207, 5.10.256
+
+	Infrastructure updates/fixes:
+
+	- Various improvements to pkg-stats.
+
+	New packages: libxmlsec1
+
+	Updated / fixed packages: apache, btrfs-progs, bubblewrap, c-icap,
+	  ca-certificates, cmake, cups, dash, dropbear, exim, expat, ffmpeg,
+	  ficl, freetype, frr, gcc, ghostscript, giflib, gnutls, haproxy,
+	  imagemagick, initscripts, kmod, lcms2, libarchive, libcap, libcurl,
+	  libexif, libinput, libjxl, libmicrohttpd, libpcap, libpjsip, libpng,
+	  libsodium, libspdm, liburiparser, libxml2, linux, linux-headers,
+	  log4cxx, mbedtls, mkpasswd, musl, mutt, neon, netsnmp,
+	  network-manager, nginx, opensc, openssh, openvpn, p11-kit, p7zip,
+	  proftpd, python-cbor2, python-certifi, python-django,
+	  python-magic-wormhole, python-pyasn1, python-pyopenssl,
+	  python-requests, python3, rsync, ruby, sqlite, strongswan, sudo,
+	  systemd, thrift, tor, util-linux, watchdogd, webkitgtk,
+	  wireless-regdb, wolfssl, wolftpm, xdg-dbus-proxy, xlib_libXpm,
+	  xserver_xorg-server, xwayland, xz
+
+2025.02.13, released April 21, 2026
+
+	Changes with potentially large impact:
+
+	- openssl was updated to 3.5.0 which has a few incompatible changes.
+	  See https://github.com/openssl/openssl/releases/tag/openssl-3.5.0
+
+	Important / security related fixes:
+
+	asterisk: CVE-2026-23739, CVE-2026-23741, CVE-2026-23738,
+	  CVE-2026-23740
+	bind: https://gitlab.isc.org/isc-projects/bind9/-/issues/5751,
+	  CVE-2026-1519, https://gitlab.isc.org/isc-
+	  projects/bind9/-/issues/5817, https://gitlab.isc.org/isc-
+	  projects/bind9/-/issues/5800, https://gitlab.isc.org/isc-
+	  projects/bind9/-/issues/5826
+	cpp-httplib: CVE-2026-33745, CVE-2026-34441, CVE-2026-21428,
+	  CVE-2026-22776, CVE-2026-28434, CVE-2026-28435, CVE-2026-29076,
+	  CVE-2026-31870, CVE-2026-32627
+	expat: CVE-2026-32776, CVE-2026-32777, CVE-2026-32778
+	gpsd: CVE-2025-67268, CVE-2025-67269
+	libarchive: [no CVE tracking]
+	libcurl: CVE-2026-3805, CVE-2026-3784, CVE-2026-3783, CVE-2026-1965
+	libde265: CVE-2026-33164, CVE-2026-33165
+	libheif: CVE-2025-68431
+	libmicrohttpd: CVE-2025-59777, CVE-2025-62689
+	libopenssl: CVE-2025-9230, CVE-2025-9231, CVE-2025-9232, CVE-2025-4575,
+	  CVE-2025-11187, CVE-2025-15467, CVE-2025-15468, CVE-2025-15469,
+	  CVE-2025-66199, CVE-2025-68160, CVE-2025-69418, CVE-2025-69419,
+	  CVE-2025-69420, CVE-2025-69421, CVE-2026-22795, CVE-2026-22796,
+	  CVE-2026-31790, CVE-2026-2673, CVE-2026-28387, CVE-2026-28388,
+	  CVE-2026-28389, CVE-2026-28390, CVE-2026-31789
+	libpng: CVE-2026-33416, CVE-2026-33636, CVE-2026-34757,
+	  GHSA-6fr7-g8h7-v645
+	libxml2: CVE-2026-1757, CVE-2026-0990, CVE-2026-0992, CVE-2025-10911,
+	  CVE-2026-0989
+	mongoose: CVE-2025-65502
+	musl: CVE-2025-26519
+	nfs-utils: CVE-2025-12801
+	nghttp2: CVE-2026-27135
+	perl: CVE-2026-4176
+	python-django: CVE-2026-25673, CVE-2026-25674
+	python-flask: CVE-2026-27205
+	python-pyasn1: CVE-2026-23490
+	python-pyjwt: CVE-2026-32597,  GHSA-752w-5fwx-jx9f
+	python-tornado: CVE-2025-67724, CVE-2025-67725, CVE-2025-67726
+	python-wheel: CVE-2026-24049
+	quickjs: CVE-2025-62490, CVE-2025-62491, CVE-2025-62492,
+	  CVE-2025-62493, CVE-2025-62494, CVE-2025-62495, CVE-2025-62496
+	rauc: CVE-2026-34155
+	redis: [No CVE tracking]
+	ruby: CVE-2025-27221, CVE-2025-58767, CVE-2025-61594, CVE-2026-27820
+	tor: TROVE-2026-003, TROVE-2026-004
+	wireshark: CVE-2025-11626
+
+	Toolchain:
+
+	- uclibc: bump to 1.0.57
+	- musl: bump to 1.2.6
+	- linux-headers: bump to 6.12.81, 6.6.134, 6.1.168, 5.15.202, 5.10.252
+
+	Infrastructure updates/fixes:
+
+	- Add SECURITY.md
+	- Automatically add 2025.02.x prefix for b4 users
+	- generate-cyclonedx: add source attribute with NVD reference for CVEs
+	- Fix cve-check's CVE URLs
+	- New runtime test for connman.
+	- Added support for "secondary" target that are less often tested in
+	  autobuilders
+	- New runtime test for memcached
+	- Fix error handling in br2-external
+
+	Updated defconfigs: aarch64_efi, nitrogen*
+
+	Updated / fixed packages: asterisk, bind, cpp-httplib, expat, faketime,
+	freeradius-server, giflib, gpsd, ibm-sw-tpm2, leafnode2, libarchive,
+	libcurl, libde265, libftdi1, libheif, libmicrohttpd, libopenssl, libpng,
+	libspdm, libxml2, linux, linux-headers, ltp-testsuite, luvi, mongoose,
+	mpd, musl, nfs-utils, nghttp2, perl, python-djange, python-flask,
+	python-pyasn1, python-pyjwt, python-tornado, quickjs, rauc, redis, ruby,
+	sway, tor, uboot, uclibc, wireshark, zfs
+
+2025.02.12, released March 17, 2026
+
+	Important / security related fixes:
+
+	botan: CVE-2024-50382, CVE-2024-50383
+	c-ares: CVE-2025-62408
+	containerd: CVE-2024-25621, CVE-2024-40635, CVE-2025-47291,
+	  CVE-2025-64329
+	cups: CVE-2025-58436, CVE-2025-61915
+	exiv2: CVE-2026-25884, CVE-2026-27596, CVE-2026-27631
+	fluidsynth: CVE-2025-56225
+	freerdp: CVE-2024-32661, CVE-2026-23530, CVE-2026-23531,
+	  CVE-2026-23532, CVE-2026-23533, CVE-2026-23534, CVE-2026-23948,
+	  CVE-2026-24675, CVE-2026-24676, CVE-2026-24679, CVE-2026-24681,
+	  CVE-2026-24682, CVE-2026-24683
+	graphicsmagick, CVE-2025-27796
+	igmpproxy: CVE-2025-50681
+	imagemagick: CVE-2026-22770, CVE-2026-23874, CVE-2026-23876,
+	  CVE-2026-24481, CVE-2026-25638, CVE-2026-25794, CVE-2026-25795,
+	  CVE-2026-25796, CVE-2026-25798, CVE-2026-25799, CVE-2026-25897,
+	  CVE-2026-25989, CVE-2026-26066, CVE-2026-26283, CVE-2026-26284,
+	  CVE-2026-26983
+	jasper: CVE-2025-8836, CVE-2025-8837
+	libsoup3: CVE-2025-14523
+	libssh: CVE-2025-14821, CVE-2026-0964, CVE-2026-0965, CVE-2026-0966,
+	  CVE-2026-0967, CVE-2026-0968
+	libtpms: CVE-2026-21444
+	mupdf: CVE-2026-25556
+	netsnmp: CVE-2025-68615
+	patch: CVE-2018-6952, CVE-2019-20633
+	postgresql: CVE-2026-2003, CVE-2026-2004, CVE-2026-2005, CVE-2026-2006
+	rtl_433: CVE-2025-34450
+	squid: CVE-2025-62168
+	tinyproxy: CVE-2025-63938
+	vim: CVE-2026-25749, CVE-2026-26269
+	wpewebkit: CVE-2025-31273, CVE-2025-31278, CVE-2025-43211,
+	  CVE-2025-43212, CVE-2025-43216, CVE-2025-43227, CVE-2025-43228,
+	  CVE-2025-43240, CVE-2025-43265, CVE-2025-43272, CVE-2025-43342,
+	  CVE-2025-43343, CVE-2025-43356, CVE-2025-43368, CVE-2025-6558
+
+	Infrastructure updates/fixes:
+
+	linux: make license option visible for _CUSTOM_VERSION as well
+	support/testing/run-tests: fix Debian testing/unstable
+
+	Updated / fixed packages: botan, c-ares, containerd, cups, dtc, exiv2,
+	  faketime, flashbench, fluidsynth, freerdp, graphicsmagick, igmpproxy,
+	  imagemagick, jasper, libsoup3, libssh, libtpms, libvips, libvirt,
+	  libzlib, mupdf, netsnmp, patch, poco, postgresql, python-multipart,
+	  qemu, rtl_433, squid, tinyproxy, util-linux, vim, webkitgtk, wmctrl,
+	  wpewebkit
+
+	Removed packages: qemu (cris target)
+
+2025.02.11, released February 20, 2026
+
+	avahi: CVE-2021-3468, CVE-2023-38469, CVE-2023-38470, CVE-2023-38471,
+	  CVE-2023-38472, CVE-2023-38473, CVE-2024-52615, CVE-2024-52616,
+	  CVE-2025-68276, CVE-2025-68468, CVE-2025-68471, CVE-2026-24401
+	bind: CVE-2025-13878
+	busybox: CVE-2025-46394, CVE-2025-60876
+	expat: CVE-2026-24515, CVE-2026-25210
+	glibc: CVE-2025-15281, CVE-2026-0861, CVE-2026-0915
+	gnutls: CVE-2025-14831, CVE-2026-1584
+	haproxy: CVE-2025-11230
+	intel-microcode: CVE-2024-24853, CVE-2025-31648
+	libopenssl: CVE-2025-11187, CVE-2025-15467, CVE-2025-15468,
+	  CVE-2025-66199, CVE-2025-68160, CVE-2025-69418, CVE-2025-69419,
+	  CVE-2025-69420, CVE-2025-69421, CVE-2026-22795, CVE-2026-22796
+	libpng: CVE-2026-22695, CVE-2026-22801, CVE-2026-25646
+	libtasn1: CVE-2025-13151
+	libvpx
+	linux-pam: CVE-2024-10963
+	nginx: CVE-2025-53859
+	nodejs: CVE-2025-27210, CVE-2025-55130, CVE-2025-55131, CVE-2025-55132,
+	  CVE-2025-59465, CVE-2025-59466, CVE-2026-21637
+	python-django: CVE-2025-13473, CVE-2025-14550, CVE-2026-1207, CVE-2026-1285,
+	 CVE-2026-1287, CVE-2026-1312
+	python-urllib3: CVE-2026-21441
+	strongswan: CVE-2025-62291
+	tor: TROVE-2025-016
+	vim: CVE-2025-66476
+	webkitgtk
+
+	Infrastructure updates/fixes:
+
+	arm-trusted-firmware, at91bootstrap3, barebox, linux, opensbi, optee-os,
+	  uboot: Add support for custom license files
+	config-fragments/autobuild: drop a number of duplicated toolchains
+	generate-cyclonedx: fix dependencies
+	Makefile: add check-package-external target
+	pkg-stats: add -N/--needs-update option
+	pkg-stats: fix RuntimeError with python 3.14 asyncio
+	relocate-sdk.sh: pre-calculate files in need of relocation
+	system/Config.in: do not reference md5 for sha256 option
+	testing/run-tests: specify multiprocessing method
+	testing: python-requests: new runtime test
+	testing: test_python.py: disable interpreter colors
+	testing/tests/package/test_firewalld: use ext2 instead of cpio
+
+	Updated / fixed packages: asterisk, at91bootstrap3, avahi, berkeleydb,
+	bind, bitcoin, brltty, busybox, cryptsetup, dash, dc3dd, docker-engine,
+	easy-rsa, ell, expat, frr, glibc, gnutls, haproxy,
+	igmpproxy, intel-microcode, libcec, libcurl, libgphoto2, libgpiod2,
+	libite, libopenssl, libpng, libselinux,
+	libtasn1, libucl, libvpx, libwebsockets, linux, linux-headers,
+	linux-pam, localedef, lockdev, m4, manual, mcelog, mesa3d, mp4v2,
+	mpg123, mpir, mupdf, netdata, nginx, nodejs, php, php-lua, pkg-utils,
+	python3, python-django, python-jinja2, python-urllib3, rp-pppoe,
+	rust-bindgen, safeclib, screen, shadow, spandsp, strongswan, swig,
+	syslog-ng, tor, uclibc, uftp, util-linux, vim, webkitgtk,
+	wireless-regdb, xmlstarlet, zeek
+
+	New package: libpam-pkcs11
+
+	Removed packages: criu, cvs, dbus-triggerd, dvdrw-tools, libsvg, libsvg-cairo, lockdev, gconf,
+
+2025.02.10, released January 20, 2026
+
+	Important / security related fixes:
+
+	apache: CVE-2025-55753, CVE-2025-58098, CVE-2025-59775, CVE-2025-65082,
+	  CVE-2025-66200
+	cryptsetup
+	dropbear: CVE-2025-14282, CVE-2019-6111
+	exim: CVE-2025-67896
+	gnupg2
+	imagemagick: CVE-2025-66628
+	libarchive
+	libcoap: CVE-2025-59391, CVE-2025-65493, CVE-2025-65494
+	  CVE-2025-65495, CVE-2025-65496, CVE-2025-65497, CVE-2025-65498,
+	  CVE-2025-65499, CVE-2025-65500, CVE-2025-65501
+	libcurl: CVE-2025-13034, CVE-2025-14017, CVE-2025-14524,
+	  CVE-2025-14819, CVE-2025-15079, CVE-2025-15224
+	libfcgi: CVE-2025-23016.
+	libfreeimage: CVE-2019-12211, CVE-2019-12213, CVE-2020-24292,
+	  CVE-2020-24293, CVE-2020-24295, CVE-2021-33367, CVE-2021-40263,
+	  CVE-2021-40266, CVE-2023-47995, CVE-2023-47997
+	libpng: CVE-2025-66293
+	liburiparser: CVE-2025-67899
+	libxslt: CVE-2025-7424, CVE-2025-9714, CVE-2025-11731
+	linenoise: CVE-2025-9810
+	perl: CVE-2025-40909
+	php: CVE-2025-14177, CVE-2025-14178, CVE-2025-14180
+	python-django: CVE-2025-13372, CVE-2025-64460
+	python-filelock: CVE-2025-68146
+	python-fonttools: CVE-2025-66034
+	python-urllib3: CVE-2025-66471, CVE-2025-66418
+	unbound: CVE-2025-11411
+	vlc
+	xserver_xorg-server: CVE-2025-62229, CVE-2025-62230,
+	  CVE-2025-62231
+	xwayland: CVE-2025-62229, CVE-2025-62230, CVE-2025-62231
+
+	Infrastructure updates/fixes:
+
+	- pkg-stats use HEAD request & unique HTTP user-agent
+	- cve-check: don't fail with unknown CVE
+	- generate-cyclonedx: support 'resolved_with_pedigree'
+	- testing: add host bin dir to PATH
+	- testing: add libiio python bindings runtime test
+	- testing: ddrescue: use dmsetup from lvm2
+	- testing: ddrescue: use f-string for test config
+	- testing: add tio runtime test
+	- add 'CVE:' trailer in various patches
+	- add md5 hash and update tarball url to various python packages
+	- testing: ltp-testsuite: replace runltp by kirk
+	- testing: new kvmtool runtime test
+	- gitignore: ignore utils/brmake log output named `br.log`
+	- testing: add opus-tools runtime test
+	- testing: add flac runtime test
+
+	Updated / fixed packages: apache, arm-trusted-firmware, atf, audit,
+	bitcoin, boost, busybox, cage, cmake, collectl, cppcms, cpulimit,
+	cryptsetup, dbus, dmraid, dropbear, embiggen-disk, evilwm, exim, ficl,
+	fontconfig, glibc, gnupg2, grpc, gvfs, imagemagick, kvmtool, ledmon,
+	libarchive, libcoap, libcpprestsdk, libcurl, libdill, libfcgi,
+	libfreeimage, libgit2, libgtk3, libgtk4, libiio, libmbus, libpng,
+	libselinux, libtirpc, libupnp, liburiparser, libxml2, libxslt, linenoise,
+	linux-tools, lttng-modules, lugaru, matchbox-fakekey, matchbox-keyboard,
+	matchbox-lib, matchbox-panel, mosh, nfs-utils, open-lldp, opencv4,
+	opencv4-contrib, openjdk, perl, perl-dbd-mysql, perl-mozilla-ca, php, pigz,
+	pixman, python-brotli, python-certifi, python-django, python-filelock,
+	python-fonttools, python-pyqt5, python-urllib3, qt5enginio, qt5webkit,
+	qt6base, racehound, rdesktop, rpcbind, rpi-firmware, softether, softhsm2,
+	spice, ssdp-responder, sway, sysprof, tio, trinity, tzdata, uboot, uclibc,
+	unbound, vim, vlc, xdriver_xf86-video-intel, xen, xinetd,
+	xlib_libxshmfence, xserver_xorg-server, xvkbd, xwayland, zic, zxing-cpp
+
+	Removed packages: opencv3 'protobuf', opencv3 'ffmpeg'
+
+2025.02.9, released December 11, 2025
+
+	Important / security related fixes:
+
+	- asterisk: CVE-2025-1131, CVE-2025-57767, CVE-2025-49832,
+	            CVE-2025-47780, CVE-2025-47779
+	- gnutls: CVE-2025-9820
+	- libpng: CVE-2025-64505, CVE-2025-64506, CVE-2025-64720, CVE-2025-65018
+	- luksmeta: CVE-2025-11568
+	- mariadb: CVE-2025-30693, CVE-2025-30722, CVE-2023-52969,
+	           CVE-2023-52970, CVE-2023-52971
+	- openvpn: CVE-2025-13086
+	- postgresql: CVE-2025-12817, CVE-2025-12818
+	- python-django: CVE-2025-64458, CVE-2025-64459
+	- python-startlette: GHSA-7f5h-v6xp-fcq8
+
+	Infrastructure updates/fixes:
+
+	- New script support/scripts/cve-check to enricht CycloneDX SBoM with
+	  CVE information from NVD database.
+
+	Updated / fixed packages: 18xx-ti-utils, asterisk, gnutls, libpng,
+	libroxml, libteam, linux-headers, luksmeta, mariadb, nbd, neard,
+	openjdk, openjdk-bin, openvpn, oprofile, perl-net-ssleay, postgresql,
+	python-django, python-starlette, redis, sdbusplus, sdl, swipl,
+	tailscale, thermald, tmux, tor
+
+	Removed packages: bctoolbox, belle-sip, belr, linphone, mediastreamer,
+	mongrel2, ortp
+
+2025.02.8, released November 20, 2025
+
+    Important / security related fixes:
+
+	- bind: CVE-2025-8677, CVE-2025-40778, CVE-2025-40780
+	- dante: CVE-2024-54662
+	- erlang: CVE-2024-53846, CVE-2025-4748, CVE-2025-26618, CVE-2025-30211,
+	          CVE-2025-32433, CVE-2025-46712, CVE-2025-48038,
+	          CVE-2025-48039, CVE-2025-48040, CVE-2025-48041
+	- hostapd: CVE-2025-24912
+	- imagemagick: CVE-2025-62171
+	- iptraf-ng: CVE-2024-52949
+	- libarchive: CVE-2025-25724
+	- libglib2: CVE-2024-54662
+	- libvips: CVE-2025-29769, CVE-2025-59933
+	- libvpx: CVE-2025-5283
+	- libxslt: CVE-2025-24855, CVE-2024-55549
+	- mbedtls: CVE-2025-54764, CVE-2025-59438
+	- modsecurity2: CVE-2025-52891, CVE-2025-54571
+	- netdata: CVE-2023-22496, CVE-2023-22497
+	- poppler: CVE-2024-6239, CVE-2024-56378, CVE-2025-32364,
+	           CVE-2025-32365, CVE-2025-43903, CVE-2025-50420,
+	           CVE-2025-52886
+	- python3: gh-139312, gh-139700, gh-139400, gh-135661, gh-135661,
+	           gh-102555, gh-135462, gh-118350, gh-86155
+	- python-webpy: CVE-2025-3818
+	- redis: CVE-2025-46817, CVE-2025-46818, CVE-2025-46819, CVE-2025-49844
+	- samba: CVE-2025-3818, CVE-2025-10230
+	- shairport-sync: Upstream security fixes without CVE
+	- squid: CVE-2025-59362
+	- suricata: CVE-2024-37151, CVE-2024-38535
+	- tpm2-tss: CVE-2024-29040
+	- xerces: CVE-2024-23807
+	- zabbix: CVE-2025-27231, CVE-2025-27236, CVE-2025-27238, CVE-2025-49641
+	- zip: CVE-2018-13410
+
+	Infrastructure updates/fixes:
+
+	- Improved matching of CPE ID with NVD database, resulting in more
+	  accurate identification of CVEs.
+	- brmake: avoid garbled output with top-level parallel build
+
+	Updated / fixed packages: 4th, audit, bind, cmake, crun, dante,
+	ebtables, erlang, freeradius-server, gpsd, gstd, hostapd, imagemagick,
+	iptraf-ng, iozone, ledmon, libarchive, libcurl, libdbi-drivers,
+	libdisplay-info, libglib2, libgphoto2, libgtk3, libheif, libsemanage,
+	libshout, libsolv, libtpms, libvips, libvpx, libwpe, libxslt, linux,
+	linux-headers, live555, mbedtls, micropython, mjpg-streamer,
+	modsecurity2, netdata, netsnmp, poppler, python3, python-flask-cors,
+	python-webpy, quota, qt6multimedia, redis, refpolicy, samba4,
+	selinux-python, sexpect, shairport-sync, siproxd, sqlite, squid,
+	suricata, tor, tpm2-tss, waffle, webkitgtk, wireless-regdb, wpewebkit,
+	xerces, zabbix, zip
+
+	Removed package: ramspeed
+
+	Boards updated / fixed: beagleboneai, cubieboard1, cubieboard2,
+	stm32f429_disco_xip, stm32f746_disco_sd, stm32f769_disco_sd,
+
+	Test Improvements:
+
+	- Capture output of failing commands on host.
 
 2025.02.7, released October 11, 2025
 

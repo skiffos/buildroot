@@ -1,5 +1,5 @@
 # md5, sha256 from https://pypi.org/pypi/pyicu/json
-md5  6ae2145f2a98433f461b128c3ebef233  pyicu-2.15.3.tar.gz
-sha256  f32e78e1cb64d0aeb14f027e037a8944861d3114548818a6adf0081ef51aefc3  pyicu-2.15.3.tar.gz
+md5  a554ecf2b79134b0324fe82e29017c34  pyicu-2.16.2.tar.gz
+sha256  006d51e24b5ec76df6ec2130f3dde269c51db8b8cfebb7d45a427dde0d10aa52  pyicu-2.16.2.tar.gz
 # Locally computed sha256 checksums
 sha256  00da5bf22f2386c4f6f07c734490e9b818c4dcf70e6ca49f594e9cec636b9c40  LICENSE

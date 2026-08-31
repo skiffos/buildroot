@@ -183,9 +183,9 @@ QT6BASE_DEPENDENCIES += freetype
 
 ifeq ($(BR2_PACKAGE_QT6BASE_VULKAN),y)
 QT6BASE_DEPENDENCIES   += vulkan-headers vulkan-loader
-QT6BASE_CONFIGURE_OPTS += -DFEATURE_vulkan=ON
+QT6BASE_CONF_OPTS += -DFEATURE_vulkan=ON
 else
-QT6BASE_CONFIGURE_OPTS += -DFEATURE_vulkan=OFF
+QT6BASE_CONF_OPTS += -DFEATURE_vulkan=OFF
 endif
 
 ifeq ($(BR2_PACKAGE_QT6BASE_LINUXFB),y)
@@ -427,9 +427,14 @@ QT6BASE_CONF_OPTS += -DFEATURE_zstd=OFF
 endif
 
 define QT6BASE_RM_USR_MKSPECS
-	$(Q)rm -rf $(TARGET_DIR)/usr/mkspecs
+	$(RM) -rf $(TARGET_DIR)/usr/mkspecs
 endef
 QT6BASE_TARGET_FINALIZE_HOOKS += QT6BASE_RM_USR_MKSPECS
+
+define QT6BASE_RM_SBOMS
+	$(RM) -rf $(TARGET_DIR)/usr/lib/qt6/sbom/
+endef
+QT6BASE_TARGET_FINALIZE_HOOKS += QT6BASE_RM_SBOMS
 
 $(eval $(cmake-package))
 $(eval $(host-cmake-package))

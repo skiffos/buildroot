@@ -2,13 +2,9 @@ config BR2_PACKAGE_QEMU_ARCH_SUPPORTS_TARGET
 	bool
 	# Only tested on these architectures
 	default y if BR2_aarch64
-	default y if BR2_arm && !BR2_ARM_CPU_ARMV4 && !BR2_ARM_CPU_ARMV5
-	default y if BR2_i386
-	default y if BR2_mips
-	default y if BR2_mipsel
 	default y if BR2_powerpc64
 	default y if BR2_powerpc64le
-	default y if BR2_riscv
+	default y if BR2_RISCV_64
 	default y if BR2_s390x
 	default y if BR2_x86_64
 
@@ -54,10 +50,26 @@ config BR2_PACKAGE_QEMU_SYSTEM
 	depends on !BR2_STATIC_LIBS # dtc
 	select BR2_PACKAGE_PIXMAN
 	select BR2_PACKAGE_QEMU_FDT if !BR2_PACKAGE_QEMU_CHOOSE_TARGETS
+	# Make sure at least one of tcg or kvm is enabled
+	select BR2_PACKAGE_QEMU_SYSTEM_TCG if !BR2_PACKAGE_QEMU_SYSTEM_KVM
 	help
 	  Say 'y' to build system emulators/virtualisers.
 
 if BR2_PACKAGE_QEMU_SYSTEM
+
+config BR2_PACKAGE_QEMU_SYSTEM_KVM
+	bool "Enable KVM system virtualisation"
+	default y
+	help
+	  Say 'y' here to enable a QEMU with KVM support.
+	  If unsure, say 'y'
+
+config BR2_PACKAGE_QEMU_SYSTEM_TCG
+	bool "Enable TCG system emulation"
+	default y
+	help
+	  Say 'y' here to enable QEMU binaries which can emulate foreign
+	  architectures using the TCG JIT.
 
 config BR2_PACKAGE_QEMU_BLOBS
 	bool "Install binary blobs"
@@ -100,6 +112,41 @@ config BR2_PACKAGE_QEMU_SDL
 	  Say 'y' to enable the SDL frontend, that is, a graphical
 	  window presenting the VM's display.
 
+config BR2_PACKAGE_QEMU_OPENGL
+	bool "Enable OpenGL"
+	depends on BR2_PACKAGE_HAS_LIBEGL || BR2_PACKAGE_HAS_LIBGL
+	select BR2_PACKAGE_LIBEPOXY
+	help
+	  Say 'y' to enable OpenGL accelerated display frontend support.
+	  This is necessary to efficiently display frames rendered in a
+	  guest on the host.
+
+	  Run qemu with `-display sdl,gl=on`
+
+comment "OpenGL support needs an OpenGL and/or OpenGL EGL backend"
+	depends on !(BR2_PACKAGE_HAS_LIBEGL || BR2_PACKAGE_HAS_LIBGL)
+
+config BR2_PACKAGE_QEMU_VIRGLRENDERER
+	bool "Enable virglrenderer"
+	depends on BR2_PACKAGE_HAS_LIBEGL || BR2_PACKAGE_HAS_LIBGL
+	select BR2_PACKAGE_QEMU_OPENGL
+	select BR2_PACKAGE_VIRGLRENDERER
+	help
+	  Say 'y' to enable qemu support for virglrenderer.
+	  virglrenderer backends such as virgl, venus, or DRM native
+	  context are configured under the virglrenderer package.
+
+	  Run qemu with `-device virtio-gpu-gl`
+
+	  https://qemu.readthedocs.io/en/v10.0.3/system/devices/virtio-gpu.html#virtio-gpu-virglrenderer
+
+comment "virglrenderer needs OpenGL accelerated display frontend support"
+	depends on !(BR2_PACKAGE_HAS_LIBEGL || BR2_PACKAGE_HAS_LIBGL)
+
+comment "virglrenderer needs virgl, venus, or a DRM backend for guest acceleration"
+	depends on BR2_PACKAGE_QEMU_VIRGLRENDERER
+	depends on !BR2_PACKAGE_VIRGLRENDERER_HAS_BACKEND
+
 config BR2_PACKAGE_QEMU_FDT
 	bool "Enable FDT"
 	select BR2_PACKAGE_DTC
@@ -130,12 +177,11 @@ config BR2_PACKAGE_QEMU_LINUX_USER
 
 config BR2_PACKAGE_QEMU_CHOOSE_TARGETS
 	bool "Select individual emulator targets"
-	depends on BR2_PACKAGE_QEMU_SYSTEM || BR2_PACKAGE_QEMU_LINUX_USER
+	depends on BR2_PACKAGE_QEMU_SYSTEM_TCG || BR2_PACKAGE_QEMU_LINUX_USER
 	help
-	  By default, all targets (system and/or user, subject to the
-	  corresponding options, above) are built. If you only need a
-	  subset of the emulated targets, say 'y' here and enable at
-	  least one target, below.
+	  By default, all targets system targets are built. If you
+	  only need a subset of the emulated targets, say 'y' here and
+	  enable at least one target, below.
 
 if BR2_PACKAGE_QEMU_CHOOSE_TARGETS
 
@@ -174,11 +220,6 @@ config BR2_PACKAGE_QEMU_TARGET_AVR
 	help
 	  AVR 8-bit microcontroller architecture.
 
-config BR2_PACKAGE_QEMU_TARGET_CRIS
-	bool "cris"
-	help
-	  ETRAX CRIS microcontroller architecture.
-
 config BR2_PACKAGE_QEMU_TARGET_HEXAGON
 	bool "hexagon (linux-user, only)"
 	depends on BR2_PACKAGE_QEMU_LINUX_USER
@@ -212,12 +253,6 @@ config BR2_PACKAGE_QEMU_TARGET_MICROBLAZE
 	select BR2_PACKAGE_QEMU_FDT if BR2_PACKAGE_QEMU_SYSTEM
 	help
 	  Xilinx MicroBlaze soft processor.
-
-config BR2_PACKAGE_QEMU_TARGET_MICROBLAZEEL
-	bool "microblazeel"
-	select BR2_PACKAGE_QEMU_FDT if BR2_PACKAGE_QEMU_SYSTEM
-	help
-	  Xilinx MicroBlaze EL soft processor.
 
 config BR2_PACKAGE_QEMU_TARGET_MIPS
 	bool "mips"

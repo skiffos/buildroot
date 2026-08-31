@@ -170,6 +170,18 @@ by using the +show-info+ make target:
 make show-info
 ----
 
+Buildroot can also produce information in the +show-info+ format about all
+packages regardless of the configuration or architecture by using
++show-info-all+.
+This is used for maintenance tasks that require information about every
+package in the tree, such as generating a full-tree SBOM for
+https://security.buildroot.org[].
+It does not require a +.config+ file:
+
+----
+make show-info-all
+----
+
 Buildroot can also produce details about packages as HTML and JSON
 output using the +pkg-stats+ make target. Amongst other things, these
 details include whether known CVEs (security vulnerabilities) affect
@@ -179,6 +191,34 @@ a newer upstream version for those packages.
 ----
 make pkg-stats
 ----
+
+=== Generating CycloneDX SBOM
+
+Based on the output of +show-info+ Buildroot can generate a SBOM in
+the CycloneDX format. While it doesn't offer any additional
+information, CycloneDX is a format specification that can be consumed
+by other projects.
+
+----
+make show-info | utils/generate-cyclonedx
+----
+
+For more information check the help of the +generate-cyclonedx+ script, the
+script call can be tailored to your project.
+
+----
+utils/generate-cyclonedx --help
+----
+
+Similarly to +pkg-stats+, CycloneDX SBOM's can be enriched with vulnerability
+analysis from the NVD database.
+
+----
+make show | utils/generate-cyclonedx > sbom.cdx.json
+cat sbom.cdx.json | support/scripts/cve-check --nvd-path dl/buildroot-nvd/
+----
+
+For more information about CycloneDX see https://cyclonedx.org/[].
 
 === Graphing the dependencies between packages
 

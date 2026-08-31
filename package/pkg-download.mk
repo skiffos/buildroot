@@ -12,7 +12,7 @@
 BR_FMT_VERSION_git = -git4
 BR_FMT_VERSION_svn = -svn5
 BR_FMT_VERSION_go = -go2
-BR_FMT_VERSION_cargo = -cargo4
+BR_FMT_VERSION_cargo = -cargo6
 
 DL_WRAPPER = support/download/dl-wrapper
 
@@ -27,7 +27,7 @@ else
 BR2_DL_DIR = $(DL_DIR)
 endif
 
-# ensure it exists and a absolute path, derefrecing symlinks
+# ensure it exists and a absolute path, dereferencing symlinks
 DL_DIR := $(shell mkdir -p $(DL_DIR) && cd $(DL_DIR) >/dev/null && pwd -P)
 
 #
@@ -83,6 +83,10 @@ ifneq ($(call qstrip,$(BR2_BACKUP_SITE)),)
 DOWNLOAD_URIS += \
 	$(call getschemeplusuri,$(call qstrip,$(BR2_BACKUP_SITE)/$($(2)_DL_SUBDIR)),urlencode) \
 	$(call getschemeplusuri,$(call qstrip,$(BR2_BACKUP_SITE)),urlencode)
+endif
+ifneq ($(call qstrip,$(BR2_SKIFFOS_BACKUP_SITE)),)
+DOWNLOAD_URIS += \
+	$(call getschemeplusuri,$(call qstrip,$(BR2_SKIFFOS_BACKUP_SITE)/$($(2)_DL_SUBDIR)),urlencode)
 endif
 endif
 

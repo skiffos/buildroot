@@ -31,15 +31,20 @@ config BR2_PACKAGE_XEN_TOOLS
 	select BR2_PACKAGE_SLIRP
 	select BR2_PACKAGE_UTIL_LINUX
 	select BR2_PACKAGE_UTIL_LINUX_LIBUUID
+	select BR2_PACKAGE_UTIL_LINUX_BINARIES # runtime (prlimit)
 	select BR2_PACKAGE_YAJL
 	select BR2_PACKAGE_ARGP_STANDALONE if !BR2_TOOLCHAIN_USES_GLIBC
 	select BR2_PACKAGE_BASH # runtime (scripts)
 	select BR2_PACKAGE_BUSYBOX_SHOW_OTHERS if BR2_PACKAGE_BUSYBOX # bash
+	select BR2_PACKAGE_COREUTILS # runtime (stat)
+	select BR2_PACKAGE_QEMU_XEN
 	help
 	  The Xen tools can be accessed by the xl command.
 
 comment "xen tools need a toolchain w/ wchar, threads, dynamic library"
 	depends on !BR2_USE_WCHAR || !BR2_TOOLCHAIN_HAS_THREADS || \
 		BR2_STATIC_LIBS
+
+source "package/qemu-xen/Config.in"
 
 endif

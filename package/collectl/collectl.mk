@@ -4,9 +4,8 @@
 #
 ################################################################################
 
-COLLECTL_VERSION = 4.3.2
-COLLECTL_SOURCE = collectl-$(COLLECTL_VERSION).src.tar.gz
-COLLECTL_SITE = http://downloads.sourceforge.net/collectl/collectl
+COLLECTL_VERSION = 4.3.20.1
+COLLECTL_SITE = $(call github,sharkcz,collectl,$(COLLECTL_VERSION))
 COLLECTL_LICENSE = Artistic or GPL-2.0
 COLLECTL_LICENSE_FILES = COPYING ARTISTIC GPL
 

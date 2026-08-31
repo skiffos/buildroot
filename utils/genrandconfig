@@ -113,8 +113,6 @@ async def fixup_config(sysinfo, configfile):
 
     ROOTFS_SIZE = '5G'
 
-    if "BR2_NEEDS_HOST_JAVA=y\n" in configlines and not await sysinfo.has("java"):
-        return False
     # libffi not available on ARMv7-M, but propagating libffi arch
     # dependencies in Buildroot is really too much work, so we handle
     # this here.
@@ -361,11 +359,6 @@ async def fixup_config(sysinfo, configfile):
        'BR2_TARGET_ROOTFS_UBI_CUSTOM_CONFIG_FILE=""\n' in configlines:
         configlines.remove('BR2_TARGET_ROOTFS_UBI_USE_CUSTOM_CONFIG=y\n')
         configlines.remove('BR2_TARGET_ROOTFS_UBI_CUSTOM_CONFIG_FILE=""\n')
-
-    if 'BR2_TARGET_S500_BOOTLOADER=y\n' in configlines and \
-       'BR2_TARGET_S500_BOOTLOADER_BOARD=""\n' in configlines:
-        configlines.remove('BR2_TARGET_S500_BOOTLOADER=y\n')
-        configlines.remove('BR2_TARGET_S500_BOOTLOADER_BOARD=""\n')
 
     if 'BR2_TARGET_TI_K3_R5_LOADER=y\n' in configlines and \
        'BR2_TARGET_TI_K3_R5_LOADER_USE_DEFCONFIG=y\n' in configlines and \

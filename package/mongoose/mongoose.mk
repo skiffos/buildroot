@@ -4,11 +4,11 @@
 #
 ################################################################################
 
-MONGOOSE_VERSION = 7.19
+MONGOOSE_VERSION = 7.23
 MONGOOSE_SITE = $(call github,cesanta,mongoose,$(MONGOOSE_VERSION))
 MONGOOSE_LICENSE = GPL-2.0
 MONGOOSE_LICENSE_FILES = LICENSE
-MONGOOSE_CPE_ID_VENDOR = cesenta
+MONGOOSE_CPE_ID_VENDOR = cesanta
 MONGOOSE_INSTALL_STAGING = YES
 # static library
 MONGOOSE_INSTALL_TARGET = NO

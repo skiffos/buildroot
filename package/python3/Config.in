@@ -76,11 +76,6 @@ config BR2_PACKAGE_PYTHON3_DECIMAL
 	help
 	  decimal module for Python3.
 
-config BR2_PACKAGE_PYTHON3_OSSAUDIODEV
-	bool "ossaudiodev module"
-	help
-	  ossaudiodev module for Python3.
-
 config BR2_PACKAGE_PYTHON3_READLINE
 	bool "readline"
 	select BR2_PACKAGE_READLINE
@@ -126,6 +121,12 @@ config BR2_PACKAGE_PYTHON3_ZLIB
 	select BR2_PACKAGE_ZLIB
 	help
 	  zlib support in Python3
+
+config BR2_PACKAGE_PYTHON3_ZSTD
+	bool "zstd module"
+	select BR2_PACKAGE_ZSTD
+	help
+	  zstd support in Python3
 
 endmenu
 

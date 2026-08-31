@@ -1,5 +1,5 @@
 # md5, sha256 from https://pypi.org/pypi/flask-smorest/json
-md5  98b3b197fcfb944954d768f6d84416ee  flask_smorest-0.45.0.tar.gz
-sha256  1490291a59e572be5c02e0a769589584180eceba65bc1949456760856b3e990b  flask_smorest-0.45.0.tar.gz
+md5  f3236d4faefd989d2bcfe7820fa0d6b4  flask_smorest-0.47.0.tar.gz
+sha256  a415ce7db3d7e63dd854eb16d59047686dbf5d31c4913e245fa5657f88e7788d  flask_smorest-0.47.0.tar.gz
 # Locally computed sha256 checksums
 sha256  c8a48548bbb732a0bbd6a0dc2c556cfa1e6e5fe35d888cdf6a1974d69e0e312a  LICENSE

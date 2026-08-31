@@ -1,10 +1,11 @@
-comment "weston needs udev and a toolchain w/ locale, threads, dynamic library, headers >= 3.0"
+comment "weston needs udev and a toolchain w/ C++, locale, threads, dynamic library, headers >= 3.0"
 	depends on !BR2_PACKAGE_HAS_UDEV || !BR2_TOOLCHAIN_HAS_THREADS || \
 		!BR2_TOOLCHAIN_HEADERS_AT_LEAST_3_0 || BR2_STATIC_LIBS || \
-		!BR2_ENABLE_LOCALE
+		!BR2_ENABLE_LOCALE || !BR2_INSTALL_LIBSTDCPP
 
 config BR2_PACKAGE_WESTON
 	bool "weston"
+	depends on BR2_INSTALL_LIBSTDCPP
 	depends on BR2_PACKAGE_HAS_UDEV
 	depends on !BR2_STATIC_LIBS # wayland
 	depends on BR2_TOOLCHAIN_HAS_THREADS # wayland
@@ -123,6 +124,7 @@ comment "X11 (nested) compositor needs X.org enabled"
 
 config BR2_PACKAGE_WESTON_XWAYLAND
 	bool "XWayland support"
+	depends on BR2_PACKAGE_HAS_LIBEGL
 	depends on BR2_PACKAGE_LIBEPOXY
 	depends on BR2_PACKAGE_XORG7 # xwayland
 	depends on BR2_USE_MMU # xwayland
@@ -136,13 +138,22 @@ config BR2_PACKAGE_WESTON_XWAYLAND
 	select BR2_PACKAGE_XLIB_LIBXCURSOR
 	select BR2_PACKAGE_XWAYLAND
 
-comment "XWayland support needs libepoxy and X.org enabled"
-	depends on !BR2_PACKAGE_XORG7 || !BR2_PACKAGE_LIBEPOXY
+comment "XWayland support needs libepoxy w/ EGL and X.org enabled"
+	depends on !BR2_PACKAGE_HAS_LIBEGL || !BR2_PACKAGE_XORG7 || \
+		!BR2_PACKAGE_LIBEPOXY
 
 comment "XWayland support needs a toolchain w/ threads, dynamic library"
 	depends on BR2_USE_MMU
 	depends on BR2_TOOLCHAIN_HAS_SYNC_4
 	depends on !BR2_TOOLCHAIN_HAS_THREADS || BR2_STATIC_LIBS
+
+config BR2_PACKAGE_WESTON_VULKAN
+	bool "Vulkan support"
+	depends on BR2_PACKAGE_HAS_LIBGBM
+	select BR2_PACKAGE_VULKAN_LOADER
+
+comment "Vulkan support needs gbm"
+	depends on !BR2_PACKAGE_HAS_LIBGBM
 
 # Weston needs at least one shell; this can be one of the bundled ones,
 # below, of from a third-party package, which should then select this.
@@ -167,6 +178,15 @@ config BR2_PACKAGE_WESTON_SHELL_KIOSK
 	bool "kiosk shell"
 	default y
 	select BR2_PACKAGE_WESTON_HAS_SHELL
+
+config BR2_PACKAGE_WESTON_SHELL_LUA
+	bool "lua shell"
+	default y
+	depends on BR2_PACKAGE_LUA_5_4
+	select BR2_PACKAGE_WESTON_HAS_SHELL
+
+comment "lua shell needs a Lua >= 5.4"
+	depends on !BR2_PACKAGE_LUA_5_4
 
 config BR2_PACKAGE_WESTON_SCREENSHARE
 	bool "screenshare"

@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-LIBSELINUX_VERSION = 3.9
+LIBSELINUX_VERSION = 3.10
 LIBSELINUX_SITE = https://github.com/SELinuxProject/selinux/releases/download/$(LIBSELINUX_VERSION)
 LIBSELINUX_LICENSE = Public Domain
 LIBSELINUX_LICENSE_FILES = LICENSE
@@ -35,7 +35,11 @@ LIBSELINUX_DEPENDENCIES += \
 	python3 \
 	python-setuptools \
 	host-python-pip \
+	host-python-setuptools \
 	host-swig
+
+LIBSELINUX_MAKE_ENV += \
+	$(PKG_PYTHON_SETUPTOOLS_ENV)
 
 LIBSELINUX_MAKE_OPTS += \
 	$(PKG_PYTHON_SETUPTOOLS_ENV) \
@@ -68,9 +72,13 @@ define LIBSELINUX_INSTALL_TARGET_CMDS
 	$(TARGET_MAKE_ENV) $(MAKE) -C $(@D) \
 		$(LIBSELINUX_MAKE_OPTS) DESTDIR=$(TARGET_DIR) \
 		$(LIBSELINUX_MAKE_INSTALL_TARGETS)
+endef
+
+define LIBSELINUX_TARGET_ADD_FSTAB_ENTRY
 	if ! grep -q "selinuxfs" $(TARGET_DIR)/etc/fstab; then \
 		echo "none /sys/fs/selinux selinuxfs noauto 0 0" >> $(TARGET_DIR)/etc/fstab ; fi
 endef
+LIBSELINUX_TARGET_FINALIZE_HOOKS += LIBSELINUX_TARGET_ADD_FSTAB_ENTRY
 
 HOST_LIBSELINUX_DEPENDENCIES = \
 	host-pkgconf \

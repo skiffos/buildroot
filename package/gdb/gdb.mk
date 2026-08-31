@@ -7,13 +7,6 @@
 GDB_VERSION = $(call qstrip,$(BR2_GDB_VERSION))
 GDB_SITE = $(BR2_GNU_MIRROR)/gdb
 GDB_SOURCE = gdb-$(GDB_VERSION).tar.xz
-
-ifeq ($(BR2_GDB_VERSION_ARC),y)
-GDB_SITE = $(call github,foss-for-synopsys-dwc-arc-processors,binutils-gdb,$(GDB_VERSION))
-GDB_SOURCE = gdb-$(GDB_VERSION).tar.gz
-GDB_FROM_GIT = y
-endif
-
 GDB_LICENSE = GPL-2.0+, LGPL-2.0+, GPL-3.0+, LGPL-3.0+
 GDB_LICENSE_FILES = COPYING COPYING.LIB COPYING3 COPYING3.LIB
 GDB_CPE_ID_VENDOR = gnu
@@ -116,6 +109,14 @@ GDB_MAKE_ENV += \
 GDB_CONF_ENV += gdb_cv_prfpregset_t_broken=no
 GDB_MAKE_ENV += gdb_cv_prfpregset_t_broken=no
 
+GDB_LDFLAGS = $(TARGET_LDFLAGS)
+# Uses __atomic_compare_exchange_1
+ifeq ($(BR2_TOOLCHAIN_HAS_LIBATOMIC),y)
+GDB_LDFLAGS += -latomic
+endif
+GDB_CONF_ENV += \
+	LDFLAGS="$(GDB_LDFLAGS)"
+
 # We want the built-in libraries of gdb (libbfd, libopcodes) to be
 # built and linked statically, as we do not install them on the
 # target, to not clash with the ones potentially installed by
@@ -216,6 +217,14 @@ else
 GDB_CONF_OPTS += --without-expat
 endif
 
+ifeq ($(BR2_PACKAGE_XXHASH),y)
+GDB_CONF_OPTS += --with-xxhash
+GDB_CONF_OPTS += --with-xxhash-prefix=$(STAGING_DIR)/usr
+GDB_DEPENDENCIES += xxhash
+else
+GDB_CONF_OPTS += --without-xxhash
+endif
+
 ifeq ($(BR2_PACKAGE_XZ),y)
 GDB_CONF_OPTS += --with-lzma
 GDB_CONF_OPTS += --with-liblzma-prefix=$(STAGING_DIR)/usr
@@ -290,6 +299,22 @@ ifeq ($(BR2_PACKAGE_HOST_GDB_SIM),y)
 HOST_GDB_CONF_OPTS += --enable-sim
 else
 HOST_GDB_CONF_OPTS += --disable-sim
+endif
+
+ifeq ($(BR2_PACKAGE_HOST_GDB_LZMA),y)
+HOST_GDB_CONF_OPTS += --with-lzma
+HOST_GDB_CONF_OPTS += --with-liblzma-prefix=$(HOST_DIR)
+HOST_GDB_DEPENDENCIES += host-xz
+else
+HOST_GDB_CONF_OPTS += --without-lzma
+endif
+
+ifeq ($(BR2_PACKAGE_HOST_GDB_XXHASH),y)
+HOST_GDB_CONF_OPTS += --with-xxhash
+HOST_GDB_CONF_OPTS += --with-xxhash-prefix=$(HOST_DIR)
+HOST_GDB_DEPENDENCIES += host-xxhash
+else
+HOST_GDB_CONF_OPTS += --without-xxhash
 endif
 
 # Since gdb 9, in-tree builds for GDB are not allowed anymore,

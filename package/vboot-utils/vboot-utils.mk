@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-VBOOT_UTILS_VERSION = 4b12d392e5b12de29c582df4e717b1228e9f1594
+VBOOT_UTILS_VERSION = 042312c6e7fce9dd106b329be0ecb51a8a347337
 VBOOT_UTILS_SITE = https://chromium.googlesource.com/chromiumos/platform/vboot_reference
 VBOOT_UTILS_SITE_METHOD = git
 VBOOT_UTILS_LICENSE = BSD-3-Clause

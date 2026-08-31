@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-HARFBUZZ_VERSION = 12.1.0
+HARFBUZZ_VERSION = 14.3.1
 HARFBUZZ_SITE = https://github.com/harfbuzz/harfbuzz/releases/download/$(HARFBUZZ_VERSION)
 HARFBUZZ_SOURCE = harfbuzz-$(HARFBUZZ_VERSION).tar.xz
 HARFBUZZ_LICENSE = MIT, ISC (ucdn library)
@@ -92,10 +92,6 @@ endif
 
 ifeq ($(BR2_TOOLCHAIN_HAS_THREADS),)
 HARFBUZZ_CXXFLAGS += $(TARGET_CXXFLAGS) -DHB_NO_MT
-endif
-
-ifeq ($(BR2_GCC_VERSION_ARC),y)
-HARFBUZZ_CXXFLAGS += -O0
 endif
 
 $(eval $(meson-package))

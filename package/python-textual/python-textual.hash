@@ -1,0 +1,5 @@
+# md5, sha256 from https://pypi.org/pypi/textual/json
+md5  c1831151f5fd52aa6f09c834e32df3b7  textual-8.2.5.tar.gz
+sha256  6c894e65a879dadb4f6cf46ddcfedb0173ff7e0cb1fe605ff7b357a597bdbc90  textual-8.2.5.tar.gz
+# Locally computed sha256 checksums
+sha256  94f290a762376dfdb7768e42070618b0abfd2a2799eab1b1c097816c3a39eb57  LICENSE

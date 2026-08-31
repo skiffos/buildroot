@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-PODMAN_VERSION = v5.6.2
+PODMAN_VERSION = v5.7.0
 PODMAN_SITE = https://github.com/containers/podman
 PODMAN_SITE_METHOD = git
 
@@ -30,6 +30,12 @@ PODMAN_TAGS += seccomp
 # This is required for rootless containers, i.e containers started by non-root
 PODMAN_DEPENDENCIES += shadow
 PODMAN_TAGS += libsubid
+
+PODMAN_CPE_ID_VERSION = $(subst v,,$(PODMAN_VERSION))
+
+# Windows only issue:
+# https://github.com/containers/podman/security/advisories/GHSA-hc8w-h2mf-hp59
+PODMAN_IGNORE_CVES += CVE-2026-33414
 
 ifeq ($(BR2_PACKAGE_BTRFS_PROGS),y)
 PODMAN_DEPENDENCIES += btrfs-progs

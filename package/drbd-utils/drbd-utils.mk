@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-DRBD_UTILS_VERSION = 9.21.4
+DRBD_UTILS_VERSION = 9.34.0
 DRBD_UTILS_SITE = http://pkg.linbit.com/downloads/drbd/utils
 DRBD_UTILS_LICENSE = GPL-2.0+
 DRBD_UTILS_LICENSE_FILES = COPYING
@@ -20,7 +20,7 @@ else
 DRBD_UTILS_CONF_OPTS += --with-initscripttype=sysv
 endif
 
-ifeq ($(BR2_TOOLCHAIN_HAS_THREADS),y)
+ifeq ($(BR2_TOOLCHAIN_HAS_THREADS)$(BR2_TOOLCHAIN_HAS_SYNC_1),yy)
 DRBD_UTILS_CONF_OPTS += --with-drbdmon
 else
 DRBD_UTILS_CONF_OPTS += --without-drbdmon

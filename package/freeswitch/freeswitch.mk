@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-FREESWITCH_VERSION = 1.10.12
+FREESWITCH_VERSION = 1.11.3
 FREESWITCH_SOURCE = freeswitch-$(FREESWITCH_VERSION).-release.tar.xz
 FREESWITCH_SITE = https://files.freeswitch.org/freeswitch-releases
 # External modules need headers/libs from staging
@@ -27,7 +27,7 @@ FREESWITCH_DEPENDENCIES = \
 	jpeg \
 	libcurl \
 	openssl \
-	pcre \
+	pcre2 \
 	spandsp \
 	sofia-sip \
 	speex \
@@ -78,7 +78,7 @@ FREESWITCH_CONF_ENV += \
 FREESWITCH_CONF_OPTS = \
 	--without-erlang \
 	--enable-fhs \
-	--without-python \
+	--without-python3 \
 	--disable-system-xmlrpc-c
 
 # Enable optional modules
@@ -153,14 +153,6 @@ define FREESWITCH_ENABLE_MODULES
 endef
 FREESWITCH_PRE_CONFIGURE_HOOKS += FREESWITCH_ENABLE_MODULES
 
-# mod_isac supports a limited set of archs
-# src/mod/codecs/mod_isac/typedefs.h
-ifeq ($(BR2_i386)$(BR2_mips)$(BR2_mipsel)$(BR2_mips64)$(BR2_mips64el)$(BR2_x86_64),y)
-FREESWITCH_LICENSE += , BSD-3-Clause (mod_isac)
-FREESWITCH_LICENSE_FILES += src/mod/codecs/mod_isac/LICENSE
-FREESWITCH_ENABLED_MODULES += codecs/mod_isac
-endif
-
 ifeq ($(BR2_PACKAGE_ALSA_LIB),y)
 FREESWITCH_DEPENDENCIES += alsa-lib
 FREESWITCH_ENABLED_MODULES += endpoints/mod_alsa
@@ -207,11 +199,6 @@ FREESWITCH_DEPENDENCIES += libks
 FREESWITCH_ENABLED_MODULES += endpoints/mod_verto
 endif
 
-ifeq ($(BR2_PACKAGE_LIBLDNS),y)
-FREESWITCH_DEPENDENCIES += libldns
-FREESWITCH_ENABLED_MODULES += applications/mod_enum
-endif
-
 ifeq ($(BR2_PACKAGE_LIBMEMCACHED),y)
 FREESWITCH_DEPENDENCIES += libmemcached
 FREESWITCH_ENABLED_MODULES += applications/mod_memcache
@@ -233,11 +220,6 @@ ifeq ($(BR2_PACKAGE_LIBXCRYPT),y)
 FREESWITCH_DEPENDENCIES += libxcrypt
 endif
 
-ifeq ($(BR2_PACKAGE_LIBYAML),y)
-FREESWITCH_DEPENDENCIES += libyaml
-FREESWITCH_ENABLED_MODULES += languages/mod_yaml
-endif
-
 ifeq ($(BR2_PACKAGE_LUA),y)
 FREESWITCH_DEPENDENCIES += lua
 FREESWITCH_ENABLED_MODULES += languages/mod_lua
@@ -251,11 +233,6 @@ endif
 ifeq ($(BR2_PACKAGE_OPUS),y)
 FREESWITCH_DEPENDENCIES += opus
 FREESWITCH_ENABLED_MODULES += codecs/mod_opus
-endif
-
-ifeq ($(BR2_PACKAGE_PORTAUDIO),y)
-FREESWITCH_DEPENDENCIES += portaudio
-FREESWITCH_ENABLED_MODULES += endpoints/mod_portaudio
 endif
 
 ifeq ($(BR2_PACKAGE_LAME)$(BR2_PACKAGE_LIBSHOUT)$(BR2_PACKAGE_MPG123),yyy)
@@ -273,17 +250,7 @@ FREESWITCH_DEPENDENCIES += libsndfile
 FREESWITCH_ENABLED_MODULES += formats/mod_sndfile
 endif
 
-ifeq ($(BR2_PACKAGE_LIBSOUNDTOUCH),y)
-FREESWITCH_DEPENDENCIES += libsoundtouch
-FREESWITCH_ENABLED_MODULES += applications/mod_soundtouch
-endif
-
-ifeq ($(BR2_PACKAGE_OPENCV3),y)
-FREESWITCH_DEPENDENCIES += opencv3
-FREESWITCH_ENABLED_MODULES += applications/mod_cv
-endif
-
-ifeq ($(BR2_PACKAGE_OPENCV4_LIB_HIGHGUI)$(BR2_PACKAGE_OPENCV4_LIB_IMGPROC)$(BR2_PACKAGE_OPENCV4_LIB_OBJDETECT),yyy)
+ifeq ($(BR2_PACKAGE_FREESWITCH_OPENCV4),y)
 FREESWITCH_DEPENDENCIES += opencv4
 FREESWITCH_ENABLED_MODULES += applications/mod_cv
 endif

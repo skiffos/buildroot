@@ -4,10 +4,11 @@
 #
 ################################################################################
 
-MDNSD_VERSION = 0.12
+MDNSD_VERSION = 1.1
 MDNSD_SITE = https://github.com/troglobit/mdnsd/releases/download/v$(MDNSD_VERSION)
 MDNSD_LICENSE = BSD-3-Clause
 MDNSD_LICENSE_FILES = LICENSE
+MDNSD_INSTALL_STAGING = YES
 MDNSD_DEPENDENCIES = host-pkgconf
 
 ifeq ($(BR2_PACKAGE_MDNSD_MQUERY),y)
