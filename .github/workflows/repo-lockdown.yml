@@ -12,7 +12,7 @@ jobs:
     if: github.repository == 'buildroot/buildroot'
     runs-on: ubuntu-latest
     steps:
-      - uses: dessant/repo-lockdown@v4
+      - uses: dessant/repo-lockdown@v5
         with:
           pr-comment: |
             Please do not submit a Pull Request via GitHub. Buildroot makes use of a
