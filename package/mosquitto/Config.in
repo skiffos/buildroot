@@ -1,5 +1,9 @@
 config BR2_PACKAGE_MOSQUITTO
 	bool "mosquitto"
+	depends on BR2_USE_MMU  # lib peeks in malloc() internals; broker fork()s
+	depends on !BR2_STATIC_LIBS
+	select BR2_HOST_CMAKE_AT_LEAST_4_3
+	select BR2_PACKAGE_CJSON
 	help
 	  Eclipse Mosquitto is an open source (EPL/EDL licensed) message
 	  broker that implements the MQTT protocol versions 5.0, 3.1.1
@@ -19,26 +23,123 @@ config BR2_PACKAGE_MOSQUITTO
 
 	  https://mosquitto.org/
 
+if BR2_PACKAGE_MOSQUITTO
+
+choice
+	prompt "Websockets support"
+	help
+	  Choose what websocket implementation to use. Note that
+	  the mosquitto_{sub,pub,rr} clients (above) only support
+	  websockets with the builtin implementation, while the
+	  broker supports websockets with either libwebsockets
+	  or the builtin implementation.
+
+config BR2_PACKAGE_MOSQUITTO_WS_NONE
+	bool "none"
+
+config BR2_PACKAGE_MOSQUITTO_WS_LIBWS
+	bool "with libwebsockets"
+	select BR2_PACKAGE_OPENSSL
+	select BR2_PACKAGE_LIBWEBSOCKETS
+	select BR2_PACKAGE_LIBWEBSOCKETS_EXT_POLL
+
+config BR2_PACKAGE_MOSQUITTO_WS_BUILTIN
+	bool "with builtin implementation"
+	select BR2_PACKAGE_OPENSSL
+
+endchoice
+
+config BR2_PACKAGE_MOSQUITTO_CLIENTS
+	bool "install clients"
+	default y  # Backward compatibility
+	help
+	  Install CLI tools to publish/subscribe to the broker:
+	    mosquitto_pub
+	    mosquitto_sub
+	    mosquitto_rr
+
+config BR2_PACKAGE_MOSQUITTO_APPS
+	bool "install apps"
+	default y if BR2_PACKAGE_MOSQUITTO_BROKER  # Backward compatibility
+	depends on BR2_USE_WCHAR  # libedit
+	# For mosquitto_ctrl shell feature, mandatorily enabled:
+	select BR2_PACKAGE_READLINE if !BR2_PACKAGE_LIBEDIT
+	help
+	  Those apps can be used to interact with the broker:
+	    mosquitto_db_dump
+	    mosquitto_signal
+
+	  Additionally, when openssl is enabled, the following apps are
+	  also installed:
+	    mosquitto_ctrl
+	    mosquitto_passwd
+
 config BR2_PACKAGE_MOSQUITTO_BROKER
 	bool "install the mosquitto broker"
 	default y
-	depends on BR2_USE_MMU # fork()
-	depends on !BR2_STATIC_LIBS # include <dlfcn.h>
-	depends on BR2_PACKAGE_MOSQUITTO
-	select BR2_PACKAGE_LIBWEBSOCKETS_EXT_POLL if BR2_PACKAGE_LIBWEBSOCKETS
 	help
 	  Build and install the mosquitto broker onto target.
 
+if BR2_PACKAGE_MOSQUITTO_BROKER
+
+config BR2_PACKAGE_MOSQUITTO_BROKER_HTTP_API
+	bool "http_api"
+	select BR2_PACKAGE_LIBMICROHTTPD
+	help
+	  Add support for simple webserver as a listener to serve
+	  some of the HTTP API.
+
+config BR2_PACKAGE_MOSQUITTO_BROKER_BRIDGE
+	bool "bridge support"
+	default y  # legacy
+	help
+	  Include bridge support for connecting to other brokers
+
+config BR2_PACKAGE_MOSQUITTO_BROKER_SYS
+	bool "$SYS tree support"
+	default y  # legacy
+	help
+	  Enable the $SYS/# tree structure, to export broker status as
+	  MQTT topics.
+
+config BR2_PACKAGE_MOSQUITTO_BROKER_CONTROL
+	bool "$CONTROL tree support"
+	default y  # legacy
+	help
+	  Enable the $CONTROL/# tree structure, to control the broker
+	  via messages posted to, or retrieved from, MQTT topics.
+
+config BR2_PACKAGE_MOSQUITTO_BROKER_PLUGIN_STATIC_PASSWD
+	bool "static password file plugin"
+	default y
+	help
+	  Add support for authentication based on static files. using
+	  a plugin rather than the legacy builtin support.
+
+config BR2_PACKAGE_MOSQUITTO_BROKER_PLUGIN_STATIC_ACL
+	bool "static ACL file plugin"
+	default y
+	help
+	  Add support for authorization (ACL) based on static files,
+	  using a plugin rather than the legacy builtin support.
+
 config BR2_PACKAGE_MOSQUITTO_BROKER_DYNAMIC_SECURITY_PLUGIN
 	bool "dynamic security plugin"
-	depends on BR2_PACKAGE_MOSQUITTO_BROKER
-	select BR2_PACKAGE_CJSON
 	select BR2_PACKAGE_OPENSSL
 	help
 	  Build and install the dynamic security plugin for
 	  mosquitto broker onto target.
 
-comment "mosquitto broker needs a toolchain w/ dynamic library"
+config BR2_PACKAGE_MOSQUITTO_BROKER_PLUGIN_PERSIST_SQLITE
+	bool "persist-sqlite plugin"
+	select BR2_PACKAGE_SQLITE
+	help
+	  Add the persist-sqlite plugin, to persist the broker
+	  state across restarts.
+
+endif
+endif
+
+comment "mosquitto needs a toolchain w/ dynamic library"
 	depends on BR2_USE_MMU
 	depends on BR2_STATIC_LIBS
-	depends on BR2_PACKAGE_MOSQUITTO

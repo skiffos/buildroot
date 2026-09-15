@@ -15,7 +15,7 @@ class TestIptables(infra.basetest.BRTest):
         BR2_TARGET_GENERIC_GETTY_PORT="ttyAMA0"
         BR2_LINUX_KERNEL=y
         BR2_LINUX_KERNEL_CUSTOM_VERSION=y
-        BR2_LINUX_KERNEL_CUSTOM_VERSION_VALUE="6.1.82"
+        BR2_LINUX_KERNEL_CUSTOM_VERSION_VALUE="6.18.36"
         BR2_LINUX_KERNEL_USE_CUSTOM_CONFIG=y
         BR2_LINUX_KERNEL_CUSTOM_CONFIG_FILE="board/qemu/aarch64-virt/linux.config"
         BR2_LINUX_KERNEL_NEEDS_HOST_OPENSSL=y
@@ -24,6 +24,7 @@ class TestIptables(infra.basetest.BRTest):
         BR2_TARGET_ROOTFS_CPIO_GZIP=y
         # BR2_TARGET_ROOTFS_TAR is not set
         """
+    iptables_backend = "(legacy)"
 
     def test_run(self):
         img = os.path.join(self.builddir, "images", "rootfs.cpio.gz")
@@ -38,7 +39,10 @@ class TestIptables(infra.basetest.BRTest):
         self.emulator.login()
 
         # We check the program can execute.
-        self.assertRunOk("iptables --version")
+        cmd = "iptables --version"
+        output, exit_code = self.emulator.run(cmd)
+        self.assertEqual(exit_code, 0)
+        self.assertTrue(output[0].endswith(self.iptables_backend))
 
         # We delete all rules in all chains. We also set default
         # policies to ACCEPT for INPUT and OUTPUT chains. This should
@@ -68,8 +72,7 @@ class TestIptables(infra.basetest.BRTest):
         # A ping to 127.0.0.2 is expected to fail, because our rule is
         # supposed to drop it.
         ping_test_cmd = ping_cmd_prefix + "127.0.0.2"
-        _, exit_code = self.emulator.run(ping_test_cmd)
-        self.assertNotEqual(exit_code, 0)
+        self.assertRunNotOk(ping_test_cmd)
 
         # Save the current rules to test the init script later.
         self.assertRunOk("/etc/init.d/S35iptables save")
@@ -85,8 +88,7 @@ class TestIptables(infra.basetest.BRTest):
         self.assertRunOk("/etc/init.d/S35iptables start")
 
         # Ping to 127.0.0.2 is expected to fail again.
-        _, exit_code = self.emulator.run(ping_test_cmd)
-        self.assertNotEqual(exit_code, 0)
+        self.assertRunNotOk(ping_test_cmd)
 
         # And flush the rules again.
         self.assertRunOk("/etc/init.d/S35iptables stop")
@@ -94,3 +96,14 @@ class TestIptables(infra.basetest.BRTest):
         # Since we deleted the rule, the ping test command which was
         # supposed to fail earlier is now supposed to succeed.
         self.assertRunOk(ping_test_cmd)
+
+
+class TestIptablesNft(TestIptables):
+    # Build iptables with nftables backend, and run the same test
+    # procedure as above
+    config = TestIptables.config + \
+        """
+        BR2_PACKAGE_IPTABLES_NFTABLES=y
+        BR2_PACKAGE_IPTABLES_NFTABLES_DEFAULT=y
+        """
+    iptables_backend = "(nf_tables)"

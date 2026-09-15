@@ -140,15 +140,6 @@ config BR2_PACKAGE_MPD_MPG123
 	  Enable mpg123 input support.
 	  Select this if you want to play back MP3 files.
 
-config BR2_PACKAGE_MPD_MUSEPACK
-	bool "musepack"
-	select BR2_PACKAGE_LIBCUEFILE
-	select BR2_PACKAGE_LIBREPLAYGAIN
-	select BR2_PACKAGE_MUSEPACK
-	help
-	  Enable musepack input support.
-	  Select this if you want to play back MPC files.
-
 config BR2_PACKAGE_MPD_OPUS
 	bool "opus"
 	select BR2_PACKAGE_OPUS
@@ -213,6 +204,7 @@ config BR2_PACKAGE_MPD_CDIO_PARANOIA
 
 config BR2_PACKAGE_MPD_CURL
 	bool "curl"
+	select BR2_PACKAGE_MPD_TCP
 	select BR2_PACKAGE_LIBCURL
 	help
 	  Enable curl streaming (http) support.
@@ -234,16 +226,17 @@ config BR2_PACKAGE_MPD_LIBNFS
 comment "nfs support needs a toolchain w/ threads support"
 	depends on !(BR2_TOOLCHAIN_HAS_THREADS || BR2_TOOLCHAIN_HAS_NATIVE_RPC)
 
-comment "samba support needs a glibc toolchain w/ dynamic library, RPC"
-	depends on !BR2_TOOLCHAIN_USES_GLIBC || BR2_STATIC_LIBS || \
-		!BR2_TOOLCHAIN_HAS_NATIVE_RPC
+comment "samba support needs a glibc or uclibc toolchain w/ dynamic library, NPTL"
+	depends on BR2_TOOLCHAIN_HAS_SYNC_4
+	depends on BR2_TOOLCHAIN_USES_MUSL || BR2_STATIC_LIBS || \
+		!BR2_TOOLCHAIN_HAS_THREADS_NPTL
 
 config BR2_PACKAGE_MPD_LIBSMBCLIENT
 	bool "samba"
-	depends on BR2_TOOLCHAIN_USES_GLIBC
-	depends on !BR2_STATIC_LIBS
-	depends on BR2_TOOLCHAIN_HAS_NATIVE_RPC
-	depends on BR2_TOOLCHAIN_HAS_SYNC_4
+	depends on !BR2_TOOLCHAIN_USES_MUSL # samba4
+	depends on BR2_TOOLCHAIN_HAS_THREADS_NPTL # samba4
+	depends on !BR2_STATIC_LIBS # samba4
+	depends on BR2_TOOLCHAIN_HAS_SYNC_4 # samba4
 	select BR2_PACKAGE_SAMBA4
 	help
 	  Enable Samba support.
@@ -267,6 +260,7 @@ config BR2_PACKAGE_MPD_AO
 
 config BR2_PACKAGE_MPD_HTTPD_OUTPUT
 	bool "httpd output"
+	select BR2_PACKAGE_MPD_TCP
 	help
 	  Enable httpd output support.
 
@@ -350,6 +344,7 @@ comment "io_uring support needs a toolchain w/ headers >= 5.1"
 
 config BR2_PACKAGE_MPD_LIBMPDCLIENT
 	bool "libmpdclient"
+	select BR2_PACKAGE_MPD_TCP
 	select BR2_PACKAGE_LIBMPDCLIENT
 	help
 	  Enable libmpdclient support.

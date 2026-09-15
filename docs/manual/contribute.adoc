@@ -283,16 +283,18 @@ the commit message body.
 When you bump a package to a new version, you should also submit a
 separate patch for each package. Don't forget to update the +.hash+
 file, or add it if it doesn't exist yet. Also don't forget to check if
-the +_LICENSE+ and +_LICENSE_FILES+ are still valid. The summary line
-should be something like +<packagename>: bump to version <new
-version>+. If the new version only contains security updates compared
-to the existing one, the summary should be +<packagename>: security
-bump to version <new version>+ and the commit message body should show
-the CVE numbers that are fixed. If some package patches can be removed
-in the new version, it should be explained explicitly why they can be
-removed, preferably with the upstream commit ID. Also any other
-required changes should be explained explicitly, like configure
-options that no longer exist or are no longer needed.
+the +_LICENSE+ and +_LICENSE_FILES+ are still valid. If the hash of a
+license file changed, please include a note in the commit message
+about what changed, ideally with a link to the upstream commit. The
+summary line should be something like +<packagename>: bump to version
+<new version>+. If the new version only contains security updates
+compared to the existing one, the summary should be +<packagename>:
+security bump to version <new version>+ and the commit message body
+should show the CVE numbers that are fixed. If some package patches
+can be removed in the new version, it should be explained explicitly
+why they can be removed, preferably with the upstream commit ID. Also
+any other required changes should be explained explicitly, like
+configure options that no longer exist or are no longer needed.
 
 If you are interested in getting notified of build failures and of
 further changes in the packages you added or modified, please add
@@ -458,7 +460,7 @@ editing the commit message. Below the +Signed-off-by+ section, add
 
 Although the changelog will be visible for the reviewers in the mail
 thread, as well as in
-https://patchwork.ozlabs.org/project/buildroot/list/[patchwork], +git+
+https://patchwork.buildroot.org/project/buildroot/list/[patchwork], +git+
 will automatically ignores lines below +---+ when the patch will be
 merged. This is the intended behavior: the changelog is not meant to
 be preserved forever in the +git+ history of the project.
@@ -511,19 +513,19 @@ $ git format-patch -v4 -M -s -o outgoing origin/master
 
 When you provide a new version of a patch, please mark the old one as
 superseded in
-https://patchwork.ozlabs.org/project/buildroot/list/[patchwork]. You
+https://patchwork.buildroot.org/project/buildroot/list/[patchwork]. You
 need to create an account on
-https://patchwork.ozlabs.org/project/buildroot/list/[patchwork] to be
+https://patchwork.buildroot.org/project/buildroot/list/[patchwork] to be
 able to modify the status of your patches. Note that you can only change
 the status of patches you submitted yourself, which means the email
 address you register in
-https://patchwork.ozlabs.org/project/buildroot/list/[patchwork] should
+https://patchwork.buildroot.org/project/buildroot/list/[patchwork] should
 match the one you use for sending patches to the mailing list.
 
 You can also add the +--in-reply-to=<message-id>+ option when
 submitting a patch to the mailing list. The id of the mail to reply to
 can be found under the "Message Id" tag on
-https://patchwork.ozlabs.org/project/buildroot/list/[patchwork]. The
+https://patchwork.buildroot.org/project/buildroot/list/[patchwork]. The
 advantage of *in-reply-to* is that patchwork will automatically mark
 the previous version of the patch as superseded.
 
@@ -559,8 +561,9 @@ If some of these details are too large, do not hesitate to use a
 pastebin service. Note that not all available pastebin services will
 preserve Unix-style line terminators when downloading raw pastes.
 Following pastebin services are known to work correctly:
+
 - https://gist.github.com/
-- http://code.bulix.org/
+- https://paste.sr.ht/
 
 === Using the runtime tests framework
 
@@ -661,7 +664,7 @@ Creating a basic test case involves:
   advantage of using +infra.basetest.BASIC_TOOLCHAIN_CONFIG+ is that a
   matching Linux kernel image is provided, which allows to boot the
   resulting image in Qemu without having to build a Linux kernel image
-  as part of the test case, therefore significant decreasing the build
+  as part of the test case, therefore significantly decreasing the build
   time required for the test case.
 
 * Implementing a +def test_run(self):+ function to implement the

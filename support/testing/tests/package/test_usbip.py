@@ -1,4 +1,5 @@
 import os
+import time
 
 import infra.basetest
 
@@ -56,8 +57,7 @@ class TestUsbIp(infra.basetest.BRTest):
 
         # The daemon is not running yet. Listing remote devices is
         # expected to fail.
-        _, ret = self.emulator.run("usbip list --remote=127.0.0.1")
-        self.assertNotEqual(ret, 0)
+        self.assertRunNotOk("usbip list --remote=127.0.0.1")
 
         # We start the USBIP daemon.
         self.assertRunOk("usbipd -D")
@@ -91,6 +91,9 @@ class TestUsbIp(infra.basetest.BRTest):
         # We attach the keyboard. This should create a second USB
         # keyboard.
         self.assertRunOk("usbip attach --remote=127.0.0.1 --busid=1-1")
+
+        # Wait a bit, to let the new keyboard be detected.
+        time.sleep(1)
 
         # We check "lsusb" now sees exactly two QEMU USB Keyboards
         # (the original one, and a second one created by usbip).

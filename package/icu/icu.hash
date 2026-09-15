@@ -1,3 +1,4 @@
+# From https://github.com/unicode-org/icu/releases/tag/release-78.2
+sha256  3e99687b5c435d4b209630e2d2ebb79906c984685e78635078b672e03c89df35  icu4c-78.2-sources.tgz
 # Locally computed
-sha256  588e431f77327c39031ffbb8843c0e3bc122c211374485fa87dc5f3faff24061  icu4c-77_1-src.tgz
-sha256  451167c55c0fa447cc2d5632714f5e3c567fe4f1e1badefab2c1333852198aca  LICENSE
+sha256  e55522d81edc687a341a4411e0776e54ca654e90147f354a90458aaced4116af  LICENSE

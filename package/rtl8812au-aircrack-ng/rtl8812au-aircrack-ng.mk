@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-RTL8812AU_AIRCRACK_NG_VERSION = c3fb89a2f7066f4bf4e4d9d85d84f9791f14c83e
+RTL8812AU_AIRCRACK_NG_VERSION = 734485506a30d6237c2deaad666a19f8ca5379f2
 RTL8812AU_AIRCRACK_NG_SITE = $(call github,aircrack-ng,rtl8812au,$(RTL8812AU_AIRCRACK_NG_VERSION))
 RTL8812AU_AIRCRACK_NG_LICENSE = GPL-2.0
 RTL8812AU_AIRCRACK_NG_LICENSE_FILES = LICENSE
@@ -15,7 +15,8 @@ RTL8812AU_AIRCRACK_NG_EXTRA_CFLAGS = \
 	-DRTW_USE_CFG80211_STA_EVENT \
 	-Wno-error=address \
 	-Wno-error=array-bounds \
-	-Wno-error=cast-function-type
+	-Wno-error=cast-function-type \
+	-Wno-error=implicit-int
 
 RTL8812AU_AIRCRACK_NG_MODULE_MAKE_OPTS = \
 	CONFIG_PLATFORM_I386_PC=n \

@@ -9,12 +9,11 @@ RSYSLOG_SITE = http://rsyslog.com/files/download/rsyslog
 RSYSLOG_LICENSE = GPL-3.0, LGPL-3.0, Apache-2.0
 RSYSLOG_LICENSE_FILES = COPYING COPYING.LESSER COPYING.ASL20
 RSYSLOG_CPE_ID_VENDOR = rsyslog
-# rsyslog uses weak permissions for generating log files.
-# Ignoring this CVE as Buildroot normally doesn't have local users and a build
-# could customize the rsyslog.conf to be more restrictive ($FileCreateMode 0640)
-RSYSLOG_IGNORE_CVES += CVE-2015-3243
 RSYSLOG_DEPENDENCIES = zlib libestr liblogging libfastjson host-pkgconf
 RSYSLOG_CONF_ENV = ac_cv_prog_cc_c99='-std=c99'
+
+# 0001-imptcp-guard-regex-framing-match-at-line-start.patch
+RSYSLOG_IGNORE_CVES += CVE-2026-19654
 
 ifeq ($(BR2_PACKAGE_RSYSLOG_EXTRA_PLUGINS),y)
 RSYSLOG_PLUGINS = imdiag imfile impstats imptcp \

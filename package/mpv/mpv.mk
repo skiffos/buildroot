@@ -4,10 +4,10 @@
 #
 ################################################################################
 
-MPV_VERSION = 0.35.1
+MPV_VERSION = 0.40.0
 MPV_SITE = $(call github,mpv-player,mpv,v$(MPV_VERSION))
 MPV_DEPENDENCIES = \
-	host-pkgconf ffmpeg libass zlib \
+	host-pkgconf ffmpeg libass libplacebo zlib \
 	$(if $(BR2_PACKAGE_LIBICONV),libiconv)
 MPV_LICENSE = GPL-2.0+
 MPV_LICENSE_FILES = LICENSE.GPL
@@ -35,6 +35,10 @@ MPV_CONF_OPTS += -Dalsa=enabled
 MPV_DEPENDENCIES += alsa-lib
 else
 MPV_CONF_OPTS += -Dalsa=disabled
+endif
+
+ifeq ($(BR2_PACKAGE_LIBDISPLAY_INFO),y)
+MPV_DEPENDENCIES += libdisplay-info
 endif
 
 ifeq ($(BR2_PACKAGE_MESA3D_GBM),y)
@@ -162,14 +166,6 @@ else
 MPV_CONF_OPTS += -Dsdl2=disabled
 endif
 
-# Raspberry Pi support
-ifeq ($(BR2_PACKAGE_RPI_USERLAND),y)
-MPV_CONF_OPTS += -Drpi=enabled -Dgl=enabled
-MPV_DEPENDENCIES += rpi-userland
-else
-MPV_CONF_OPTS += -Drpi=disabled
-endif
-
 # va-api support
 ifeq ($(BR2_PACKAGE_LIBVA)$(BR2_PACKAGE_MPV_SUPPORTS_VAAPI),yy)
 MPV_CONF_OPTS += -Dvaapi=enabled
@@ -212,12 +208,6 @@ MPV_CONF_OPTS += -Dxv=disabled
 endif
 else
 MPV_CONF_OPTS += -Dx11=disabled
-endif
-
-ifeq ($(BR2_TOOLCHAIN_HAS_LIBATOMIC),y)
-MPV_CONF_OPTS += -Dstdatomic=enabled
-else
-MPV_CONF_OPTS += -Dstdatomic=disabled
 endif
 
 $(eval $(meson-package))

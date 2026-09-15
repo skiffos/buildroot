@@ -4,13 +4,13 @@
 #
 ################################################################################
 
-REDIS_VERSION = 8.2.2
-REDIS_SITE = http://download.redis.io/releases
+REDIS_VERSION = 8.10.1
+REDIS_SITE = https://download.redis.io/releases
 REDIS_LICENSE = \
 	AGPL-3.0 or SSPL-1.0 or RSAL-2.0 (core); \
 	MIT and BSD family licenses (Bundled components)
 REDIS_LICENSE_FILES = LICENSE.txt
-REDIS_CPE_ID_VENDOR = redislabs
+REDIS_CPE_ID_VENDOR = redis
 REDIS_SELINUX_MODULES = redis
 
 define REDIS_USERS
@@ -49,13 +49,15 @@ REDIS_BUILDOPTS += BUILD_TLS=no
 endif
 
 define REDIS_BUILD_CMDS
-	$(TARGET_MAKE_ENV) $(MAKE) $(REDIS_BUILDOPTS) -C $(@D)
+	$(TARGET_MAKE_ENV) $(MAKE) $(REDIS_BUILDOPTS) -C $(@D) build redis
 endef
 
 define REDIS_INSTALL_TARGET_CMDS
 	$(TARGET_MAKE_ENV) $(MAKE) $(REDIS_BUILDOPTS) -C $(@D) \
 		LDCONFIG=true install
-	$(INSTALL) -D -m 0644 $(@D)/redis.conf \
+	$(TARGET_MAKE_ENV) $(MAKE) $(REDIS_BUILDOPTS) -C $(@D) \
+		sync-redis-conf
+	$(INSTALL) -D -m 0644 $(@D)/redis-full.conf \
 		$(TARGET_DIR)/etc/redis.conf
 endef
 

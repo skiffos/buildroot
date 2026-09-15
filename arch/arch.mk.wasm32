@@ -1,0 +1,133 @@
+# wasi-libc emulation flags for wasm32-wasi targets.
+ifeq ($(BR2_wasm32),y)
+ARCH_TOOLCHAIN_WRAPPER_OPTS += \
+	-D_WASI_EMULATED_SIGNAL \
+	-D_WASI_EMULATED_MMAN \
+	-D_WASI_EMULATED_PROCESS_CLOCKS \
+	-D_WASI_EMULATED_GETPID \
+	-include wasi-posix-fixups.h
+
+# Export __errno_location so host runtimes can set errno in WASM memory.
+# Add usr/lib to search path (wasi-sdk sysroot only has lib/wasm32-wasi).
+TARGET_LDFLAGS += -Wl,--export=__errno_location -L$(STAGING_DIR)/usr/lib
+
+# Autoconf function detection cache overrides for wasm32-wasi.
+#
+# wasi-posix-fixups.h is force-included via -include into every compilation
+# unit, including autoconf test programs. Autoconf detects functions by
+# compiling `char FUNC(void); int main() { return FUNC(); }` -- which
+# conflicts with the proper prototypes in wasi-posix-fixups.h and the
+# wasi-libc headers. Pre-seeding these cache variables tells configure
+# the functions exist without running the (broken) compile test.
+TARGET_CONFIGURE_ARGS += \
+	ac_cv_func__exit=yes \
+	ac_cv_func_accept=yes \
+	ac_cv_func_access=yes \
+	ac_cv_func_bind=yes \
+	ac_cv_func_chdir=yes \
+	ac_cv_func_chown=yes \
+	ac_cv_func_chroot=yes \
+	ac_cv_func_clock_gettime=yes \
+	ac_cv_func_clock_settime=yes \
+	ac_cv_func_connect=yes \
+	ac_cv_func_dup=yes \
+	ac_cv_func_dup2=yes \
+	ac_cv_func_dup3=yes \
+	ac_cv_func_execl=yes \
+	ac_cv_func_execle=yes \
+	ac_cv_func_execlp=yes \
+	ac_cv_func_execv=yes \
+	ac_cv_func_execve=yes \
+	ac_cv_func_execvp=yes \
+	ac_cv_func_fchdir=yes \
+	ac_cv_func_fchown=yes \
+	ac_cv_func_fork=yes \
+	ac_cv_func_fpathconf=yes \
+	ac_cv_func_ftruncate=yes \
+	ac_cv_func_getcwd=yes \
+	ac_cv_func_getegid=yes \
+	ac_cv_func_geteuid=yes \
+	ac_cv_func_getgid=yes \
+	ac_cv_func_getgroups=yes \
+	ac_cv_func_gethostname=yes \
+	ac_cv_func_getpeername=yes \
+	ac_cv_func_getpgid=yes \
+	ac_cv_func_getpgrp=yes \
+	ac_cv_func_getppid=yes \
+	ac_cv_func_getpriority=yes \
+	ac_cv_func_getrlimit=yes \
+	ac_cv_func_getsid=yes \
+	ac_cv_func_getsockname=yes \
+	ac_cv_func_getsockopt=yes \
+	ac_cv_func_gettimeofday=yes \
+	ac_cv_func_getuid=yes \
+	ac_cv_func_initgroups=yes \
+	ac_cv_func_isatty=yes \
+	ac_cv_func_kill=yes \
+	ac_cv_func_killpg=yes \
+	ac_cv_func_lchown=yes \
+	ac_cv_func_link=yes \
+	ac_cv_func_listen=yes \
+	ac_cv_func_mkdtemp=yes \
+	ac_cv_func_mkfifo=yes \
+	ac_cv_func_mknod=yes \
+	ac_cv_func_mkstemp=yes \
+	ac_cv_func_nice=yes \
+	ac_cv_func_pathconf=yes \
+	ac_cv_func_pause=yes \
+	ac_cv_func_pipe=yes \
+	ac_cv_func_pipe2=yes \
+	ac_cv_func_readlink=yes \
+	ac_cv_func_recv=yes \
+	ac_cv_func_recvfrom=yes \
+	ac_cv_func_select=yes \
+	ac_cv_func_send=yes \
+	ac_cv_func_sendto=yes \
+	ac_cv_func_setegid=yes \
+	ac_cv_func_seteuid=yes \
+	ac_cv_func_setgid=yes \
+	ac_cv_func_setgroups=yes \
+	ac_cv_func_sethostname=yes \
+	ac_cv_func_setpgid=yes \
+	ac_cv_func_setpgrp=yes \
+	ac_cv_func_setpriority=yes \
+	ac_cv_func_setregid=yes \
+	ac_cv_func_setreuid=yes \
+	ac_cv_func_setrlimit=yes \
+	ac_cv_func_setsid=yes \
+	ac_cv_func_setsockopt=yes \
+	ac_cv_func_settimeofday=yes \
+	ac_cv_func_setuid=yes \
+	ac_cv_func_shutdown=yes \
+	ac_cv_func_sigaction=yes \
+	ac_cv_func_sigaddset=yes \
+	ac_cv_func_sigdelset=yes \
+	ac_cv_func_sigemptyset=yes \
+	ac_cv_func_sigfillset=yes \
+	ac_cv_func_sigismember=yes \
+	ac_cv_func_sigpending=yes \
+	ac_cv_func_sigprocmask=yes \
+	ac_cv_func_sigaltstack=yes \
+	ac_cv_func_setitimer=yes \
+	ac_cv_func_getitimer=yes \
+	ac_cv_func_socket=yes \
+	ac_cv_func_symlink=yes \
+	ac_cv_func_sync=yes \
+	ac_cv_func_sysconf=yes \
+	ac_cv_func_tcgetpgrp=yes \
+	ac_cv_func_tcsetpgrp=yes \
+	ac_cv_func_truncate=yes \
+	ac_cv_func_ttyname=yes \
+	ac_cv_func_ttyname_r=yes \
+	ac_cv_func_tzset=yes \
+	ac_cv_func_umask=yes \
+	ac_cv_func_vfork=yes \
+	ac_cv_func_wait=yes \
+	ac_cv_func_waitpid=yes
+
+# Functions falsely detected due to -Wl,--allow-undefined (link always
+# succeeds). These do NOT exist in wasi-libc or our host imports.
+TARGET_CONFIGURE_ARGS += \
+	ac_cv_func_tcgetwinsize=no \
+	ac_cv_func_tcsetwinsize=no
+endif

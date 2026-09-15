@@ -4,8 +4,8 @@
 #
 ################################################################################
 
-PROJ_VERSION = 9.5.1
-PROJ_SITE = http://download.osgeo.org/proj
+PROJ_VERSION = 9.8.0
+PROJ_SITE = https://download.osgeo.org/proj
 PROJ_LICENSE = MIT
 PROJ_LICENSE_FILES = COPYING
 PROJ_INSTALL_STAGING = YES

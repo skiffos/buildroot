@@ -41,7 +41,7 @@ choice
 	  Select the specific U-Boot version you want to use
 
 config BR2_TARGET_UBOOT_LATEST_VERSION
-	bool "2025.10"
+	bool "2026.07"
 
 config BR2_TARGET_UBOOT_CUSTOM_VERSION
 	bool "Custom version"
@@ -85,12 +85,20 @@ endif
 
 config BR2_TARGET_UBOOT_VERSION
 	string
-	default "2025.10"	if BR2_TARGET_UBOOT_LATEST_VERSION
+	default "2026.07"	if BR2_TARGET_UBOOT_LATEST_VERSION
 	default BR2_TARGET_UBOOT_CUSTOM_VERSION_VALUE \
 		if BR2_TARGET_UBOOT_CUSTOM_VERSION
 	default "custom"	if BR2_TARGET_UBOOT_CUSTOM_TARBALL
 	default BR2_TARGET_UBOOT_CUSTOM_REPO_VERSION \
 		if BR2_TARGET_UBOOT_CUSTOM_GIT || BR2_TARGET_UBOOT_CUSTOM_HG || BR2_TARGET_UBOOT_CUSTOM_SVN
+
+config BR2_TARGET_UBOOT_LICENSE_FILES
+	string "U-boot license files" if BR2_TARGET_UBOOT_CUSTOM_GIT || BR2_TARGET_UBOOT_CUSTOM_HG || \
+		BR2_TARGET_UBOOT_CUSTOM_SVN || BR2_TARGET_UBOOT_CUSTOM_TARBALL
+	default "Licenses/gpl-2.0.txt"
+	help
+	  A space-separated list of license files related to U-Boot
+	  package.
 
 config BR2_TARGET_UBOOT_PATCH
 	string "Custom U-Boot patches"
@@ -287,16 +295,36 @@ choice
 	  Since this version, the TEE in binary format must be used as
 	  it contains important meta-data.
 
+	  https://optee.readthedocs.io/en/4.9.0/architecture/porting_guidelines.html#binaries
+
 config BR2_TARGET_UBOOT_NEEDS_OPTEE_TEE_ELF
 	bool "tee.elf"
 	help
+	  The main OP-TEE ELF file. All other OP-TEE binaries are
+	  created with this as input.
+
 	  ELF format may be used only for OP-TEE versions before
 	  3.8.0.
 
 config BR2_TARGET_UBOOT_NEEDS_OPTEE_TEE_BIN
 	bool "tee.bin"
 	help
+	  The original OP-TEE binary with a header (v1) and combined
+	  init, paged, and unpaged parts.
+
 	  Binary format must be used for OP-TEE versions since 3.8.0.
+
+config BR2_TARGET_UBOOT_NEEDS_OPTEE_TEE_RAW_BIN
+	bool "tee-raw.bin"
+	help
+	  Raw binary suitable to copy into physical memory where OP-TEE
+	  be can executed from.
+
+	  OP-TEE since 3.21 suggests to use tee-raw.bin instead of (the
+	  still identical) tee-pager_v2.bin.
+
+	  Texas Instrument’s K3 family of SoCs embed tee-raw.bin in
+	  U-Boot (using Binman tool) to support their boot flow.
 
 endchoice
 
@@ -340,7 +368,7 @@ config BR2_TARGET_UBOOT_USE_BINMAN
 	help
 	  Use binman tool for generation and signing of boot images.
 
-	  https://docs.u-boot.org/en/v2025.10/develop/package/binman.html
+	  https://docs.u-boot.org/en/v2026.07/develop/package/binman.html
 
 menu "U-Boot binary format"
 
@@ -478,6 +506,14 @@ config BR2_TARGET_UBOOT_FORMAT_QSPI_BIN
 	  When booting from qspi flash, u-boot can generate a single
 	  file for flashing by combining the spl/boot.bin and
 	  u-boot.itb files into a unified binary.
+
+config BR2_TARGET_UBOOT_FORMAT_ADSP_LDR
+	bool "u-boot.ldr"
+	depends on BR2_arm || BR2_aarch64
+	help
+	  Boot stream format for Analog Devices, Inc. ADSP-SCxxx
+	  processors including 32-bit SC589, SC592, and SC594, as
+	  well as 64-bit SC596 and SC598
 
 config BR2_TARGET_UBOOT_FORMAT_STM32
 	bool "u-boot.stm32"
@@ -677,7 +713,7 @@ config BR2_TARGET_UBOOT_ZYNQMP_PSU_INIT_FILE
 	string "Custom psu_init_gpl file"
 	depends on BR2_TARGET_UBOOT_BUILD_SYSTEM_KCONFIG
 	help
-	  On ZynqMP the booloader is responsible for some basic
+	  On ZynqMP the bootloader is responsible for some basic
 	  initializations, such as enabling peripherals and
 	  configuring pinmuxes. The psu_init_gpl.c file (and,
 	  optionally, psu_init_gpl.h) contains the code for such
@@ -714,7 +750,7 @@ config BR2_TARGET_UBOOT_ZYNQ_PS7_INIT_FILE
 	depends on BR2_TARGET_UBOOT_BUILD_SYSTEM_KCONFIG
 	depends on BR2_TARGET_UBOOT_ZYNQ
 	help
-	  On Zynq the booloader is responsible for some basic
+	  On Zynq the bootloader is responsible for some basic
 	  initializations, such as enabling peripherals and
 	  configuring pinmuxes. The ps7_init_gpl.c file (and,
 	  optionally, ps7_init_gpl.h) contains the code for such

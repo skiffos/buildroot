@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-FREERADIUS_SERVER_VERSION = 3.2.8
+FREERADIUS_SERVER_VERSION = 3.2.10
 FREERADIUS_SERVER_SOURCE = \
 	freeradius-server-$(FREERADIUS_SERVER_VERSION).tar.bz2
 FREERADIUS_SERVER_SITE = https://freeradius.org/ftp/pub/freeradius
@@ -158,9 +158,9 @@ else
 FREERADIUS_SERVER_CONF_OPTS += --without-rlm_sql_mysql
 endif
 
-ifeq ($(BR2_PACKAGE_PCRE),y)
+ifeq ($(BR2_PACKAGE_PCRE2),y)
 FREERADIUS_SERVER_CONF_OPTS += --with-pcre
-FREERADIUS_SERVER_DEPENDENCIES += pcre
+FREERADIUS_SERVER_DEPENDENCIES += pcre2
 else
 FREERADIUS_SERVER_CONF_OPTS += --without-pcre
 endif
@@ -213,13 +213,6 @@ FREERADIUS_SERVER_CONF_OPTS += \
 	--without-openssl \
 	--without-rlm_eap \
 	--without-rlm_eap_pwd
-endif
-
-ifeq ($(BR2_PACKAGE_PCRE),y)
-FREERADIUS_SERVER_CONF_OPTS += --with-pcre
-FREERADIUS_SERVER_DEPENDENCIES += pcre
-else
-FREERADIUS_SERVER_CONF_OPTS += --without-pcre
 endif
 
 ifeq ($(BR2_PACKAGE_RUBY),y)

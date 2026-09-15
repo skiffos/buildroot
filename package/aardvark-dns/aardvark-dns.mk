@@ -5,11 +5,13 @@
 ################################################################################
 
 # When updating the version here, also update netavark in lockstep
-AARDVARK_DNS_VERSION = v1.16.0
+AARDVARK_DNS_VERSION = v1.17.1
 AARDVARK_DNS_SITE = https://github.com/containers/aardvark-dns
 AARDVARK_DNS_SITE_METHOD = git
 
 AARDVARK_DNS_LICENSE = Apache-2.0
 AARDVARK_DNS_LICENSE_FILES = LICENSE
+AARDVARK_DNS_CPE_ID_VENDOR = containers
+AARDVARK_DNS_CPE_ID_VERSION = $(subst v,,$(AARDVARK_DNS_VERSION))
 
 $(eval $(cargo-package))

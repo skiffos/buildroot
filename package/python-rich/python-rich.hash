@@ -1,0 +1,5 @@
+# md5, sha256 from https://pypi.org/pypi/rich/json
+md5  44f6e884d4af4150446b36469025e060  rich-15.0.0.tar.gz
+sha256  edd07a4824c6b40189fb7ac9bc4c52536e9780fbbfbddf6f1e2502c31b068c36  rich-15.0.0.tar.gz
+# Locally computed sha256 checksums
+sha256  deed7c17a4318158190a3ea239cc879a5a50271cebb98ae7025f48fbe58dca15  LICENSE

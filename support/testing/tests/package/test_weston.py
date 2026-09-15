@@ -5,6 +5,7 @@ import infra.basetest
 from ..graphics_base import GraphicsBase
 
 
+# gitlab-runner: 2xlarge
 class TestWeston(infra.basetest.BRTest, GraphicsBase):
     config = \
         """
@@ -149,5 +150,4 @@ class TestWeston(infra.basetest.BRTest, GraphicsBase):
 
         # Now weston is supposed to be stopped,
         # a simple client is expected to fail.
-        _, exit_code = self.emulator.run("wayland-info")
-        self.assertNotEqual(exit_code, 0)
+        self.assertRunNotOk("wayland-info")

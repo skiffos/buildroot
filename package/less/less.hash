@@ -1,6 +1,6 @@
 # Locally calculated after checking pgp signature
-# using DSA key F153A7C833235259
-# https://www.greenwoodsoftware.com/less/less-685.sig
-sha256  2701041e767e697ee420ce0825641cedc8f20b51576abe99d92c1666d332e9dc  less-685.tar.gz
+# using DSA key AE27252BD6846E7D6EAE1DD6F153A7C833235259
+# https://www.greenwoodsoftware.com/less/less-704.sig
+sha256  20a0b0a2bb2525fa53c7eee9beb854b4c9cf172eabb209af7020743547bfe9fb  less-704.tar.gz
 # Locally calculated
 sha256  3972dc9744f6499f0f9b2dbf76696f2ae7ad8af9b23dde66d6af86c9dfb36986  COPYING

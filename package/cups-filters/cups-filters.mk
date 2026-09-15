@@ -8,10 +8,21 @@ CUPS_FILTERS_VERSION = 1.28.17
 CUPS_FILTERS_SITE = https://github.com/OpenPrinting/cups-filters/releases/download/$(CUPS_FILTERS_VERSION)
 CUPS_FILTERS_LICENSE = GPL-2.0, GPL-2.0+, GPL-3.0, GPL-3.0+, LGPL-2, LGPL-2.1+, MIT, BSD-4-Clause
 CUPS_FILTERS_LICENSE_FILES = COPYING
-CUPS_FILTERS_CPE_ID_VENDOR = linuxfoundation
+CUPS_FILTERS_CPE_ID_VENDOR = openprinting
+
+# 0003-libcupsfilters-Fixed-building-with-QPDF-11.x.patch
+# 0004-Updated-code-to-be-built-with-QPDF-12.x.patch
+# ax_cxx_compile_stdcxx.m4 needs to be updated for gcc 16.x (C++20)
+CUPS_FILTERS_AUTORECONF = YES
 
 # 0001-beh-backend-Use-execv-instead-of-system-CVE-2023-24805.patch
 CUPS_FILTERS_IGNORE_CVES += CVE-2023-24805
+
+# 0002-rastertopclx.c-Fix-infinite-loop-caused-by-crafted-f.patch
+CUPS_FILTERS_IGNORE_CVES += CVE-2025-64524
+
+# 0005-fix-out-of-bounds-write-in-pdftoraster.patch
+CUPS_FILTERS_IGNORE_CVES += CVE-2025-64503
 
 CUPS_FILTERS_DEPENDENCIES = cups libglib2 lcms2 qpdf fontconfig freetype jpeg
 
