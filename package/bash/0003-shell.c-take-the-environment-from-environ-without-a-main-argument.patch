@@ -1,0 +1,25 @@
+From: Christian Stewart <christian@aperture.us>
+Subject: shell.c: take the environment from environ without a main argument
+
+A system whose main takes no environment argument defines
+NO_MAIN_ENV_ARG, but main still reads env, which only __OPENNT
+declares. Declare it from environ for both.
+
+Signed-off-by: Christian Stewart <christian@aperture.us>
+---
+--- a/shell.c
++++ b/shell.c
+@@ -379,11 +379,11 @@
+ #endif
+   volatile int locally_skip_execution;
+   volatile int arg_index, top_level_arg_index;
+-#ifdef __OPENNT
++#if defined (__OPENNT) || defined (NO_MAIN_ENV_ARG)
+   char **env;
+ 
+   env = environ;
+-#endif /* __OPENNT */
++#endif /* __OPENNT || NO_MAIN_ENV_ARG */
+ 
+   USE_VAR(argc);
+   USE_VAR(argv);
