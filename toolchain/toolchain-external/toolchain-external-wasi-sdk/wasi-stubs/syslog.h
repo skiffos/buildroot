@@ -36,6 +36,8 @@
 #define LOG_PERROR 0x20
 void openlog(const char *, int, int);
 void syslog(int, const char *, ...);
+#include <stdarg.h>
+void vsyslog(int, const char *, va_list);
 void closelog(void);
 int setlogmask(int);
 #endif

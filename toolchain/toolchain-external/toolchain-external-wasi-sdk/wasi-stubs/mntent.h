@@ -3,6 +3,8 @@
 
 #include <stdio.h>
 
+#define MOUNTED "/etc/mtab"
+
 struct mntent {
     char *mnt_fsname;
     char *mnt_dir;

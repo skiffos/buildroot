@@ -55,7 +55,12 @@ endef
 # as symlinks to usr/*, but wasi-sysroot has real lib/ and include/
 # directories. Remove conflicting symlinks before copying. Then install
 # POSIX stub headers for APIs not in wasi-libc (netdb, pwd, grp, etc.)
-# so packages like busybox can compile.
+# so packages like busybox can compile, and include wasi-posix-fixups.h
+# at the end of the libc headers it extends.
+#
+# wasivm.imports lists the host functions the wasivm kernel provides.
+# The link may leave exactly these undefined, as imports, so configure
+# tests find only the functions that exist at run time.
 #
 # After sysroot install, patch libc.a and libwasi-emulated-signal.a to
 # remove/replace objects that conflict with the wasivm kernel host imports.
@@ -69,9 +74,24 @@ define TOOLCHAIN_EXTERNAL_WASI_SDK_INSTALL_STAGING_CMDS
 	$(Q)cp -a $(TOOLCHAIN_EXTERNAL_INSTALL_DIR)/share/wasi-sysroot/* $(STAGING_DIR)/
 	$(Q)cp -a $(TOPDIR)/$(TOOLCHAIN_EXTERNAL_WASI_SDK_PKGDIR)/wasi-stubs/* \
 		$(STAGING_DIR)/include/wasm32-wasi/
+	$(Q)for h in $(WASI_SDK_FIXUPS_HEADERS); do \
+		printf '\n#include <wasi-posix-fixups.h>\n' \
+			>> $(STAGING_DIR)/include/wasm32-wasi/$$h; \
+	done
+	$(Q)cat $(TOPDIR)/$(TOOLCHAIN_EXTERNAL_WASI_SDK_PKGDIR)/dirent-rename.h \
+		>> $(STAGING_DIR)/include/wasm32-wasi/dirent.h
+	$(Q)cat $(TOPDIR)/$(TOOLCHAIN_EXTERNAL_WASI_SDK_PKGDIR)/stat-rename.h \
+		>> $(STAGING_DIR)/include/wasm32-wasi/sys/stat.h
+	$(Q)$(INSTALL) -D -m 0644 \
+		$(TOPDIR)/$(TOOLCHAIN_EXTERNAL_WASI_SDK_PKGDIR)/wasivm.imports \
+		$(STAGING_DIR)/lib/wasm32-wasi/wasivm.imports
 	$(TOOLCHAIN_EXTERNAL_INSTALL_WRAPPER)
 	$(call wasi_sdk_patch_libc)
 endef
+
+WASI_SDK_FIXUPS_HEADERS = \
+	fcntl.h sched.h signal.h stdio.h stdlib.h sys/ioctl.h sys/resource.h \
+	sys/socket.h sys/time.h sys/types.h time.h unistd.h
 
 define TOOLCHAIN_EXTERNAL_WASI_SDK_INSTALL_TARGET_CMDS
 endef
@@ -81,22 +101,39 @@ endef
 #
 # libc.a replacements:
 #   fcntl.c   - forwards to env.__posix_fcntl3
-#   exit.c    - fflush(NULL) + env.__posix_exit (vfork-aware)
+#   exit.c    - atexit handlers and stdio flush, then env.__posix_exit;
+#               also defines __wasm_call_dtors, which _start calls
 #   _Exit.c   - env.__posix_exit directly
 #   poll.c    - handle POLLPRI gracefully (strip or ENOSYS)
 #   pselect.c - thread errorfds through poll as POLLPRI
-#   fstatat.c - add 0755 permissions + st_blocks
-#   fstat.c   - add 0755 permissions + st_blocks
+#   mntent.c  - setmntent, getmntent and friends, from musl
+#   flockfile.c - no-op stream locks for the single-threaded process
+#   tmpfile.c - mktemp, mkstemp, mkdtemp and friends, from musl
+#   err.c     - err, warn and friends, from musl
+#   gethostbyname.c - host lookups through env.getaddrinfo
+#   getnameinfo.c - numeric host and service names
+#   ppoll.c   - poll with a temporary signal mask
+#   statfs.c  - statfs and fstatfs over statvfs
+#   __wasilibc_dt.c - IFTODT that masks the permission bits
+#   syslog.c  - console logging, as musl does without /dev/log
+#   utmpx.c   - an empty login database, as in musl
+#   popen.c   - popen, pclose and system over fork and /bin/sh, after musl
+#   passwd.c  - the user and group databases from /etc/passwd and /etc/group
 #
 # libc.a removals (resolved as env.* host imports):
 #   chdir.c.obj - env.chdir handles kernel CWD
 #   abort.c.obj - env.abort delivers SIGABRT cleanly
+#   uname.c.obj - env.uname reports the kernel's names; gethostname and
+#                 getdomainname read them through it
+#   fstat.c.obj, fstatat.c.obj - env.fstat and env.__wasilibc_nocwd_fstatat
+#                 report the kernel's modes, which WASI's filestat lacks
 #
 # libwasi-emulated-signal.a removals:
 #   signal.c.obj - env.signal/raise/sigaction via kernel
 
 WASI_SDK_PATCH_SRCDIR = $(TOPDIR)/$(TOOLCHAIN_EXTERNAL_WASI_SDK_PKGDIR)/src
-WASI_SDK_PATCH_OBJS = fcntl exit _Exit poll pselect fstatat fstat
+WASI_SDK_PATCH_OBJS = fcntl exit _Exit poll pselect mntent flockfile tmpfile err gethostbyname \
+	getnameinfo ppoll statfs syslog utmpx __wasilibc_dt popen passwd
 
 define wasi_sdk_patch_libc
 	$(Q)WASI_LIBC=$(STAGING_DIR)/lib/wasm32-wasi/libc.a; \
@@ -114,6 +151,9 @@ define wasi_sdk_patch_libc
 	done; \
 	$(TARGET_AR) d "$$WASI_LIBC" chdir.c.obj 2>/dev/null || true; \
 	$(TARGET_AR) d "$$WASI_LIBC" abort.c.obj 2>/dev/null || true; \
+	$(TARGET_AR) d "$$WASI_LIBC" uname.c.obj 2>/dev/null || true; \
+	$(TARGET_AR) d "$$WASI_LIBC" fstat.c.obj 2>/dev/null || true; \
+	$(TARGET_AR) d "$$WASI_LIBC" fstatat.c.obj 2>/dev/null || true; \
 	if [ -f "$$WASI_SIGLIB" ]; then \
 		if [ ! -f "$$WASI_SIGLIB.orig" ]; then cp "$$WASI_SIGLIB" "$$WASI_SIGLIB.orig"; fi; \
 		$(TARGET_AR) d "$$WASI_SIGLIB" signal.c.obj 2>/dev/null || true; \
