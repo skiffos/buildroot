@@ -1,23 +1,23 @@
 #ifndef __ASSEMBLER__
 /* POSIX compatibility layer for wasi-libc.
  *
- * Force-included via -include in the toolchain wrapper. Provides
+ * Included at the end of the libc headers it extends, so it follows a
+ * package's config.h and feature macros like any libc header. Provides
  * constants, structs, and function declarations that wasi-libc
  * deliberately omits (guarded behind __wasilibc_unmodified_upstream).
  *
- * These are stub declarations -- the wasivm Go kernel handles the
- * actual implementation at runtime via WASI host imports.
+ * The functions are host imports: the wasivm kernel implements each one
+ * named in wasivm.imports.
  */
 #ifndef _WASI_POSIX_FIXUPS_H
 #define _WASI_POSIX_FIXUPS_H
 
-/* Suppress setjmp.h error - we provide stub setjmp/longjmp via --import-undefined */
-#ifndef __wasm_exception_handling__
-#define __wasm_exception_handling__ 1
-#endif
-
 #include <sys/types.h>
 #include <stddef.h>
+
+#ifdef __cplusplus
+extern "C" {
+#endif
 
 /* ================================================================
  * Socket types and address families
@@ -51,14 +51,6 @@
 #define PF_NETLINK 16
 #define AF_NETLINK PF_NETLINK
 #endif
-
-/* Override wasi-libc truncated sockaddr_un (no sun_path). */
-#define __wasilibc___struct_sockaddr_un_h
-#include <__typedef_sa_family_t.h>
-struct sockaddr_un {
-    sa_family_t sun_family;
-    char sun_path[108];
-};
 
 #ifndef SO_DEBUG
 #define SO_DEBUG        1
@@ -95,6 +87,9 @@ struct sockaddr_un {
  * Signals
  * ================================================================ */
 
+/* Define sigset_t before signal.h, which a package's replacement signal.h
+ * may wrap and declare functions of sigset_t before the libc header runs. */
+#include <__typedef_sigset_t.h>
 #include <signal.h>
 
 #ifndef SA_RESTART
@@ -115,10 +110,10 @@ struct sockaddr_un {
 
 #ifndef _WASI_SIGACTION_DEFINED
 #define _WASI_SIGACTION_DEFINED
+/* The wasivm kernel reads the handler, the flags and then the mask. */
 struct sigaction {
     void (*sa_handler)(int);
     unsigned long sa_flags;
-    void (*sa_restorer)(void);
     sigset_t sa_mask;
 };
 #endif
@@ -383,6 +378,10 @@ struct rlimit {
 int getrlimit(int, struct rlimit *);
 int setrlimit(int, const struct rlimit *);
 #endif
+#ifndef RLIM_SAVED_CUR
+#define RLIM_SAVED_CUR RLIM_INFINITY
+#define RLIM_SAVED_MAX RLIM_INFINITY
+#endif
 
 #ifndef PRIO_PROCESS
 #define PRIO_PROCESS 0
@@ -479,16 +478,41 @@ long sysconf(int);
  * Misc
  * ================================================================ */
 
+/* wasi-libc defines these but hides their declarations. */
+void qsort_r(void *, size_t, size_t,
+             int (*)(const void *, const void *, void *), void *);
+int getdomainname(char *, size_t);
+
+/* wasi-libc claims _POSIX_THREAD_SAFE_FUNCTIONS; src/flockfile.c provides
+ * the stream locks, which a single-threaded process does not need. */
+struct _IO_FILE;
+void flockfile(struct _IO_FILE *);
+int ftrylockfile(struct _IO_FILE *);
+void funlockfile(struct _IO_FILE *);
+
+/* src/popen.c runs the command in a forked /bin/sh. */
+struct _IO_FILE *popen(const char *, const char *);
+int pclose(struct _IO_FILE *);
+
 struct spwd;
 int getspnam_r(const char *, struct spwd *, char *, size_t, struct spwd **);
 
+#ifndef P_tmpdir
+#define P_tmpdir "/tmp"
+#endif
+char *mktemp(char *);
 int mkstemp(char *);
 int mkostemp(char *, int);
 int mkstemps(char *, int);
+int mkostemps(char *, int, int);
 char *mkdtemp(char *);
 
 #ifndef TP_STATUS_CSUMNOTREADY
 #define TP_STATUS_CSUMNOTREADY (1 << 3)
+#endif
+
+#ifdef __cplusplus
+}
 #endif
 
 #endif /* _WASI_POSIX_FIXUPS_H */
