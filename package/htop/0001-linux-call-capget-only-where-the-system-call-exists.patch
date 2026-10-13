@@ -1,0 +1,26 @@
+From: Christian Stewart <christian@aperture.us>
+Subject: linux: call capget only where the system call exists
+
+Other OSes masquerading as Linux lack SYS_capget, as they lack
+SYS_ioprio_get. Treat a missing system call as no elevated privileges.
+
+Signed-off-by: Christian Stewart <christian@aperture.us>
+---
+ linux/LinuxProcessTable.c | 4 ++++
+ 1 file changed, 4 insertions(+)
+
+diff --git a/linux/LinuxProcessTable.c b/linux/LinuxProcessTable.c
+--- a/linux/LinuxProcessTable.c
++++ b/linux/LinuxProcessTable.c
+@@ -1820,7 +1820,11 @@
+          struct __user_cap_header_struct header = { .version = _LINUX_CAPABILITY_VERSION_3, .pid = Process_getPid(proc) };
+          struct __user_cap_data_struct data;
+ 
++#ifdef SYS_capget
+          long res = syscall(SYS_capget, &header, &data);
++#else
++         long res = -1;
++#endif
+          if (res == 0) {
+             proc->elevated_priv = (data.permitted != 0) ? TRI_ON : TRI_OFF;
+          } else {
