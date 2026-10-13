@@ -1,0 +1,25 @@
+From: Christian Stewart <christian@aperture.us>
+Subject: mythread: use sigprocmask on WASI with emulated signals
+
+xz leaves mythread_sigmask undefined on WASI, which has no signal mask,
+but signals.c calls it whenever threads are disabled. wasi-libc's
+emulated signals provide sigprocmask, so use it there.
+
+Signed-off-by: Christian Stewart <christian@aperture.us>
+---
+ src/common/mythread.h | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
+
+diff --git a/src/common/mythread.h b/src/common/mythread.h
+--- a/src/common/mythread.h
++++ b/src/common/mythread.h
+@@ -79,7 +79,8 @@
+ 
+ 
+ #if !(defined(_WIN32) && !defined(__CYGWIN__)) \
+-		&& (!defined(__wasm__) || defined(__EMSCRIPTEN__))
++		&& (!defined(__wasm__) || defined(__EMSCRIPTEN__) \
++			|| defined(_WASI_EMULATED_SIGNAL))
+ // Use sigprocmask() to set the signal mask in single-threaded programs.
+ #include <signal.h>
+ 
