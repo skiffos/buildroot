@@ -377,7 +377,8 @@ struct cmsghdr {
  * ================================================================ */
 
 #ifndef RLIMIT_CORE
-typedef unsigned long rlim_t;
+/* 64 bits, as in musl: the kernel reads and writes two 64-bit limits. */
+typedef unsigned long long rlim_t;
 #define RLIM_INFINITY (~(rlim_t)0)
 struct rlimit {
     rlim_t rlim_cur;
