@@ -17,4 +17,6 @@ struct utmp {
 	char ut_line[UT_LINESIZE]; char ut_id[4]; char ut_user[UT_NAMESIZE];
 	char ut_host[UT_HOSTSIZE];
 };
+
+int login_tty(int);
 #endif

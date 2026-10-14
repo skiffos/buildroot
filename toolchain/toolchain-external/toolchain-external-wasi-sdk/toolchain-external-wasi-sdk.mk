@@ -122,6 +122,8 @@ endef
 #   preopens.c - every path goes to the kernel unchanged under AT_FDCWD; the
 #               kernel preopens no directory
 #   getcwd.c  - the working directory from the kernel, which chdir changes
+#   ioctl.c   - every request through env.__wasivm_ioctl
+#   pty.c     - ptsname, openpty, login_tty and forkpty over TIOCGPTN, after musl
 #
 # libc.a removals (resolved as env.* host imports):
 #   chdir.c.obj - env.chdir handles kernel CWD
@@ -136,7 +138,7 @@ endef
 
 WASI_SDK_PATCH_SRCDIR = $(TOPDIR)/$(TOOLCHAIN_EXTERNAL_WASI_SDK_PKGDIR)/src
 WASI_SDK_PATCH_OBJS = fcntl exit _Exit poll pselect mntent flockfile tmpfile err gethostbyname \
-	getnameinfo ppoll statfs syslog utmpx __wasilibc_dt popen passwd preopens getcwd
+	getnameinfo ppoll statfs syslog utmpx __wasilibc_dt popen passwd preopens getcwd ioctl pty
 
 define wasi_sdk_patch_libc
 	$(Q)WASI_LIBC=$(STAGING_DIR)/lib/wasm32-wasi/libc.a; \

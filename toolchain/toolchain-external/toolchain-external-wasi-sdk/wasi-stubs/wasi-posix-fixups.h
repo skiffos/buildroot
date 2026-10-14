@@ -298,6 +298,18 @@ int __posix_fcntl3(int, int, int);
 #ifndef TIOCSTI
 #define TIOCSTI    0x5412
 #endif
+#ifndef TIOCGPTN
+#define TIOCGSID   0x5429
+#define TIOCGPTN   0x80045430
+#define TIOCSPTLCK 0x40045431
+#endif
+
+/* The kernel serves FIONREAD and FIONBIO in their Linux values, which replace
+ * the values of wasi-libc's own ioctl. */
+#undef FIONREAD
+#undef FIONBIO
+#define FIONREAD 0x541B
+#define FIONBIO  0x5421
 #ifndef TIOCSSERIAL
 #define TIOCSSERIAL  0x541F
 #define TIOCGSERIAL  0x541E
@@ -317,6 +329,8 @@ int ttyname_r(int, char *, size_t);
 int isatty(int);
 
 /* PTY */
+int posix_openpt(int);
+char *ptsname(int);
 int grantpt(int);
 int unlockpt(int);
 int ptsname_r(int, char *, size_t);
