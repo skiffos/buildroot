@@ -1,5 +1,7 @@
 // Host lookups by name and address, which wasi-libc lacks. gethostbyname
-// resolves IPv4 addresses through the kernel's getaddrinfo.
+// resolves IPv4 addresses through the kernel's getaddrinfo. The root has no
+// services database, so service lookups find nothing and callers use numeric
+// ports.
 
 #include <netdb.h>
 #include <netinet/in.h>
@@ -42,4 +44,14 @@ const char *hstrerror(int err)
 	case NO_DATA: return "No address associated with name";
 	}
 	return "Unknown error";
+}
+
+struct servent *getservbyname(const char *name, const char *proto)
+{
+	return 0;
+}
+
+struct servent *getservbyport(int port, const char *proto)
+{
+	return 0;
 }
