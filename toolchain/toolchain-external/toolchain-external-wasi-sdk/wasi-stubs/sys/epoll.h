@@ -1,6 +1,7 @@
 #ifndef _SYS_EPOLL_H
 #define _SYS_EPOLL_H
 #include <stdint.h>
+#include <__typedef_sigset_t.h>
 #define EPOLLIN      0x001
 #define EPOLLPRI     0x002
 #define EPOLLOUT     0x004
@@ -24,4 +25,5 @@ int epoll_create(int size);
 int epoll_create1(int flags);
 int epoll_ctl(int epfd, int op, int fd, struct epoll_event *event);
 int epoll_wait(int epfd, struct epoll_event *events, int maxevents, int timeout);
+int epoll_pwait(int epfd, struct epoll_event *events, int maxevents, int timeout, const sigset_t *sigmask);
 #endif
