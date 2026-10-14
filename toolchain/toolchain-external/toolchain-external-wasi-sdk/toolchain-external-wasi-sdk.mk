@@ -90,7 +90,7 @@ define TOOLCHAIN_EXTERNAL_WASI_SDK_INSTALL_STAGING_CMDS
 endef
 
 WASI_SDK_FIXUPS_HEADERS = \
-	fcntl.h sched.h signal.h stdio.h stdlib.h sys/ioctl.h sys/resource.h \
+	fcntl.h poll.h sched.h signal.h stdio.h stdlib.h sys/ioctl.h sys/resource.h \
 	sys/socket.h sys/time.h sys/types.h time.h unistd.h
 
 define TOOLCHAIN_EXTERNAL_WASI_SDK_INSTALL_TARGET_CMDS
@@ -142,7 +142,7 @@ define wasi_sdk_patch_libc
 	for src in $(WASI_SDK_PATCH_OBJS); do \
 		$(TARGET_CC) -c -O2 \
 			-o $$TMPDIR/$$src.c.obj \
-			$(WASI_SDK_PATCH_SRCDIR)/$$src.c; \
+			$(WASI_SDK_PATCH_SRCDIR)/$$src.c || exit 1; \
 	done; \
 	if [ ! -f "$$WASI_LIBC.orig" ]; then cp "$$WASI_LIBC" "$$WASI_LIBC.orig"; fi; \
 	for src in $(WASI_SDK_PATCH_OBJS); do \
