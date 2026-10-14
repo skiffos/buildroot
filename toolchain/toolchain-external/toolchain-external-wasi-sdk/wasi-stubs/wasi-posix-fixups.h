@@ -314,6 +314,7 @@ struct sockaddr;
 struct iovec;
 
 int socket(int, int, int);
+int socketpair(int, int, int, int[2]);
 int bind(int, const struct sockaddr *, unsigned int);
 int connect(int, const struct sockaddr *, unsigned int);
 int listen(int, int);
