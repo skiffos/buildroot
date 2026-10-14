@@ -6,6 +6,7 @@
 #include <errno.h>
 #include <grp.h>
 #include <pwd.h>
+#include <stdint.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -217,6 +218,50 @@ struct group *getgrnam(const char *name)
 struct group *getgrgid(gid_t gid)
 {
 	return find_gr(0, gid);
+}
+
+// copy_gr copies the group found into buf for the reentrant lookups: the
+// member list first, aligned for its pointers, then each string.
+static int copy_gr(struct group *found, struct group *g, char *buf, size_t size, struct group **res)
+{
+	// Report a missing group as success with no result, as POSIX does.
+	size_t n = 0, pad = -(uintptr_t)buf % sizeof(char *);
+	*res = 0;
+	if (!found) return 0;
+
+	// Place the member list.
+	while (found->gr_mem[n]) n++;
+	if (pad + (n + 1) * sizeof(char *) > size) return ERANGE;
+	g->gr_mem = (char **)(buf + pad);
+	buf += pad + (n + 1) * sizeof(char *);
+	size -= pad + (n + 1) * sizeof(char *);
+
+	// Copy the name, the password and the members.
+	for (size_t i = 0; i < n + 2; i++) {
+		char *src = i == 0 ? found->gr_name : i == 1 ? found->gr_passwd : found->gr_mem[i - 2];
+		size_t len = strlen(src) + 1;
+		if (len > size) return ERANGE;
+		memcpy(buf, src, len);
+		if (i == 0) g->gr_name = buf;
+		else if (i == 1) g->gr_passwd = buf;
+		else g->gr_mem[i - 2] = buf;
+		buf += len;
+		size -= len;
+	}
+	g->gr_mem[n] = 0;
+	g->gr_gid = found->gr_gid;
+	*res = g;
+	return 0;
+}
+
+int getgrnam_r(const char *name, struct group *g, char *buf, size_t size, struct group **res)
+{
+	return copy_gr(find_gr(name, 0), g, buf, size, res);
+}
+
+int getgrgid_r(gid_t gid, struct group *g, char *buf, size_t size, struct group **res)
+{
+	return copy_gr(find_gr(0, gid), g, buf, size, res);
 }
 
 // getgrouplist stores gid and the groups listing user as a member. When more
