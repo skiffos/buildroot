@@ -6,6 +6,7 @@ __posix_fchmod
 __posix_fchmodat
 __posix_fcntl3
 __wasilibc_nocwd_fstatat
+__wasivm_getcwd
 _exit
 abort
 alarm
