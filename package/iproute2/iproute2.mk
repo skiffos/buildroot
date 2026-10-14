@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-IPROUTE2_VERSION = 6.17.0
+IPROUTE2_VERSION = 7.1.0
 IPROUTE2_SOURCE = iproute2-$(IPROUTE2_VERSION).tar.xz
 IPROUTE2_SITE = $(BR2_KERNEL_MIRROR)/linux/utils/net/iproute2
 IPROUTE2_DEPENDENCIES = host-bison host-flex host-pkgconf \
@@ -23,6 +23,10 @@ endif
 
 ifeq ($(BR2_PACKAGE_LIBSELINUX),y)
 IPROUTE2_DEPENDENCIES += libselinux
+endif
+
+ifeq ($(BR2_PACKAGE_LIBTIRPC),y)
+IPROUTE2_DEPENDENCIES += libtirpc
 endif
 
 ifeq ($(BR2_PACKAGE_IPTABLES)x$(BR2_STATIC_LIBS),yx)

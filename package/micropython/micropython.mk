@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-MICROPYTHON_VERSION = 1.22.2
+MICROPYTHON_VERSION = 1.28.0
 MICROPYTHON_SITE = https://micropython.org/resources/source
 MICROPYTHON_SOURCE = micropython-$(MICROPYTHON_VERSION).tar.xz
 # Micropython has a lot of code copied from other projects, and also a number
@@ -15,9 +15,6 @@ MICROPYTHON_LICENSE_FILES = LICENSE
 MICROPYTHON_DEPENDENCIES = host-python3
 MICROPYTHON_CPE_ID_VENDOR = micropython
 
-# 0004-py-objarray-fix-use-after-free-if-extending-a-bytearray-from-itself.patch
-MICROPYTHON_IGNORE_CVES += CVE-2024-8947
-
 # Use fallback implementation for exception handling on architectures that don't
 # have explicit support.
 ifeq ($(BR2_i386)$(BR2_x86_64)$(BR2_arm)$(BR2_armeb),)
@@ -26,13 +23,6 @@ endif
 
 # xtensa has problems with nlr_push, use setjmp based implementation instead
 ifeq ($(BR2_xtensa),y)
-MICROPYTHON_CFLAGS += -DMICROPY_NLR_SETJMP=1
-endif
-
-# https://github.com/micropython/micropython/issues/14115
-# Temporary fix for GCC 14 compatibility, should be removed after updating to
-# 1.23.0 or later.
-ifeq ($(BR2_TOOLCHAIN_GCC_AT_LEAST_14),y)
 MICROPYTHON_CFLAGS += -DMICROPY_NLR_SETJMP=1
 endif
 
@@ -46,6 +36,7 @@ MICROPYTHON_MAKE_OPTS += \
 	LDFLAGS_EXTRA="$(TARGET_LDFLAGS)" \
 	CWARN=
 
+# Support libffi in MicroPython itself; separate from unix-ffi libraries
 ifeq ($(BR2_PACKAGE_LIBFFI),y)
 MICROPYTHON_DEPENDENCIES += host-pkgconf libffi
 MICROPYTHON_MAKE_OPTS += MICROPY_PY_FFI=1
@@ -71,7 +62,8 @@ ifeq ($(BR2_PACKAGE_MICROPYTHON_LIB),y)
 define MICROPYTHON_COLLECT_LIBS
 	$(EXTRA_ENV) PYTHONPATH=$(@D)/tools \
 		package/micropython/collect_micropython_lib.py \
-		$(@D) $(@D)/.built_pylib
+		$(@D) $(@D)/.built_pylib \
+		$(if $(BR2_PACKAGE_MICROPYTHON_LIB_UNIXFFI),--ffi,--no-ffi)
 endef
 
 define MICROPYTHON_INSTALL_LIBS

@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-MUSL_VERSION = 1.2.5
+MUSL_VERSION = 1.2.6
 MUSL_SITE = http://musl.libc.org/releases
 MUSL_LICENSE = MIT
 MUSL_LICENSE_FILES = COPYRIGHT
@@ -26,9 +26,13 @@ MUSL_ADD_TOOLCHAIN_DEPENDENCY = NO
 
 MUSL_INSTALL_STAGING = YES
 
-# 0004-iconv-fix-erroneous-input-validation-in-EUC-KR-decod.patch
-# 0005-iconv-harden-UTF-8-output-code-path-against-input-de.patch
-MUSL_IGNORE_CVES += CVE-2025-26519
+# 0003-fix-pathological-slowness-incorrect-mappings-in-icon.patch
+MUSL_IGNORE_CVES += CVE-2026-6042
+
+# 0004-qsort-fix-leonardo-heap-corruption-from-bug-in-doubl.patch
+# 0005-qsort-hard-preclude-oob-array-writes-independent-of-.patch
+# 0006-qsort-fix-shift-UB-in-shl-and-shr.patch
+MUSL_IGNORE_CVES += CVE-2026-40200
 
 # musl does not build with LTO, so explicitly disable it
 # when using a compiler that may have support for LTO

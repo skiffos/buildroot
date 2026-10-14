@@ -1,0 +1,38 @@
+From: Christian Stewart <christian@aperture.us>
+Subject: [PATCH] LzmaCompress: clear stack output stream pointers
+
+The encoder state retains pointers to stack output streams after two memory
+encoding functions return. Clear the pointers after the encoder has finished
+using each stream.
+
+Signed-off-by: Christian Stewart <christian@aperture.us>
+Upstream: https://github.com/CloverHackyColor/CloverBootloader/pull/TODO
+---
+--- a/BaseTools/Source/C/LzmaCompress/Sdk/C/LzmaEnc.c
++++ b/BaseTools/Source/C/LzmaCompress/Sdk/C/LzmaEnc.c
+@@ -2638,15 +2638,15 @@
+ 
+   nowPos64 = p->nowPos64;
+   RangeEnc_Init(&p->rc);
+-  p->rc.outStream = &outStream.vt;
+-
+   if (desiredPackSize == 0)
+     return SZ_ERROR_OUTPUT_EOF;
+ 
++  p->rc.outStream = &outStream.vt;
+   res = LzmaEnc_CodeOneBlock(p, desiredPackSize, *unpackSize);
+   
+   *unpackSize = (UInt32)(p->nowPos64 - nowPos64);
+   *destLen -= outStream.rem;
++  p->rc.outStream = NULL;
+   if (outStream.overflow)
+     return SZ_ERROR_OUTPUT_EOF;
+ 
+@@ -2760,6 +2760,7 @@
+   }
+ 
+   *destLen -= outStream.rem;
++  p->rc.outStream = NULL;
+   if (outStream.overflow)
+     return SZ_ERROR_OUTPUT_EOF;
+   return res;

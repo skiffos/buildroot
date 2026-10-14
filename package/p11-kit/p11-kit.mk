@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-P11_KIT_VERSION = 0.25.5
+P11_KIT_VERSION = 0.26.2
 P11_KIT_SOURCE = p11-kit-$(P11_KIT_VERSION).tar.xz
 P11_KIT_SITE = https://github.com/p11-glue/p11-kit/releases/download/$(P11_KIT_VERSION)
 P11_KIT_INSTALL_STAGING = YES
@@ -44,4 +44,20 @@ P11_KIT_CONF_OPTS += \
 	--without-libtasn1
 endif
 
+ifeq ($(BR2_PACKAGE_SYSTEMD),y)
+P11_KIT_CONF_OPTS += --with-systemd
+else
+P11_KIT_CONF_OPTS += --without-systemd
+endif
+
+HOST_P11_KIT_DEPENDENCIES = host-pkgconf
+
+HOST_P11_KIT_CONF_OPTS = \
+	--without-libffi \
+	--without-trust-paths \
+	--disable-trust-module \
+	--without-libtasn1 \
+	--without-systemd
+
 $(eval $(autotools-package))
+$(eval $(host-autotools-package))

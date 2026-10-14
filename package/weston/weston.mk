@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-WESTON_VERSION = 14.0.2
+WESTON_VERSION = 16.0.0
 WESTON_SITE = https://gitlab.freedesktop.org/wayland/weston/-/releases/$(WESTON_VERSION)/downloads
 WESTON_SOURCE = weston-$(WESTON_VERSION).tar.xz
 WESTON_LICENSE = MIT
@@ -18,7 +18,6 @@ WESTON_DEPENDENCIES = host-pkgconf wayland wayland-protocols \
 
 WESTON_CONF_OPTS = \
 	-Ddoc=false \
-	-Dremoting=false \
 	-Dbackend-vnc=false \
 	-Dtools=calibrator,debug,info,terminal,touch-calibrator
 
@@ -58,16 +57,22 @@ ifeq ($(BR2_PACKAGE_WESTON_SIMPLE_CLIENTS),y)
 WESTON_SIMPLE_CLIENTS += dmabuf-egl dmabuf-feedback egl
 endif
 ifeq ($(BR2_PACKAGE_PIPEWIRE)$(BR2_PACKAGE_WESTON_DRM),yy)
-WESTON_CONF_OPTS += -Dpipewire=true -Dbackend-pipewire=true
+WESTON_CONF_OPTS += -Dbackend-pipewire=true
 WESTON_DEPENDENCIES += pipewire
 else
-WESTON_CONF_OPTS += -Dpipewire=false -Dbackend-pipewire=false
+WESTON_CONF_OPTS += -Dbackend-pipewire=false
 endif
 else
 WESTON_CONF_OPTS += \
 	-Drenderer-gl=false \
-	-Dpipewire=false \
 	-Dbackend-pipewire=false
+endif
+
+ifeq ($(BR2_PACKAGE_WESTON_VULKAN),y)
+WESTON_CONF_OPTS += -Drenderer-vulkan=true
+WESTON_DEPENDENCIES += host-python-glslang libgbm vulkan-loader
+else
+WESTON_CONF_OPTS += -Drenderer-vulkan=false
 endif
 
 WESTON_CONF_OPTS += -Dsimple-clients=$(subst $(space),$(comma),$(strip $(WESTON_SIMPLE_CLIENTS)))
@@ -114,13 +119,6 @@ else
 WESTON_CONF_OPTS += -Dxwayland=false
 endif
 
-ifeq ($(BR2_PACKAGE_LIBVA),y)
-WESTON_CONF_OPTS += -Dbackend-drm-screencast-vaapi=true
-WESTON_DEPENDENCIES += libva
-else
-WESTON_CONF_OPTS += -Dbackend-drm-screencast-vaapi=false
-endif
-
 ifeq ($(BR2_PACKAGE_LCMS2),y)
 WESTON_CONF_OPTS += -Dcolor-management-lcms=true
 WESTON_DEPENDENCIES += lcms2
@@ -148,12 +146,6 @@ else
 WESTON_CONF_OPTS += -Dshell-desktop=false
 endif
 
-ifeq ($(BR2_PACKAGE_WESTON_SHELL_FULLSCREEN),y)
-WESTON_CONF_OPTS += -Dshell-fullscreen=true
-else
-WESTON_CONF_OPTS += -Dshell-fullscreen=false
-endif
-
 ifeq ($(BR2_PACKAGE_WESTON_SHELL_IVI),y)
 WESTON_CONF_OPTS += -Dshell-ivi=true
 else
@@ -166,10 +158,11 @@ else
 WESTON_CONF_OPTS += -Dshell-kiosk=false
 endif
 
-ifeq ($(BR2_PACKAGE_WESTON_SCREENSHARE),y)
-WESTON_CONF_OPTS += -Dscreenshare=true
+ifeq ($(BR2_PACKAGE_WESTON_SHELL_LUA),y)
+WESTON_DEPENDENCIES += lua
+WESTON_CONF_OPTS += -Dshell-lua=true
 else
-WESTON_CONF_OPTS += -Dscreenshare=false
+WESTON_CONF_OPTS += -Dshell-lua=false
 endif
 
 ifeq ($(BR2_PACKAGE_WESTON_DEMO_CLIENTS),y)

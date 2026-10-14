@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-GRUB2_VERSION = 2.12
+GRUB2_VERSION = 2.14
 GRUB2_SITE = $(BR2_GNU_MIRROR)/grub
 GRUB2_SOURCE = grub-$(GRUB2_VERSION).tar.xz
 GRUB2_LICENSE = GPL-3.0+
@@ -15,47 +15,12 @@ HOST_GRUB2_DEPENDENCIES = host-bison host-flex host-gawk \
 	$(BR2_PYTHON3_HOST_DEPENDENCY)
 GRUB2_INSTALL_IMAGES = YES
 
-# CVE-2019-14865 is about a flaw in the grub2-set-bootflag tool, which
-# doesn't exist upstream, but is added by the Redhat/Fedora
-# packaging. Not applicable to Buildroot.
-GRUB2_IGNORE_CVES += CVE-2019-14865
-# vulnerability is specific to the Redhat distribution, affects a
-# downstream change from Redhat related to password authentication
-GRUB2_IGNORE_CVES += CVE-2023-4001
-# vulnerability is specific to the Redhat distribution, affects the
-# grub2-set-bootflag tool, which doesn't exist upstream
-GRUB2_IGNORE_CVES += CVE-2024-1048
-
-# 0004-fs-hfs-Fix-stack-OOB-write-with-grub_strcpy.patch (yes, two
-# CVEs are fixed by this patch)
-GRUB2_IGNORE_CVES += CVE-2024-45782
-GRUB2_IGNORE_CVES += CVE-2024-56737
-
-# 0006-fs-tar-Integer-overflow-leads-to-heap-OOB-write.patch
-GRUB2_IGNORE_CVES += CVE-2024-45780
-
-# 0037-gettext-Integer-overflow-leads-to-heap-OOB-write.patch
-GRUB2_IGNORE_CVES += CVE-2024-45777
-
-# 0043-fs-bfs-Disable-under-lockdown.patch (yes, two CVEs are fixed by
-# this patch)
-GRUB2_IGNORE_CVES += CVE-2024-45778
-GRUB2_IGNORE_CVES += CVE-2024-45779
-
-# 0044-fs-Disable-many-filesystems-under-lockdown.patch (yes, four
-# CVEs are fixed by this patch)
-GRUB2_IGNORE_CVES += CVE-2025-0684
-GRUB2_IGNORE_CVES += CVE-2025-0685
-GRUB2_IGNORE_CVES += CVE-2025-0686
-GRUB2_IGNORE_CVES += CVE-2025-0689
-
-# 0050-fs-Prevent-overflows-when-allocating-memory-for-arra.patch
-# (yes, two CVEs are fixed by this patch)
-GRUB2_IGNORE_CVES += CVE-2025-0678
-GRUB2_IGNORE_CVES += CVE-2025-1125
-
-# 0074-Constant-time-grub_crypto_memcmp.patch
-GRUB2_IGNORE_CVES += CVE-2024-56738
+# 0001-Revert-configure-Check-linker-for-image-base-support.patch
+# 0002-Revert-configure-Print-a-more-helpful-error-if-autoc.patch
+# Target grub2 package doesn't use autotools-package
+GRUB2_DEPENDENCIES += host-automake host-autoconf host-libtool host-pkgconf
+HOST_GRUB2_AUTORECONF = YES
+HOST_GRUB2_DEPENDENCIES += host-pkgconf
 
 ifeq ($(BR2_TARGET_GRUB2_INSTALL_TOOLS),y)
 GRUB2_INSTALL_TARGET = YES
@@ -174,6 +139,7 @@ HOST_GRUB2_CONF_OPTS = \
 	--disable-werror
 
 define GRUB2_CONFIGURE_CMDS
+	cd $(@D); $(AUTORECONF)
 	$(foreach tuple, $(GRUB2_TUPLES-y), \
 		@$(call MESSAGE,Configuring $(tuple))
 		mkdir -p $(@D)/build-$(tuple)

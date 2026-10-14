@@ -113,8 +113,6 @@ async def fixup_config(sysinfo, configfile):
 
     ROOTFS_SIZE = '5G'
 
-    if "BR2_NEEDS_HOST_JAVA=y\n" in configlines and not await sysinfo.has("java"):
-        return False
     # libffi not available on ARMv7-M, but propagating libffi arch
     # dependencies in Buildroot is really too much work, so we handle
     # this here.
@@ -125,6 +123,13 @@ async def fixup_config(sysinfo, configfile):
     # Buildroot is really too much work, so we handle this here.
     if 'BR2_PACKAGE_LIBOPENSSL=y\n' in configlines and \
        'BR2_TOOLCHAIN_HAS_ATOMIC=y\n' not in configlines:
+        return False
+    # Qemu in user mode cannot load target binaries laid out for 4k
+    # pages on a host with larger pages (e.g. 16k on Apple Silicon),
+    # so packages running target code at build time (gobject-
+    # introspection, nodejs) fail there.
+    if 'BR2_PACKAGE_HOST_QEMU_LINUX_USER_MODE=y\n' in configlines and \
+       os.sysconf('SC_PAGE_SIZE') > 4096:
         return False
     if 'BR2_PACKAGE_SUNXI_BOARDS=y\n' in configlines:
         configlines.remove('BR2_PACKAGE_SUNXI_BOARDS_FEX_FILE=""\n')
@@ -361,11 +366,6 @@ async def fixup_config(sysinfo, configfile):
        'BR2_TARGET_ROOTFS_UBI_CUSTOM_CONFIG_FILE=""\n' in configlines:
         configlines.remove('BR2_TARGET_ROOTFS_UBI_USE_CUSTOM_CONFIG=y\n')
         configlines.remove('BR2_TARGET_ROOTFS_UBI_CUSTOM_CONFIG_FILE=""\n')
-
-    if 'BR2_TARGET_S500_BOOTLOADER=y\n' in configlines and \
-       'BR2_TARGET_S500_BOOTLOADER_BOARD=""\n' in configlines:
-        configlines.remove('BR2_TARGET_S500_BOOTLOADER=y\n')
-        configlines.remove('BR2_TARGET_S500_BOOTLOADER_BOARD=""\n')
 
     if 'BR2_TARGET_TI_K3_R5_LOADER=y\n' in configlines and \
        'BR2_TARGET_TI_K3_R5_LOADER_USE_DEFCONFIG=y\n' in configlines and \

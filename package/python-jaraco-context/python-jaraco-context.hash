@@ -1,5 +1,5 @@
-# md5, sha256 from https://pypi.org/pypi/jaraco.context/json
-md5  bb22ef027077b1fa8528ef1d9840b838  jaraco_context-6.0.1.tar.gz
-sha256  9bae4ea555cf0b14938dc0aee7c9f32ed303aa20a3b73e7dc80111628792d1b3  jaraco_context-6.0.1.tar.gz
+# md5, sha256 from https://pypi.org/pypi/jaraco-context/json
+md5  3832a9304c95b6a209bd218411c6d696  jaraco_context-6.1.2.tar.gz
+sha256  f1a6c9d391e661cc5b8d39861ff077a7dc24dc23833ccee564b234b81c82dfe3  jaraco_context-6.1.2.tar.gz
 # Locally computed sha256 checksums
-sha256  86da0f01aeae46348a3c3d465195dc1ceccde79f79e87769a64b8da04b2a4741  LICENSE
+sha256  9755a18519666e5f0f4cae3daad3d7012bcae48a600b31237d75e9fe134e6683  LICENSE

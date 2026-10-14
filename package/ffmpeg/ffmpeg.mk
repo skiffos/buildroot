@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-FFMPEG_VERSION = 6.1.3
+FFMPEG_VERSION = 6.1.5
 FFMPEG_SOURCE = ffmpeg-$(FFMPEG_VERSION).tar.xz
 FFMPEG_SITE = https://ffmpeg.org/releases
 FFMPEG_INSTALL_STAGING = YES
@@ -52,7 +52,10 @@ FFMPEG_CONF_OPTS = \
 	--disable-libilbc \
 	--disable-libvo-amrwbenc \
 	--disable-symver \
-	--disable-doc
+	--disable-doc \
+	--disable-mmal \
+	--disable-omx \
+	--disable-omx-rpi
 
 FFMPEG_DEPENDENCIES += host-pkgconf
 
@@ -284,25 +287,9 @@ else
 FFMPEG_CONF_OPTS += --disable-vdpau
 endif
 
-ifeq ($(BR2_PACKAGE_RPI_USERLAND),y)
-FFMPEG_CONF_OPTS += --enable-omx --enable-omx-rpi \
-	--extra-cflags=-I$(STAGING_DIR)/usr/include/IL
-FFMPEG_DEPENDENCIES += rpi-userland
-ifeq ($(BR2_arm),y)
-FFMPEG_CONF_OPTS += --enable-mmal
-else
-FFMPEG_CONF_OPTS += --disable-mmal
-endif
-else
-FFMPEG_CONF_OPTS += --disable-mmal --disable-omx --disable-omx-rpi
-endif
-
 # To avoid a circular dependency only use opencv if opencv itself does
 # not depend on ffmpeg.
-ifeq ($(BR2_PACKAGE_OPENCV3_LIB_IMGPROC)x$(BR2_PACKAGE_OPENCV3_WITH_FFMPEG),yx)
-FFMPEG_CONF_OPTS += --enable-libopencv
-FFMPEG_DEPENDENCIES += opencv3
-else ifeq ($(BR2_PACKAGE_OPENCV4_LIB_IMGPROC)x$(BR2_PACKAGE_OPENCV4_WITH_FFMPEG),yx)
+ifeq ($(BR2_PACKAGE_OPENCV4_LIB_IMGPROC)x$(BR2_PACKAGE_OPENCV4_WITH_FFMPEG),yx)
 FFMPEG_CONF_OPTS += --enable-libopencv \
 	--extra-cflags=-I$(STAGING_DIR)/usr/include/opencv4
 FFMPEG_DEPENDENCIES += opencv4

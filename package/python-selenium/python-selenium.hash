@@ -1,4 +1,4 @@
 # Locally calculated after vendoring
-sha256  b5a238e9712d8f41c78c27759ec14c761acecc14505399c020b69de8bc38e51c  python-selenium-4.35.0-cargo4.tar.gz
+sha256  6cf2734ba0e1651163a936122739140a4a9689226a58f1c57fd56ef67dcc3fac  python-selenium-4.50.0-cargo6.tar.gz
 # Locally computed sha256 checksums
-sha256  1ee8454a0696ac46b0d5b67f85b2a0e3af2b7726e1b82cd182af60fd285bcba3  LICENSE
+sha256  307012b4481479a56605420e81db14686a0274d246d06d224c363ee09297d330  LICENSE

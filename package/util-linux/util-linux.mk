@@ -8,7 +8,7 @@
 # util-linux-libs/util-linux-libs.mk needs to be updated accordingly as well.
 
 UTIL_LINUX_VERSION_MAJOR = 2.41
-UTIL_LINUX_VERSION = $(UTIL_LINUX_VERSION_MAJOR).1
+UTIL_LINUX_VERSION = $(UTIL_LINUX_VERSION_MAJOR).5
 UTIL_LINUX_SOURCE = util-linux-$(UTIL_LINUX_VERSION).tar.xz
 UTIL_LINUX_SITE = $(BR2_KERNEL_MIRROR)/linux/utils/util-linux/v$(UTIL_LINUX_VERSION_MAJOR)
 
@@ -21,7 +21,7 @@ UTIL_LINUX_LICENSE = \
 	LGPL-2.1+ (libblkid, libfdisk, libmount), \
 	BSD-3-Clause (libuuid), \
 	BSD-2-Clause (xxhash), \
-	ISC (rfkill) \
+	ISC (rfkill), \
 	MIT (hardlink, flock)
 UTIL_LINUX_LICENSE_FILES = README.licensing \
 	Documentation/licenses/COPYING.BSD-2-Clause \
@@ -37,6 +37,12 @@ UTIL_LINUX_LICENSE_FILES = README.licensing \
 
 UTIL_LINUX_CPE_ID_VENDOR = kernel
 
+# 0003-loopdev-use-openat2-RESOLVE_NO_SYMLINKS-for-backing-.patch
+UTIL_LINUX_IGNORE_CVES += CVE-2026-27456
+
+# 0002-autotools-optionally-add-libpthread-to-uuid.pc.patch
+UTIL_LINUX_AUTORECONF = YES
+
 UTIL_LINUX_INSTALL_STAGING = YES
 UTIL_LINUX_DEPENDENCIES = \
 	host-pkgconf \
@@ -47,9 +53,12 @@ UTIL_LINUX_DEPENDENCIES = \
 # system is not Y2038 compliant. util-linux will support year2038 if
 # the system is compliant even with this option passed
 UTIL_LINUX_CONF_OPTS += \
-	--disable-rpath \
+	--disable-asciidoc \
 	--disable-makeinstall-chown \
-	--disable-year2038
+	--disable-poman \
+	--disable-rpath \
+	--disable-year2038 \
+	--enable-fs-paths-default=/sbin:/usr/sbin
 
 UTIL_LINUX_LINK_LIBS = $(TARGET_NLS_LIBS)
 
@@ -57,6 +66,8 @@ HOST_UTIL_LINUX_DEPENDENCIES = host-pkgconf
 
 # We also don't want the host-python dependency
 HOST_UTIL_LINUX_CONF_OPTS = \
+	--disable-asciidoc \
+	--disable-poman \
 	--without-systemd \
 	--with-systemdsystemunitdir=no \
 	--without-python
@@ -75,7 +86,13 @@ endif
 # ${usrlib_execdir} (/usr/lib) to ${libdir} (/lib), since both paths are
 # the same when merged usr is in use.
 ifeq ($(BR2_ROOTFS_MERGED_USR),y)
-UTIL_LINUX_CONF_OPTS += --bindir=/usr/bin --sbindir=/usr/sbin --libdir=/usr/lib
+UTIL_LINUX_CONF_OPTS += --bindir=/usr/bin --libdir=/usr/lib
+# Ditto for /usr/sbin and /usr/bin when merge sbin is in use
+ifeq ($(BR2_ROOTFS_MERGED_BIN),y)
+UTIL_LINUX_CONF_OPTS += --sbindir=/usr/bin
+else
+UTIL_LINUX_CONF_OPTS += --sbindir=/usr/sbin
+endif
 endif
 
 ifeq ($(BR2_PACKAGE_SYSTEMD),y)
@@ -110,6 +127,14 @@ endif
 UTIL_LINUX_CONF_OPTS += --without-ncursesw --without-ncurses
 endif
 
+# if ncurses is not available, try to fallback onto slang
+ifeq ($(BR2_PACKAGE_SLANG):$(BR2_PACKAGE_NCURSES),y:)
+UTIL_LINUX_DEPENDENCIES += slang
+UTIL_LINUX_CONF_OPTS += --with-slang
+else
+UTIL_LINUX_CONF_OPTS += --without-slang
+endif
+
 # workaround for static_assert on uclibc-ng < 1.0.42
 UTIL_LINUX_CONF_ENV += CFLAGS="$(TARGET_CFLAGS) -Dstatic_assert=_Static_assert"
 
@@ -119,6 +144,11 @@ UTIL_LINUX_CONF_ENV += CFLAGS="$(TARGET_CFLAGS) -Dstatic_assert=_Static_assert"
 # and then pass it again at build time.
 UTIL_LINUX_CONF_ENV += LIBS="$(UTIL_LINUX_LINK_LIBS)"
 UTIL_LINUX_MAKE_OPTS += LIBS="$(UTIL_LINUX_LINK_LIBS)"
+
+# pthread support uses pthread_atfork, which is not available on nommu
+ifeq ($(BR2_USE_MMU),)
+UTIL_LINUX_CONF_ENV += ac_cv_lib_pthread_pthread_atfork=no
+endif
 
 ifeq ($(BR2_PACKAGE_LIBSELINUX),y)
 UTIL_LINUX_DEPENDENCIES += libselinux

@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-LMDB_VERSION = 0.9.33
+LMDB_VERSION = 0.9.35
 LMDB_SOURCE = openldap-LMDB_$(LMDB_VERSION).tar.bz2
 LMDB_SITE = https://git.openldap.org/openldap/openldap/-/archive/LMDB_$(LMDB_VERSION)
 LMDB_LICENSE = OLDAP-2.8

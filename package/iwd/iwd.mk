@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-IWD_VERSION = 3.10
+IWD_VERSION = 3.12
 IWD_SOURCE = iwd-$(IWD_VERSION).tar.xz
 IWD_SITE = $(BR2_KERNEL_MIRROR)/linux/network/wireless
 IWD_LICENSE = LGPL-2.1+
@@ -38,7 +38,11 @@ endif
 ifeq ($(BR2_PACKAGE_SYSTEMD_RESOLVED),y)
 IWD_RESOLV_SERVICE = systemd
 else
+ifeq ($(BR2_PACKAGE_OPENRESOLV),y)
 IWD_RESOLV_SERVICE = resolvconf
+else
+IWD_RESOLV_SERVICE = none
+endif
 endif
 
 ifeq ($(BR2_PACKAGE_IWD_IWMON),y)
@@ -51,8 +55,8 @@ IWD_CONF_OPTS += --disable-monitor
 endif
 
 define IWD_INSTALL_CONFIG_FILE
-	$(INSTALL) -D -m 644 package/iwd/main.conf $(TARGET_DIR)/etc/iwd/main.conf
-	$(SED) 's,__RESOLV_SERVICE__,$(IWD_RESOLV_SERVICE),' $(TARGET_DIR)/etc/iwd/main.conf
+	$(INSTALL) -D -m 644 $(@D)/doc/main.conf $(TARGET_DIR)/etc/iwd/main.conf
+	$(SED) 's,#\?\(NameResolvingService\)=.*,\1=$(IWD_RESOLV_SERVICE),' $(TARGET_DIR)/etc/iwd/main.conf
 endef
 
 IWD_POST_INSTALL_TARGET_HOOKS += IWD_INSTALL_CONFIG_FILE
