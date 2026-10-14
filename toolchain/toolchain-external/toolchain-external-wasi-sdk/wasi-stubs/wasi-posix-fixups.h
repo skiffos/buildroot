@@ -73,6 +73,10 @@ extern "C" {
 #define SO_RCVBUFFORCE  33
 #define SO_SNDBUFFORCE  32
 #endif
+#ifndef SO_ACCEPTCONN
+#define SO_ACCEPTCONN   30
+#define SO_DOMAIN       39
+#endif
 
 #ifndef SOL_PACKET
 #define SOL_PACKET 263
@@ -138,6 +142,13 @@ extern "C" {
 #define SA_ONSTACK   0x08000000
 #endif
 
+/* The real-time signal range of musl. The kernel sends only the standard
+ * signals, so a program sees these only as the bounds of its tables. */
+#ifndef SIGRTMIN
+#define SIGRTMIN 35
+#define SIGRTMAX 64
+#endif
+
 #ifndef SIG_BLOCK
 #define SIG_BLOCK   0
 #define SIG_UNBLOCK 1
@@ -197,6 +208,7 @@ int sigemptyset(sigset_t *);
 int sigismember(const sigset_t *, int);
 int sigisemptyset(const sigset_t *);
 int sigprocmask(int, const sigset_t *, sigset_t *);
+int pthread_sigmask(int, const sigset_t *, sigset_t *);
 int sigtimedwait(const sigset_t *, siginfo_t *, const struct timespec *);
 int sigwait(const sigset_t *, int *);
 int sigsuspend(const sigset_t *);
@@ -319,11 +331,14 @@ int __posix_fcntl3(int, int, int);
 #define O_NDELAY O_NONBLOCK
 #endif
 
-/* The WasiVM kernel reads O_NOCTTY from a bit of path_open's fdflags that
- * WASI leaves unused, where wasi-libc's open passes the low open flags. */
+/* The WasiVM kernel reads O_NOCTTY and O_CLOEXEC from bits of path_open's
+ * fdflags that WASI leaves unused, where wasi-libc's open passes the low open
+ * flags. wasi-libc defines O_CLOEXEC as zero. */
 #include <__header_fcntl.h>
 #undef O_NOCTTY
 #define O_NOCTTY 0x100
+#undef O_CLOEXEC
+#define O_CLOEXEC 0x200
 
 /* File locking (wasi-libc omits all of these) */
 #ifndef F_RDLCK
@@ -408,57 +423,9 @@ int grantpt(int);
 int unlockpt(int);
 int ptsname_r(int, char *, size_t);
 
-/* ================================================================
- * Network
- * ================================================================ */
-
-struct sockaddr;
-struct iovec;
-struct msghdr;
-
-int socket(int, int, int);
-int socketpair(int, int, int, int[2]);
-int bind(int, const struct sockaddr *, unsigned int);
-int connect(int, const struct sockaddr *, unsigned int);
-int listen(int, int);
-int accept(int, struct sockaddr *, unsigned int *);
-ssize_t send(int, const void *, size_t, int);
-ssize_t recv(int, void *, size_t, int);
-ssize_t sendto(int, const void *, size_t, int, const struct sockaddr *, unsigned int);
-ssize_t recvfrom(int, void *, size_t, int, struct sockaddr *, unsigned int *);
-ssize_t sendmsg(int, const struct msghdr *, int);
-ssize_t recvmsg(int, struct msghdr *, int);
-int setsockopt(int, int, int, const void *, unsigned int);
-int getsockopt(int, int, int, void *, unsigned int *);
-int shutdown(int, int);
-int getsockname(int, struct sockaddr *, unsigned int *);
-int getpeername(int, struct sockaddr *, unsigned int *);
+/* Host names, which unistd.h declares. */
 int sethostname(const char *, size_t);
 int gethostname(char *, size_t);
-
-/* CMSG macros (struct msghdr from wasi-libc __struct_msghdr.h) */
-struct cmsghdr {
-    unsigned int cmsg_len;
-    int cmsg_level;
-    int cmsg_type;
-};
-
-#ifndef CMSG_ALIGN
-#define CMSG_ALIGN(len) (((len) + sizeof(long) - 1) & ~(sizeof(long) - 1))
-#define CMSG_LEN(len)   (CMSG_ALIGN(sizeof(struct cmsghdr)) + (len))
-#define CMSG_SPACE(len)  (CMSG_ALIGN(sizeof(struct cmsghdr)) + CMSG_ALIGN(len))
-#define CMSG_DATA(cmsg)  ((unsigned char *)((struct cmsghdr *)(cmsg) + 1))
-#define CMSG_FIRSTHDR(mhdr) \
-    ((mhdr)->msg_controllen >= sizeof(struct cmsghdr) ? \
-     (struct cmsghdr *)(mhdr)->msg_control : (struct cmsghdr *)0)
-#define CMSG_NXTHDR(mhdr, cmsg) \
-    ((cmsg)->cmsg_len < sizeof(struct cmsghdr) ? (struct cmsghdr *)0 : \
-     ((unsigned char *)(cmsg) + CMSG_ALIGN((cmsg)->cmsg_len) + \
-      sizeof(struct cmsghdr) > \
-      (unsigned char *)(mhdr)->msg_control + (mhdr)->msg_controllen) ? \
-     (struct cmsghdr *)0 : \
-     (struct cmsghdr *)((unsigned char *)(cmsg) + CMSG_ALIGN((cmsg)->cmsg_len)))
-#endif
 
 /* ================================================================
  * Resource limits and priority
@@ -504,14 +471,20 @@ int nice(int);
 
 #include <time.h>
 
-#ifndef CLOCK_REALTIME
-#define CLOCK_REALTIME  0
-#define CLOCK_MONOTONIC 1
-#endif
+/* The Linux clocks wasi-libc does not name, as clock objects like its own. */
 #ifndef CLOCK_BOOTTIME
-#define CLOCK_BOOTTIME         ((clockid_t)7)
-#define CLOCK_REALTIME_COARSE  ((clockid_t)5)
-#define CLOCK_MONOTONIC_COARSE ((clockid_t)6)
+extern const struct __clockid _CLOCK_PROCESS_CPUTIME_ID;
+extern const struct __clockid _CLOCK_THREAD_CPUTIME_ID;
+extern const struct __clockid _CLOCK_MONOTONIC_RAW;
+extern const struct __clockid _CLOCK_REALTIME_COARSE;
+extern const struct __clockid _CLOCK_MONOTONIC_COARSE;
+extern const struct __clockid _CLOCK_BOOTTIME;
+#define CLOCK_PROCESS_CPUTIME_ID (&_CLOCK_PROCESS_CPUTIME_ID)
+#define CLOCK_THREAD_CPUTIME_ID  (&_CLOCK_THREAD_CPUTIME_ID)
+#define CLOCK_MONOTONIC_RAW      (&_CLOCK_MONOTONIC_RAW)
+#define CLOCK_REALTIME_COARSE    (&_CLOCK_REALTIME_COARSE)
+#define CLOCK_MONOTONIC_COARSE   (&_CLOCK_MONOTONIC_COARSE)
+#define CLOCK_BOOTTIME           (&_CLOCK_BOOTTIME)
 #endif
 
 int clock_settime(clockid_t, const struct timespec *);
@@ -621,4 +594,67 @@ char *mkdtemp(char *);
 #endif
 
 #endif /* _WASI_POSIX_FIXUPS_H */
+
+/* The socket calls and control messages, declared only with sys/socket.h
+ * as in musl, so a program may give its own functions their names. */
+#if defined(_SYS_SOCKET_H) && !defined(_WASI_POSIX_FIXUPS_SOCKET_H)
+#define _WASI_POSIX_FIXUPS_SOCKET_H
+#ifdef __cplusplus
+extern "C" {
+#endif
+
+/* ================================================================
+ * Network
+ * ================================================================ */
+
+struct sockaddr;
+struct iovec;
+struct msghdr;
+
+int socket(int, int, int);
+int socketpair(int, int, int, int[2]);
+int bind(int, const struct sockaddr *, unsigned int);
+int connect(int, const struct sockaddr *, unsigned int);
+int listen(int, int);
+int accept(int, struct sockaddr *, unsigned int *);
+ssize_t send(int, const void *, size_t, int);
+ssize_t recv(int, void *, size_t, int);
+ssize_t sendto(int, const void *, size_t, int, const struct sockaddr *, unsigned int);
+ssize_t recvfrom(int, void *, size_t, int, struct sockaddr *, unsigned int *);
+ssize_t sendmsg(int, const struct msghdr *, int);
+ssize_t recvmsg(int, struct msghdr *, int);
+int setsockopt(int, int, int, const void *, unsigned int);
+int getsockopt(int, int, int, void *, unsigned int *);
+int shutdown(int, int);
+int getsockname(int, struct sockaddr *, unsigned int *);
+int getpeername(int, struct sockaddr *, unsigned int *);
+
+/* CMSG macros (struct msghdr from wasi-libc __struct_msghdr.h) */
+struct cmsghdr {
+    unsigned int cmsg_len;
+    int cmsg_level;
+    int cmsg_type;
+};
+
+#ifndef CMSG_ALIGN
+#define CMSG_ALIGN(len) (((len) + sizeof(long) - 1) & ~(sizeof(long) - 1))
+#define CMSG_LEN(len)   (CMSG_ALIGN(sizeof(struct cmsghdr)) + (len))
+#define CMSG_SPACE(len)  (CMSG_ALIGN(sizeof(struct cmsghdr)) + CMSG_ALIGN(len))
+#define CMSG_DATA(cmsg)  ((unsigned char *)((struct cmsghdr *)(cmsg) + 1))
+#define CMSG_FIRSTHDR(mhdr) \
+    ((mhdr)->msg_controllen >= sizeof(struct cmsghdr) ? \
+     (struct cmsghdr *)(mhdr)->msg_control : (struct cmsghdr *)0)
+#define CMSG_NXTHDR(mhdr, cmsg) \
+    ((cmsg)->cmsg_len < sizeof(struct cmsghdr) ? (struct cmsghdr *)0 : \
+     ((unsigned char *)(cmsg) + CMSG_ALIGN((cmsg)->cmsg_len) + \
+      sizeof(struct cmsghdr) > \
+      (unsigned char *)(mhdr)->msg_control + (mhdr)->msg_controllen) ? \
+     (struct cmsghdr *)0 : \
+     (struct cmsghdr *)((unsigned char *)(cmsg) + CMSG_ALIGN((cmsg)->cmsg_len)))
+#endif
+
+#ifdef __cplusplus
+}
+#endif
+#endif /* _WASI_POSIX_FIXUPS_SOCKET_H */
 #endif /* \!__ASSEMBLER__ */
