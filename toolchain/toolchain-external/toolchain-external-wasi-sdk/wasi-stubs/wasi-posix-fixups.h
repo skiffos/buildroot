@@ -267,6 +267,12 @@ int __posix_fcntl3(int, int, int);
 #define O_NDELAY O_NONBLOCK
 #endif
 
+/* The WasiVM kernel reads O_NOCTTY from a bit of path_open's fdflags that
+ * WASI leaves unused, where wasi-libc's open passes the low open flags. */
+#include <__header_fcntl.h>
+#undef O_NOCTTY
+#define O_NOCTTY 0x100
+
 /* File locking (wasi-libc omits all of these) */
 #ifndef F_RDLCK
 #define F_RDLCK  0
@@ -305,7 +311,9 @@ int __posix_fcntl3(int, int, int);
 #endif
 
 /* The kernel serves FIONREAD and FIONBIO in their Linux values, which replace
- * the values of wasi-libc's own ioctl. */
+ * the values of wasi-libc's own ioctl. Its header comes first, so a later
+ * include cannot restore them. */
+#include <__header_sys_ioctl.h>
 #undef FIONREAD
 #undef FIONBIO
 #define FIONREAD 0x541B
