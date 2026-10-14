@@ -84,7 +84,11 @@ extern "C" {
 #define MSG_CTRUNC 0x8
 #endif
 
-/* The kernel carries no control messages; recvmsg reports none. */
+#ifndef MSG_CMSG_CLOEXEC
+#define MSG_CMSG_CLOEXEC 0x40000000
+#endif
+
+/* The kernel passes descriptors in SCM_RIGHTS messages. */
 #ifndef SCM_RIGHTS
 #define SCM_RIGHTS 0x01
 #define SCM_CREDENTIALS 0x02
