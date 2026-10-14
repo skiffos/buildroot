@@ -51,6 +51,13 @@ extern "C" {
 #define PF_NETLINK 16
 #define AF_NETLINK PF_NETLINK
 #endif
+#ifndef PF_UNIX
+#define PF_UNIX AF_UNIX
+#endif
+#ifndef AF_LOCAL
+#define AF_LOCAL AF_UNIX
+#define PF_LOCAL AF_UNIX
+#endif
 
 #ifndef SO_DEBUG
 #define SO_DEBUG        1
@@ -75,6 +82,12 @@ extern "C" {
 #define MSG_DONTWAIT 0x40
 #endif
 
+/* The kernel takes MSG_NOSIGNAL to fail a write to a closed peer with EPIPE
+ * and no SIGPIPE. */
+#ifndef MSG_NOSIGNAL
+#define MSG_NOSIGNAL 0x4000
+#endif
+
 /* WASI has no out-of-band data, so poll never reports POLLPRI. */
 #ifndef POLLPRI
 #define POLLPRI 0x0200
@@ -92,6 +105,11 @@ extern "C" {
 #ifndef SCM_RIGHTS
 #define SCM_RIGHTS 0x01
 #define SCM_CREDENTIALS 0x02
+#endif
+
+/* A Unix socket's peer credentials, read into sys/socket.h's struct ucred. */
+#ifndef SO_PEERCRED
+#define SO_PEERCRED 17
 #endif
 
 #ifndef NI_NUMERICHOST
@@ -126,15 +144,45 @@ extern "C" {
 #define SIG_SETMASK 2
 #endif
 
+#ifndef _WASI_SIGINFO_DEFINED
+#define _WASI_SIGINFO_DEFINED
+/* Linux's siginfo_t, 128 bytes holding the signal, its cause and the
+ * fields of that cause. */
+typedef struct {
+    int si_signo;
+    int si_errno;
+    int si_code;
+    union {
+        char __si_pad[128 - 3 * sizeof(int)];
+        struct {
+            pid_t si_pid;
+            uid_t si_uid;
+            int si_status;
+        };
+        void *si_addr;
+    };
+} siginfo_t;
+#endif
+
+#ifndef SA_SIGINFO
+#define SA_SIGINFO 4
+#endif
+
 #ifndef _WASI_SIGACTION_DEFINED
 #define _WASI_SIGACTION_DEFINED
 /* The wasivm kernel reads the handler, the flags and then the mask. It calls
- * the handler with the signal number alone, so there is no SA_SIGINFO. */
+ * the handler with the signal number alone, so it refuses SA_SIGINFO and
+ * never calls sa_sigaction. */
 struct sigaction {
-    void (*sa_handler)(int);
+    union {
+        void (*sa_handler)(int);
+        void (*sa_sigaction)(int, siginfo_t *, void *);
+    } __sa_handler;
     unsigned long sa_flags;
     sigset_t sa_mask;
 };
+#define sa_handler   __sa_handler.sa_handler
+#define sa_sigaction __sa_handler.sa_sigaction
 #endif
 
 #ifndef WCOREDUMP
@@ -149,7 +197,7 @@ int sigemptyset(sigset_t *);
 int sigismember(const sigset_t *, int);
 int sigisemptyset(const sigset_t *);
 int sigprocmask(int, const sigset_t *, sigset_t *);
-int sigtimedwait(const sigset_t *, void *, const struct timespec *);
+int sigtimedwait(const sigset_t *, siginfo_t *, const struct timespec *);
 int sigwait(const sigset_t *, int *);
 int sigsuspend(const sigset_t *);
 
@@ -293,6 +341,19 @@ int __posix_fcntl3(int, int, int);
 #define F_SETLKW 7
 #endif
 
+/* File seals, which the kernel keeps for a memfd made with
+ * MFD_ALLOW_SEALING. */
+#ifndef F_ADD_SEALS
+#define F_ADD_SEALS         1033
+#define F_GET_SEALS         1034
+#define F_SEAL_SEAL         0x0001
+#define F_SEAL_SHRINK       0x0002
+#define F_SEAL_GROW         0x0004
+#define F_SEAL_WRITE        0x0008
+#define F_SEAL_FUTURE_WRITE 0x0010
+#define F_SEAL_EXEC         0x0020
+#endif
+
 /* ================================================================
  * Terminal
  * ================================================================ */
@@ -353,6 +414,7 @@ int ptsname_r(int, char *, size_t);
 
 struct sockaddr;
 struct iovec;
+struct msghdr;
 
 int socket(int, int, int);
 int socketpair(int, int, int, int[2]);
