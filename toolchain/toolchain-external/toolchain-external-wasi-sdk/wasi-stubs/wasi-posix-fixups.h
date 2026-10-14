@@ -75,6 +75,21 @@ extern "C" {
 #define MSG_DONTWAIT 0x40
 #endif
 
+/* WASI has no out-of-band data, so poll never reports POLLPRI. */
+#ifndef POLLPRI
+#define POLLPRI 0x0200
+#endif
+
+#ifndef MSG_CTRUNC
+#define MSG_CTRUNC 0x8
+#endif
+
+/* The kernel carries no control messages; recvmsg reports none. */
+#ifndef SCM_RIGHTS
+#define SCM_RIGHTS 0x01
+#define SCM_CREDENTIALS 0x02
+#endif
+
 #ifndef NI_NUMERICHOST
 #define NI_NUMERICHOST 1
 #define NI_NUMERICSERV 2
@@ -98,7 +113,6 @@ extern "C" {
 #define SA_RESETHAND 0x80000000
 #define SA_NOCLDSTOP 1
 #define SA_NOCLDWAIT 2
-#define SA_SIGINFO   4
 #define SA_ONSTACK   0x08000000
 #endif
 
@@ -110,7 +124,8 @@ extern "C" {
 
 #ifndef _WASI_SIGACTION_DEFINED
 #define _WASI_SIGACTION_DEFINED
-/* The wasivm kernel reads the handler, the flags and then the mask. */
+/* The wasivm kernel reads the handler, the flags and then the mask. It calls
+ * the handler with the signal number alone, so there is no SA_SIGINFO. */
 struct sigaction {
     void (*sa_handler)(int);
     unsigned long sa_flags;

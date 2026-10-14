@@ -11,11 +11,6 @@
 #include <stdbool.h>
 #include <wasi/api.h>
 
-// POLLPRI is not in wasi-libc headers (no OOB data in WASI).
-#ifndef POLLPRI
-#define POLLPRI 0x0200
-#endif
-
 int poll(struct pollfd *fds, nfds_t nfds, int timeout) {
     size_t maxevents = 2 * nfds + 1;
     __wasi_subscription_t subscriptions[maxevents];
