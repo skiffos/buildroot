@@ -120,6 +120,7 @@ sigsuspend
 sigtimedwait
 sigwait
 socket
+socketpair
 sync
 sysinfo
 tcflow
