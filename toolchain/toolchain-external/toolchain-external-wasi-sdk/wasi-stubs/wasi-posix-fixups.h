@@ -512,7 +512,8 @@ int pause(void);
 
 #ifndef CPU_SETSIZE
 #define CPU_SETSIZE 1024
-typedef struct {
+/* Tagged as musl tags it, so pthread.h can name struct cpu_set_t in C++. */
+typedef struct cpu_set_t {
     unsigned long __bits[CPU_SETSIZE / (8 * sizeof(unsigned long))];
 } cpu_set_t;
 int sched_getaffinity(pid_t, size_t, cpu_set_t *);
