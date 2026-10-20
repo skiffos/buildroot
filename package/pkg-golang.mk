@@ -146,6 +146,14 @@ ifeq ($(BR2_aarch64),y)
 $(2)_EXTLDFLAGS += -fuse-ld=bfd
 endif
 
+ifeq ($(BR2_ARM_INSTRUCTIONS_THUMB)$(BR2_PACKAGE_HOST_GO_TARGET_CGO_LINKING_SUPPORTS),yy)
+# On ARMv5, runtime/cgo needs helpers such as __sync_synchronize from
+# libgcc.a. With BR2_ARM_INSTRUCTIONS_THUMB, libgcc.a is built in Thumb
+# mode, and Go's internal linker cannot handle its R_ARM_THM_CALL
+# relocations. Use the external linker, which handles interworking.
+$(2)_LDFLAGS += -linkmode=external
+endif
+
 ifneq ($$($(2)_EXTLDFLAGS),)
 $(2)_LDFLAGS += -extldflags '$$($(2)_EXTLDFLAGS)'
 endif
