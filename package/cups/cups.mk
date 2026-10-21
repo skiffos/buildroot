@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-CUPS_VERSION = 2.4.14
+CUPS_VERSION = 2.4.19
 CUPS_SOURCE = cups-$(CUPS_VERSION)-source.tar.gz
 CUPS_SITE = https://github.com/OpenPrinting/cups/releases/download/v$(CUPS_VERSION)
 CUPS_LICENSE = Apache-2.0 with GPL-2.0/LGPL-2.0 exception
@@ -45,6 +45,11 @@ endif
 ifeq ($(BR2_PACKAGE_DBUS),y)
 CUPS_CONF_OPTS += --enable-dbus
 CUPS_DEPENDENCIES += dbus
+define CUPS_INSTALL_DBUS
+	$(INSTALL) -m 0644 -D $(@D)/desktop/cups.conf \
+		$(TARGET_DIR)/usr/share/dbus-1/system.d/cups.conf
+endef
+CUPS_POST_INSTALL_TARGET_HOOKS += CUPS_INSTALL_DBUS
 else
 CUPS_CONF_OPTS += --disable-dbus
 endif

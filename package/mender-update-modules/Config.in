@@ -129,12 +129,14 @@ config BR2_PACKAGE_MENDER_UPDATE_MODULES_PODMAN
 	bool "podman"
 	depends on BR2_USE_MMU  # podman
 	depends on BR2_PACKAGE_HOST_GO_TARGET_ARCH_SUPPORTS  # podman
+	depends on BR2_PACKAGE_HOST_GO_TARGET_CGO_LINKING_SUPPORTS || BR2_PACKAGE_CRUN # podman
 	depends on BR2_PACKAGE_HOST_RUSTC_TARGET_ARCH_SUPPORTS  # podman
 	depends on BR2_PACKAGE_LIBGPG_ERROR_ARCH_SUPPORTS  # podman
 	depends on BR2_PACKAGE_LIBSECCOMP_ARCH_SUPPORTS  # podman
-	depends on BR2_TOOLCHAIN_HEADERS_AT_LEAST_3_17  # podman
+	depends on BR2_TOOLCHAIN_HEADERS_AT_LEAST_4_14  # podman
 	depends on BR2_TOOLCHAIN_HAS_THREADS  # podman
 	depends on BR2_USE_WCHAR  # podman
+	depends on !BR2_STATIC_LIBS # podman
 	select BR2_PACKAGE_JQ # runtime
 	select BR2_PACKAGE_PODMAN
 	help
@@ -150,15 +152,17 @@ config BR2_PACKAGE_MENDER_UPDATE_MODULES_PODMAN
 
 	  https://github.com/mendersoftware/mender-update-modules/tree/master/podman
 
-comment "podman support needs a toolchain w/ headers >= 3.17, threads, wchar"
+comment "podman support needs a toolchain w/ headers >= 4.14, threads, wchar, dynamic library"
 	depends on BR2_USE_MMU
 	depends on BR2_PACKAGE_HOST_GO_TARGET_ARCH_SUPPORTS
+	depends on BR2_PACKAGE_HOST_GO_TARGET_CGO_LINKING_SUPPORTS || BR2_PACKAGE_CRUN
 	depends on BR2_PACKAGE_HOST_RUSTC_TARGET_ARCH_SUPPORTS
 	depends on BR2_PACKAGE_LIBGPG_ERROR_ARCH_SUPPORTS
 	depends on BR2_PACKAGE_LIBSECCOMP_ARCH_SUPPORTS
-	depends on !BR2_TOOLCHAIN_HEADERS_AT_LEAST_3_17 \
+	depends on !BR2_TOOLCHAIN_HEADERS_AT_LEAST_4_14 \
 		|| !BR2_TOOLCHAIN_HAS_THREADS \
-		|| !BR2_USE_WCHAR
+		|| !BR2_USE_WCHAR \
+		|| BR2_STATIC_LIBS
 
 config BR2_PACKAGE_MENDER_UPDATE_MODULES_REBOOT
 	bool "reboot"
@@ -173,6 +177,8 @@ config BR2_PACKAGE_MENDER_UPDATE_MODULES_REBOOT
 
 config BR2_PACKAGE_MENDER_UPDATE_MODULES_ROOTFS_VERSION_CHECK
 	bool "rootfs version check"
+	depends on BR2_USE_WCHAR # python3
+	depends on BR2_USE_MMU # python3
 	depends on BR2_TOOLCHAIN_HAS_THREADS # python3
 	depends on !BR2_STATIC_LIBS # python3
 	select BR2_PACKAGE_PYTHON3 # runtime
@@ -195,8 +201,10 @@ config BR2_PACKAGE_MENDER_UPDATE_MODULES_ROOTFS_VERSION_CHECK
 
 	  https://github.com/mendersoftware/mender-update-modules/tree/master/rootfs-version-check
 
-comment "rootfs version check needs a toolchain w/ threads"
-	depends on !BR2_TOOLCHAIN_HAS_THREADS || BR2_STATIC_LIBS
+comment "rootfs version check needs a toolchain w/ threads, dynamic library, wchar"
+	depends on BR2_USE_MMU
+	depends on !BR2_TOOLCHAIN_HAS_THREADS || BR2_STATIC_LIBS || \
+		!BR2_USE_WCHAR
 
 config BR2_PACKAGE_MENDER_UPDATE_MODULES_RPM
 	bool "rpm"
@@ -204,6 +212,7 @@ config BR2_PACKAGE_MENDER_UPDATE_MODULES_RPM
 	depends on BR2_PACKAGE_BUSYBOX_SHOW_OTHERS
 	depends on BR2_PACKAGE_LUA && !BR2_PACKAGE_LUA_5_1
 	depends on BR2_TOOLCHAIN_HAS_THREADS
+	depends on BR2_USE_MMU # rpm
 	select BR2_PACKAGE_RPM
 	help
 	  The Rpm Update Module updates software on the device using
@@ -216,6 +225,7 @@ config BR2_PACKAGE_MENDER_UPDATE_MODULES_RPM
 	  https://github.com/mendersoftware/mender-update-modules/tree/master/rpm
 
 comment "rpm needs a toolchain w/ dynamic library, threads and lua >= 5.3"
+	depends on BR2_USE_MMU
 	depends on !BR2_TOOLCHAIN_HAS_THREADS || BR2_STATIC_LIBS \
 		|| !BR2_PACKAGE_LUA || BR2_PACKAGE_LUA_5_1
 	depends on BR2_PACKAGE_BUSYBOX_SHOW_OTHERS
@@ -224,6 +234,7 @@ config BR2_PACKAGE_MENDER_UPDATE_MODULES_SWU
 	bool "swupdate"
 	depends on !BR2_STATIC_LIBS
 	depends on BR2_TOOLCHAIN_HAS_SYNC_4 # swupdate
+	depends on BR2_USE_MMU # swupdate
 	select BR2_PACKAGE_JQ # runtime
 	select BR2_PACKAGE_SWUPDATE
 	help
@@ -236,6 +247,7 @@ config BR2_PACKAGE_MENDER_UPDATE_MODULES_SWU
 	  https://github.com/mendersoftware/mender-update-modules/tree/master/swu
 
 comment "swupdate support needs a toolchain w/ dynamic library"
+	depends on BR2_USE_MMU
 	depends on BR2_TOOLCHAIN_HAS_SYNC_4
 	depends on BR2_STATIC_LIBS
 

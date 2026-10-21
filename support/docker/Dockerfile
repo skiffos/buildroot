@@ -24,7 +24,7 @@ ARG TAR_VERSION="1.35"
 ENV DEBIAN_FRONTEND=noninteractive
 
 # This repository can be a bit slow at times. Don't panic...
-COPY apt-sources.list /etc/apt/sources.list
+COPY debian.sources /etc/apt/sources.list.d/debian.sources
 
 # Install 32bit variant on x86_64 image.
 RUN if [ "$TARGETPLATFORM" = "linux/amd64" ]; then \
@@ -32,15 +32,18 @@ RUN if [ "$TARGETPLATFORM" = "linux/amd64" ]; then \
 fi
 
 # The container has no package lists, so need to update first
-RUN apt-get -o APT::Retries=3 update -y
+RUN apt-get -o APT::Retries=3 -o APT::Acquire::http::Timeout=60 \
+        update -y
 
 RUN if [ "$TARGETPLATFORM" = "linux/amd64" ]; then \
-    apt-get -o APT::Retries=3 install -y --no-install-recommends \
+    apt-get -o APT::Retries=3 -o APT::Acquire::http::Timeout=60 \
+        install -y --no-install-recommends \
         g++-multilib \
         libc6:i386; \
 fi
 
-RUN apt-get -o APT::Retries=3 install -y --no-install-recommends \
+RUN apt-get -o APT::Retries=3 -o APT::Acquire::http::Timeout=60 \
+        install -y --no-install-recommends \
         bc \
         build-essential \
         bzr \
@@ -91,6 +94,10 @@ RUN sed -i 's/# \(en_US.UTF-8\)/\1/' /etc/locale.gen && \
 
 RUN useradd -ms /bin/bash br-user && \
     chown -R br-user:br-user /home/br-user
+
+# Make the br-user home directory not writable, even for br-user
+# itself, to catch builds writing into $HOME
+RUN chmod 555 /home/br-user
 
 USER br-user
 WORKDIR /home/br-user

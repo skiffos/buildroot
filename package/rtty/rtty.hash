@@ -1,2 +1,4 @@
-sha256  522b0fc5e032c3b84ac707abce8ac4ff5609900011f8f300ce4f4246abac0acc  rtty-8.1.2.tar.gz
+# From https://github.com/zhaojh329/rtty/releases/tag/v9.2.1
+sha256  3764ec2537a5ae2b3a93853dda13fc20b0c0a57184cac30ed2ac1317312c3e2a  rtty-9.2.1.tar.gz
+# Locally computed
 sha256  99efed4bbc0b62f96f999ef23399e38234fb91651af734fd389a52b033a85b55  LICENSE

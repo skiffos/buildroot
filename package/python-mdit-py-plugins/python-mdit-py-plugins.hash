@@ -1,0 +1,5 @@
+# md5, sha256 from https://pypi.org/pypi/mdit-py-plugins/json
+md5  78fcde535f69c580e9bdc4393ef2a8bd  mdit_py_plugins-0.6.1.tar.gz
+sha256  a2bca0f039f39dbd35fb74ae1b5f998608c437463371f0ff7f49a19a17a114d0  mdit_py_plugins-0.6.1.tar.gz
+# Locally computed sha256 checksums
+sha256  4a2260d6e2cd0f5a151a1e86dbfe7d3ed552b1e2beabf9941c1ba5c49cbce484  LICENSE

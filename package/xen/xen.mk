@@ -4,34 +4,61 @@
 #
 ################################################################################
 
-XEN_VERSION = 4.14.6
+XEN_VERSION = 4.22.0
 XEN_SITE = https://downloads.xenproject.org/release/xen/$(XEN_VERSION)
 XEN_SELINUX_MODULES = systemd udev xen
 XEN_LICENSE = GPL-2.0
-XEN_LICENSE_FILES = COPYING
+XEN_LICENSE_FILES = COPYING LICENSES/GPL-2.0
 XEN_CPE_ID_VENDOR = xen
 XEN_CPE_ID_PREFIX = cpe:2.3:o
-XEN_DEPENDENCIES = host-acpica host-python3
+
+XEN_DEPENDENCIES = \
+	host-acpica \
+	host-meson \
+	host-pkgconf \
+	host-python3 \
+	host-python-distlib
 
 # Calculate XEN_ARCH
 ifeq ($(ARCH),aarch64)
 XEN_ARCH = arm64
 else ifeq ($(ARCH),arm)
 XEN_ARCH = arm32
+else ifeq ($(ARCH),x86_64)
+XEN_ARCH = x86_64
 endif
 
 XEN_CONF_OPTS = \
 	--disable-golang \
 	--disable-ocamltools \
-	--with-initddir=/etc/init.d
+	--with-initddir=/etc/init.d \
+	--disable-werror
 
+ifeq ($(BR2_x86_64),y)
+# SeaBIOS, OVMF and iPXE would be git-cloned at build time, and ROMBIOS
+# needs the bcc/as86/ld86 toolchain, so only build hvmloader. The PV shim
+# is a second, differently configured build of the hypervisor.
+XEN_CONF_OPTS += \
+	--disable-seabios \
+	--disable-ovmf \
+	--disable-ipxe \
+	--disable-rombios \
+	--disable-pvshim
+
+# hvmloader is 32-bit x86 firmware, loaded into HVM guests
+XEN_BIN_ARCH_EXCLUDE = /usr/lib/xen/boot
+endif
+
+# Xen 4.20+ would normally fetch qemu-xen via git at build time; we
+# pre-provide it via the qemu-xen package instead.
 XEN_CONF_ENV = PYTHON=$(HOST_DIR)/bin/python3
 XEN_MAKE_ENV = \
 	XEN_TARGET_ARCH=$(XEN_ARCH) \
 	CROSS_COMPILE=$(TARGET_CROSS) \
 	HOST_EXTRACFLAGS="-Wno-error" \
 	XEN_HAS_CHECKPOLICY=n \
-	$(TARGET_CONFIGURE_OPTS)
+	$(TARGET_CONFIGURE_OPTS) \
+	EXTRA_CFLAGS_QEMU_XEN="-U__XEN_INTERFACE_VERSION__"
 
 ifeq ($(BR2_PACKAGE_XEN_HYPERVISOR),y)
 XEN_MAKE_OPTS += dist-xen
@@ -45,13 +72,31 @@ endif
 
 ifeq ($(BR2_PACKAGE_XEN_TOOLS),y)
 XEN_DEPENDENCIES += \
-	dtc libaio libglib2 ncurses openssl pixman slirp util-linux yajl
+	dtc \
+	libaio \
+	libglib2 \
+	ncurses \
+	openssl \
+	pixman \
+	qemu-xen \
+	slirp \
+	util-linux \
+	yajl
 ifeq ($(BR2_PACKAGE_ARGP_STANDALONE),y)
 XEN_DEPENDENCIES += argp-standalone
 endif
 XEN_INSTALL_TARGET_OPTS += DESTDIR=$(TARGET_DIR) install-tools
 XEN_MAKE_OPTS += dist-tools
 XEN_CONF_OPTS += --with-extra-qemuu-configure-args="--disable-sdl --disable-opengl"
+
+# Place the pre-downloaded qemu-xen source where the Xen build expects it.
+# This prevents Xen from trying to git-clone qemu-xen during the build.
+# Use cp -a (not symlink) so meson can write into subprojects/.
+define XEN_INSTALL_QEMU_XEN_SRC
+	rm -rf $(@D)/tools/qemu-xen
+	cp -a $(QEMU_XEN_DIR) $(@D)/tools/qemu-xen
+endef
+XEN_POST_EXTRACT_HOOKS += XEN_INSTALL_QEMU_XEN_SRC
 
 define XEN_INSTALL_INIT_SYSV
 	mv $(TARGET_DIR)/etc/init.d/xencommons $(TARGET_DIR)/etc/init.d/S50xencommons

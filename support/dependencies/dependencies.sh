@@ -41,7 +41,7 @@ case ":${PATH:-unset}:" in
 (*" "*|*"${TAB}"*|*"${NL}"*)
 	printf "\n"
 	printf "Your PATH contains spaces, TABs, and/or newline (\\\n) characters.\n"
-	printf "This doesn't work. Fix you PATH.\n"
+	printf "This doesn't work. Fix your PATH environment variable.\n"
 	exit 1
 	;;
 esac
@@ -190,6 +190,17 @@ if test "${missing_progs}" = "yes" ; then
 	exit 1
 fi
 
+INSTALL_VERSION="$(install --version | sed -n 's/^install \(.*\)/\1/p')"
+if [ "${INSTALL_VERSION}" = "(uutils coreutils) 0.8.0" ]; then
+	echo
+	echo "You have an uutils 'install' version installed which is affected by:"
+	echo "  https://github.com/uutils/coreutils/issues/12166"
+	echo
+	echo "Please change to coreutils install with:"
+	echo "update-alternatives --install /usr/bin/install install /usr/bin/gnuinstall 100"
+	exit 1
+fi
+
 PATCH_VERSION="$(patch -v 2>/dev/null | sed -n 's/^GNU patch \(.*\)/\1/p')"
 if [ -z "${PATCH_VERSION}" ] ; then
 	echo
@@ -213,17 +224,6 @@ if grep -q ^BR2_NEEDS_HOST_UTF8_LOCALE=y $BR2_CONFIG ; then
 	if ! locale -a | grep -q -i -E 'utf-?8$' ; then
 		echo
 		echo "You need at least one UTF8 locale to build a toolchain supporting locales"
-		exit 1 ;
-	fi
-fi
-
-if grep -q ^BR2_NEEDS_HOST_JAVA=y $BR2_CONFIG ; then
-	check_prog_host "java"
-	JAVA_GCJ=$(java -version 2>&1 | grep gcj)
-	if [ ! -z "$JAVA_GCJ" ] ; then
-		echo
-		echo "$JAVA_GCJ is not sufficient to compile your package selection."
-		echo "Please install an OpenJDK/IcedTea/Oracle Java."
 		exit 1 ;
 	fi
 fi

@@ -4,7 +4,8 @@
 #
 ################################################################################
 
-LIBZLIB_VERSION = 1.3.1
+# When updating the version here, please also update the minizip-zlib package
+LIBZLIB_VERSION = 1.3.2
 LIBZLIB_SOURCE = zlib-$(LIBZLIB_VERSION).tar.xz
 LIBZLIB_SITE = https://www.zlib.net
 LIBZLIB_LICENSE = Zlib
@@ -13,6 +14,8 @@ LIBZLIB_INSTALL_STAGING = YES
 LIBZLIB_PROVIDES = zlib
 LIBZLIB_CPE_ID_VENDOR = zlib
 LIBZLIB_CPE_ID_PRODUCT = zlib
+
+LIBZLIB_IGNORE_CVES += CVE-2026-85091
 
 # It is not possible to build only a shared version of zlib, so we build both
 # shared and static, unless we only want the static libs, and we eventually

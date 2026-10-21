@@ -1,5 +1,5 @@
 # md5, sha256 from https://pypi.org/pypi/pynacl/json
-md5  297e50e469abf0b5ea18b3a158312ba5  pynacl-1.6.0.tar.gz
-sha256  cb36deafe6e2bce3b286e5d1f3e1c246e0ccdb8808ddb4550bb2792f2df298f2  pynacl-1.6.0.tar.gz
+md5  4443a25f6c2f27fa47962a75b1ecb968  pynacl-1.6.2.tar.gz
+sha256  018494d6d696ae03c7e656e5e74cdfd8ea1326962cc401bcf018f1ed8436811c  pynacl-1.6.2.tar.gz
 # Locally computed sha256 checksums
 sha256  d3174ad63e721d4c9dccb8ad4320848992d314369bc46319720b5802c9153fe9  LICENSE

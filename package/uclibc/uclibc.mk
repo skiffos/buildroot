@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-UCLIBC_VERSION = 1.0.55
+UCLIBC_VERSION = 1.0.59
 UCLIBC_SOURCE = uClibc-ng-$(UCLIBC_VERSION).tar.xz
 UCLIBC_SITE = https://downloads.uclibc-ng.org/releases/$(UCLIBC_VERSION)
 UCLIBC_LICENSE = LGPL-2.1+
@@ -286,6 +286,7 @@ else
 define UCLIBC_FLOAT_CONFIG
 	$(call KCONFIG_ENABLE_OPT,UCLIBC_HAS_FPU)
 	$(call KCONFIG_ENABLE_OPT,UCLIBC_HAS_FLOATS)
+	$(call KCONFIG_ENABLE_OPT,UCLIBC_HAS_FENV)
 endef
 endif
 
@@ -364,6 +365,7 @@ endif
 
 ifeq ($(BR2_TOOLCHAIN_BUILDROOT_WCHAR),y)
 UCLIBC_WCHAR_CONFIG = $(call KCONFIG_ENABLE_OPT,UCLIBC_HAS_WCHAR)
+UCLIBC_UCHAR_CONFIG = $(call KCONFIG_ENABLE_OPT,UCLIBC_HAS_UCHAR)
 else
 UCLIBC_WCHAR_CONFIG = $(call KCONFIG_DISABLE_OPT,UCLIBC_HAS_WCHAR)
 endif
@@ -430,6 +432,7 @@ define UCLIBC_KCONFIG_FIXUP_CMDS
 	$(UCLIBC_THREAD_DEBUG_CONFIG)
 	$(UCLIBC_LOCALE_CONFIG)
 	$(UCLIBC_WCHAR_CONFIG)
+	$(UCLIBC_UCHAR_CONFIG)
 	$(UCLIBC_SHARED_LIBS_CONFIG)
 endef
 
@@ -449,6 +452,14 @@ define UCLIBC_INSTALL_UTILS_TARGET
 		PREFIX=$(TARGET_DIR) \
 		utils install_utils
 endef
+
+define UCLIBC_INSTALL_UTILS_STAGING
+	$(MAKE1) -C $(@D) \
+		CC="$(TARGET_CC)" CPP="$(TARGET_CPP)" LD="$(TARGET_LD)" \
+		ARCH="$(UCLIBC_TARGET_ARCH)" \
+		PREFIX=$(STAGING_DIR) \
+		utils install_utils
+endef
 endif
 
 define UCLIBC_INSTALL_TARGET_CMDS
@@ -463,7 +474,7 @@ endef
 
 # STATIC has no ld* tools, only getconf
 ifeq ($(BR2_STATIC_LIBS),)
-define UCLIBC_INSTALL_UTILS_STAGING
+define UCLIBC_INSTALL_HOST_UTILS
 	$(INSTALL) -D -m 0755 $(@D)/utils/ldd.host $(HOST_DIR)/bin/ldd
 	ln -sf ldd $(HOST_DIR)/bin/$(GNU_TARGET_NAME)-ldd
 	$(INSTALL) -D -m 0755 $(@D)/utils/ldconfig.host $(HOST_DIR)/bin/ldconfig
@@ -478,6 +489,7 @@ define UCLIBC_INSTALL_STAGING_CMDS
 		DEVEL_PREFIX=/usr/ \
 		RUNTIME_PREFIX=/ \
 		install_runtime install_dev
+	$(UCLIBC_INSTALL_HOST_UTILS)
 	$(UCLIBC_INSTALL_UTILS_STAGING)
 endef
 
