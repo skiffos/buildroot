@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-FOOT_VERSION = 1.24.0
+FOOT_VERSION = 1.26.0
 FOOT_SITE = https://codeberg.org/dnkl/foot.git
 FOOT_SITE_METHOD = git
 FOOT_LICENSE = MIT
@@ -25,6 +25,12 @@ FOOT_CONF_OPTS = \
 
 ifeq ($(BR2_PACKAGE_SYSTEMD),y)
 FOOT_DEPENDENCIES += systemd
+endif
+
+# As recommended by upstream foot, prefer ncurses terminfo if
+# available.
+ifeq ($(BR2_PACKAGE_NCURSES),y)
+FOOT_CONF_OPTS += -Dterminfo=disabled
 endif
 
 ifeq ($(BR2_PACKAGE_LIBUTEMPTER),y)

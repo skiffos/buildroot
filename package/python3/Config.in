@@ -41,11 +41,6 @@ menu "core python3 modules"
 
 comment "The following modules are unusual or require extra libraries"
 
-config BR2_PACKAGE_PYTHON3_2TO3
-	bool "2to3 module"
-	help
-	  code translation from python 2 to 3
-
 config BR2_PACKAGE_PYTHON3_BERKELEYDB
 	bool "berkeleydb"
 	select BR2_PACKAGE_BERKELEYDB
@@ -75,11 +70,6 @@ config BR2_PACKAGE_PYTHON3_DECIMAL
 	select BR2_PACKAGE_MPDECIMAL
 	help
 	  decimal module for Python3.
-
-config BR2_PACKAGE_PYTHON3_OSSAUDIODEV
-	bool "ossaudiodev module"
-	help
-	  ossaudiodev module for Python3.
 
 config BR2_PACKAGE_PYTHON3_READLINE
 	bool "readline"
@@ -126,6 +116,12 @@ config BR2_PACKAGE_PYTHON3_ZLIB
 	select BR2_PACKAGE_ZLIB
 	help
 	  zlib support in Python3
+
+config BR2_PACKAGE_PYTHON3_ZSTD
+	bool "zstd module"
+	select BR2_PACKAGE_ZSTD
+	help
+	  zstd support in Python3
 
 endmenu
 

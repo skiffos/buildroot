@@ -9,14 +9,8 @@
 #
 
 GCC_VERSION = $(call qstrip,$(BR2_GCC_VERSION))
-
-ifeq ($(BR2_GCC_VERSION_ARC),y)
-GCC_SITE = $(call github,foss-for-synopsys-dwc-arc-processors,gcc,$(GCC_VERSION))
-GCC_SOURCE = gcc-$(GCC_VERSION).tar.gz
-else
 GCC_SITE = $(BR2_GNU_MIRROR:/=)/gcc/gcc-$(GCC_VERSION)
 GCC_SOURCE = gcc-$(GCC_VERSION).tar.xz
-endif
 
 HOST_GCC_LICENSE = GPL-2.0, GPL-3.0, LGPL-2.1, LGPL-3.0
 HOST_GCC_LICENSE_FILES = COPYING COPYING3 COPYING.LIB COPYING3.LIB
@@ -76,7 +70,6 @@ HOST_GCC_COMMON_CONF_OPTS = \
 	--with-gnu-ld \
 	--disable-libssp \
 	--disable-multilib \
-	--disable-decimal-float \
 	--enable-plugins \
 	--enable-lto \
 	--with-gmp=$(HOST_DIR) \
@@ -85,6 +78,15 @@ HOST_GCC_COMMON_CONF_OPTS = \
 	--with-pkgversion="Buildroot $(BR2_VERSION_FULL)" \
 	--with-bugurl="https://gitlab.com/buildroot.org/buildroot/-/issues" \
 	--without-zstd
+
+# https://gcc.gnu.org/gcc-16/changes.html#s390
+# Floating-point type _Float16 added in gcc-16 on s390 now requires
+# decimal float support enabled in the toolchain.
+ifeq ($(BR2_s390x)$(BR2_TOOLCHAIN_GCC_AT_LEAST_16),yy)
+HOST_GCC_COMMON_CONF_OPTS += --enable-decimal-float
+else
+HOST_GCC_COMMON_CONF_OPTS += --disable-decimal-float
+endif
 
 ifeq ($(BR2_REPRODUCIBLE),y)
 HOST_GCC_COMMON_CONF_OPTS += --with-debug-prefix-map=$(BASE_DIR)=buildroot
@@ -202,10 +204,6 @@ HOST_GCC_COMMON_DEPENDENCIES += host-isl
 HOST_GCC_COMMON_CONF_OPTS += --with-isl=$(HOST_DIR)
 else
 HOST_GCC_COMMON_CONF_OPTS += --without-isl --without-cloog
-endif
-
-ifeq ($(BR2_arc),y)
-HOST_GCC_COMMON_DEPENDENCIES += host-flex host-bison
 endif
 
 ifeq ($(BR2_SOFT_FLOAT),y)

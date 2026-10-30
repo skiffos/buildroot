@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-KMSXX_VERSION = 824bbb1f4cd062d66b457faca50f904b34dfd96c
+KMSXX_VERSION = 4d2008f5893a5d6ea2b2bf5e70bc539bfcaf6db0
 KMSXX_SITE = $(call github,tomba,kmsxx,$(KMSXX_VERSION))
 KMSXX_LICENSE = MPL-2.0
 KMSXX_LICENSE_FILES = LICENSE
@@ -12,18 +12,23 @@ KMSXX_INSTALL_STAGING = YES
 KMSXX_DEPENDENCIES = fmt libdrm host-pkgconf
 KMSXX_CONF_OPTS = \
 	-Dkmscube=false \
-	-Dpykms=disabled \
-	-Domap=disabled \
-	-Dsystem-pybind11=enabled
+	-Domap=disabled
 
 ifeq ($(BR2_TOOLCHAIN_HAS_GCC_BUG_85180),y)
 KMSXX_CXXFLAGS += $(TARGET_CXXFLAGS) -O0
 endif
 
+ifeq ($(BR2_PACKAGE_KMSXX_PYKMS),y)
+KMSXX_CONF_OPTS += -Dpykms=enabled
+KMSXX_DEPENDENCIES += python3 python-pybind
+else
+KMSXX_CONF_OPTS += -Dpykms=disabled
+endif
+
 ifeq ($(BR2_PACKAGE_KMSXX_INSTALL_TESTS),y)
 KMSXX_CONF_OPTS += -Dutils=true
 # extra handling for some utils not installed by default
-KMSXX_EXTRA_UTILS = kmsview kmscapture omap-wbcap omap-wbm2m
+KMSXX_EXTRA_UTILS = kmsview kmscapture kmsprint kmstest
 ifeq ($(BR2_PACKAGE_LIBEVDEV),y)
 KMSXX_DEPENDENCIES += libevdev
 KMSXX_EXTRA_UTILS += kmstouch

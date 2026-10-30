@@ -4,13 +4,13 @@
 #
 ################################################################################
 
-QT5BASE_VERSION = 2b9835f5c9bcfe3105b60a8dd33c1db7d8611378
+QT5BASE_VERSION = bebdfd54917e25d1c100e6bd9f5dd53c2e645fd8
 QT5BASE_SITE = $(QT5_SITE)/qtbase
 QT5BASE_SITE_METHOD = git
 QT5BASE_CPE_ID_VENDOR = qt
 QT5BASE_CPE_ID_PRODUCT = qt
 # Closest upstream version
-QT5BASE_CPE_ID_VERSION = 5.15.14
+QT5BASE_CPE_ID_VERSION = 5.15.18
 
 QT5BASE_DEPENDENCIES = host-pkgconf pcre2 zlib
 QT5BASE_INSTALL_STAGING = YES
@@ -101,8 +101,8 @@ ifneq ($(QT5BASE_CONFIG_FILE),)
 QT5BASE_CONFIGURE_OPTS += -qconfig buildroot
 endif
 
-ifeq ($(BR2_PACKAGE_HAS_UDEV),y)
-QT5BASE_DEPENDENCIES += udev
+ifeq ($(BR2_PACKAGE_HAS_LIBUDEV),y)
+QT5BASE_DEPENDENCIES += libudev
 endif
 
 ifeq ($(BR2_PACKAGE_CUPS), y)
@@ -230,8 +230,16 @@ else
 QT5BASE_CONFIGURE_OPTS += -no-eglfs
 endif
 
-QT5BASE_CONFIGURE_OPTS += $(if $(BR2_PACKAGE_LIBOPENSSL),-openssl,-no-openssl)
-QT5BASE_DEPENDENCIES   += $(if $(BR2_PACKAGE_LIBOPENSSL),openssl)
+# Qt5 officially only supports OpenSSL. Users can also provide their own
+# OpenSSL variant through the virtual package mechanism, but it is then up
+# to them to ensure that the provided API is exactly compatible with the
+# libopenssl one
+ifeq ($(BR2_PACKAGE_OPENSSL):$(BR2_PACKAGE_LIBRESSL),y:)
+QT5BASE_CONFIGURE_OPTS += -openssl
+QT5BASE_DEPENDENCIES   += openssl
+else
+QT5BASE_CONFIGURE_OPTS += -no-openssl
+endif
 
 QT5BASE_CONFIGURE_OPTS += $(if $(BR2_PACKAGE_QT5BASE_FONTCONFIG),-fontconfig,-no-fontconfig)
 QT5BASE_DEPENDENCIES   += $(if $(BR2_PACKAGE_QT5BASE_FONTCONFIG),fontconfig)

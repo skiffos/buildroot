@@ -70,19 +70,22 @@ class TestExternalToolchainArmGnu(TestExternalToolchain):
 
 
 class TestExternalToolchainBuildrootMusl(TestExternalToolchain):
+    busybox_fragment = \
+        infra.filepath("conf/busybox-for-old-toolchains.cfg")
     config = BASIC_CONFIG + \
-        """
+        f"""
         BR2_arm=y
         BR2_cortex_a9=y
         BR2_ARM_ENABLE_VFP=y
         BR2_TOOLCHAIN_EXTERNAL=y
         BR2_TOOLCHAIN_EXTERNAL_CUSTOM=y
         BR2_TOOLCHAIN_EXTERNAL_DOWNLOAD=y
-        BR2_TOOLCHAIN_EXTERNAL_URL="http://autobuild.buildroot.org/toolchains/tarballs/br-arm-cortex-a9-musl-2017.05-1078-g95b1dae.tar.bz2"
+        BR2_TOOLCHAIN_EXTERNAL_URL="https://autobuild.buildroot.org/toolchains/tarballs/br-arm-cortex-a9-musl-2017.05-1078-g95b1dae.tar.bz2"
         BR2_TOOLCHAIN_EXTERNAL_GCC_6=y
         BR2_TOOLCHAIN_EXTERNAL_HEADERS_4_12=y
         BR2_TOOLCHAIN_EXTERNAL_CUSTOM_MUSL=y
         BR2_TOOLCHAIN_EXTERNAL_CXX=y
+        BR2_PACKAGE_BUSYBOX_CONFIG_FRAGMENT_FILES="{busybox_fragment}"
         """
     toolchain_prefix = "arm-linux"
 
@@ -96,20 +99,23 @@ class TestExternalToolchainBuildrootMusl(TestExternalToolchain):
 
 
 class TestExternalToolchainCtngMusl(TestExternalToolchain):
+    busybox_fragment = \
+        infra.filepath("conf/busybox-for-old-toolchains.cfg")
     config = BASIC_CONFIG + \
-        """
+        f"""
         BR2_arm=y
         BR2_cortex_a9=y
         BR2_ARM_ENABLE_VFP=y
         BR2_TOOLCHAIN_EXTERNAL=y
         BR2_TOOLCHAIN_EXTERNAL_CUSTOM=y
         BR2_TOOLCHAIN_EXTERNAL_DOWNLOAD=y
-        BR2_TOOLCHAIN_EXTERNAL_URL="http://autobuild.buildroot.net/toolchains/tarballs/arm-ctng-linux-musleabihf.tar.xz"
+        BR2_TOOLCHAIN_EXTERNAL_URL="https://autobuild.buildroot.org/toolchains/tarballs/arm-ctng-linux-musleabihf.tar.xz"
         BR2_TOOLCHAIN_EXTERNAL_CUSTOM_PREFIX="arm-ctng-linux-musleabihf"
         BR2_TOOLCHAIN_EXTERNAL_GCC_7=y
         BR2_TOOLCHAIN_EXTERNAL_HEADERS_3_10=y
         BR2_TOOLCHAIN_EXTERNAL_CUSTOM_MUSL=y
         BR2_TOOLCHAIN_EXTERNAL_CXX=y
+        BR2_PACKAGE_BUSYBOX_CONFIG_FRAGMENT_FILES="{busybox_fragment}"
         """
     toolchain_prefix = "arm-ctng-linux-musleabihf"
 
@@ -123,18 +129,21 @@ class TestExternalToolchainCtngMusl(TestExternalToolchain):
 
 
 class TestExternalToolchainBuildrootuClibc(TestExternalToolchain):
+    busybox_fragment = \
+        infra.filepath("conf/busybox-for-old-toolchains.cfg")
     config = BASIC_CONFIG + \
-        """
+        f"""
         BR2_arm=y
         BR2_TOOLCHAIN_EXTERNAL=y
         BR2_TOOLCHAIN_EXTERNAL_CUSTOM=y
         BR2_TOOLCHAIN_EXTERNAL_DOWNLOAD=y
-        BR2_TOOLCHAIN_EXTERNAL_URL="http://autobuild.buildroot.org/toolchains/tarballs/br-arm-full-2017.05-1078-g95b1dae.tar.bz2"
+        BR2_TOOLCHAIN_EXTERNAL_URL="https://autobuild.buildroot.org/toolchains/tarballs/br-arm-full-2017.05-1078-g95b1dae.tar.bz2"
         BR2_TOOLCHAIN_EXTERNAL_GCC_4_9=y
         BR2_TOOLCHAIN_EXTERNAL_HEADERS_3_10=y
         BR2_TOOLCHAIN_EXTERNAL_LOCALE=y
         # BR2_TOOLCHAIN_EXTERNAL_HAS_THREADS_DEBUG is not set
         BR2_TOOLCHAIN_EXTERNAL_CXX=y
+        BR2_PACKAGE_BUSYBOX_CONFIG_FRAGMENT_FILES="{busybox_fragment}"
         """
     toolchain_prefix = "arm-linux"
 

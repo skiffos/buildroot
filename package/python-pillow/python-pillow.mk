@@ -4,17 +4,18 @@
 #
 ################################################################################
 
-PYTHON_PILLOW_VERSION = 11.3.0
-PYTHON_PILLOW_SITE = https://files.pythonhosted.org/packages/f3/0d/d0d6dea55cd152ce3d6767bb38a8fc10e33796ba4ba210cbab9354b6d238
+PYTHON_PILLOW_VERSION = 12.3.0
+PYTHON_PILLOW_SITE = https://files.pythonhosted.org/packages/1c/3d/bb7fca845737cf9d7dbde16ed1843984665ff2e0a518f5db43e77ec540b9
 PYTHON_PILLOW_SOURCE = pillow-$(PYTHON_PILLOW_VERSION).tar.gz
-PYTHON_PILLOW_LICENSE = HPND
+PYTHON_PILLOW_LICENSE = MIT-CMU
 PYTHON_PILLOW_LICENSE_FILES = LICENSE
 PYTHON_PILLOW_CPE_ID_VENDOR = python
 PYTHON_PILLOW_CPE_ID_PRODUCT = pillow
 PYTHON_PILLOW_SETUP_TYPE = setuptools
 
-PYTHON_PILLOW_DEPENDENCIES = host-pkgconf
+PYTHON_PILLOW_DEPENDENCIES = host-pkgconf python-pybind
 PYTHON_PILLOW_BUILD_OPTS = \
+	--skip-dependency-check \
 	-Cplatform-guessing=disable \
 	-Cimagequant=disable \
 	-Craqm=disable
@@ -38,6 +39,13 @@ PYTHON_PILLOW_DEPENDENCIES += lcms2
 PYTHON_PILLOW_BUILD_OPTS += -Clcms=enable
 else
 PYTHON_PILLOW_BUILD_OPTS += -Clcms=disable
+endif
+
+ifeq ($(BR2_PACKAGE_LIBAVIF),y)
+PYTHON_PILLOW_DEPENDENCIES += libavif
+PYTHON_PILLOW_BUILD_OPTS += -Clibavif=enable
+else
+PYTHON_PILLOW_BUILD_OPTS += -Clibavif=disable
 endif
 
 ifeq ($(BR2_PACKAGE_LIBXCB),y)

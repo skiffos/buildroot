@@ -57,12 +57,13 @@ class TestZfsBase(infra.basetest.BRTest):
             "sha256sum -c /tmp/urandom.sha256",
             "zpool status -v",
             # Check PyZFS
-            "arc_summary",
+            "zarcsummary",
         ]
         for cmd in cmds:
             self.assertRunOk(cmd, timeout=self.timeout)
 
 
+# gitlab-runner: medium
 class TestZfsGlibc(TestZfsBase):
     config = TestZfsBase.config + \
         """
@@ -73,6 +74,7 @@ class TestZfsGlibc(TestZfsBase):
         TestZfsBase.base_test_run(self)
 
 
+# gitlab-runner: large
 class TestZfsUclibc(TestZfsBase):
     # The Bootling aarch64 uclibc stable 2025.08-1 needs to be
     # rebuild with uClibc-ng 1.0.55.
@@ -81,7 +83,7 @@ class TestZfsUclibc(TestZfsBase):
     config = config.replace('BR2_TOOLCHAIN_EXTERNAL_BOOTLIN=y\n', '') + \
         """
         BR2_TOOLCHAIN_BUILDROOT_UCLIBC=y
-        BR2_KERNEL_HEADERS_5_4=y
+        BR2_KERNEL_HEADERS_5_10=y
         BR2_TOOLCHAIN_BUILDROOT_LOCALE=y
         BR2_PTHREAD_DEBUG=y
         BR2_TOOLCHAIN_BUILDROOT_CXX=y
@@ -92,6 +94,7 @@ class TestZfsUclibc(TestZfsBase):
         TestZfsBase.base_test_run(self)
 
 
+# gitlab-runner: medium
 class TestZfsMusl(TestZfsBase):
     config = TestZfsBase.config + \
         """

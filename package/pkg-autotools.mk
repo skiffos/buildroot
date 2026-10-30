@@ -76,6 +76,12 @@ define LIBTOOL_PATCH_HOOK
 			fi \
 		elif test $${ltmain_version} = "2.5"; then\
 			patch -i support/libtool/buildroot-libtool-v2.4.4.patch $${i}; \
+		elif test $${ltmain_version} = "2.6"; then\
+			if test $${ltmain_patchlevel:-0} -ge 2; then\
+				patch -i support/libtool/buildroot-libtool-v2.6.2.patch $${i}; \
+			else \
+				patch -i support/libtool/buildroot-libtool-v2.6.0.patch $${i}; \
+			fi \
 		fi \
 	done
 endef

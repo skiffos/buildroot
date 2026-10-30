@@ -1,0 +1,7 @@
+config BR2_PACKAGE_PYTHON_LIBRT
+	bool "python-librt"
+	select BR2_PACKAGE_PYTHON_MYPY_EXTENSIONS # runtime
+	help
+	  Mypyc runtime library.
+
+	  https://github.com/mypyc/librt

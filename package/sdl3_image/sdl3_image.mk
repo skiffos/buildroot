@@ -1,0 +1,71 @@
+################################################################################
+#
+# sdl3_image
+#
+################################################################################
+
+SDL3_IMAGE_VERSION = 3.4.6
+SDL3_IMAGE_SITE = https://www.libsdl.org/projects/SDL_image/release
+SDL3_IMAGE_SOURCE = SDL3_image-$(SDL3_IMAGE_VERSION).tar.gz
+SDL3_IMAGE_LICENSE = Zlib
+SDL3_IMAGE_LICENSE_FILES = LICENSE.txt
+SDL3_IMAGE_INSTALL_STAGING = YES
+SDL3_IMAGE_DEPENDENCIES = sdl3
+
+# Do not use vendored dependencies
+# Request dynamic linking to dependencies instead of dlopen()
+SDL3_IMAGE_CONF_OPTS = \
+	-DSDLIMAGE_VENDORED=OFF \
+	-DSDLIMAGE_DEPS_SHARED=OFF \
+	-DSDLIMAGE_SAMPLES=OFF \
+	-DSDLIMAGE_TESTS=OFF \
+	-DSDLIMAGE_INSTALL_MAN=OFF \
+	-DSDLIMAGE_STRICT=ON
+
+# Without jpeg, JPEG support falls back to the bundled stb_image
+# decoder rather than being dropped.
+ifeq ($(BR2_PACKAGE_JPEG),y)
+SDL3_IMAGE_DEPENDENCIES += jpeg
+SDL3_IMAGE_CONF_OPTS += \
+	-DSDLIMAGE_BACKEND_STB=OFF \
+	-DSDLIMAGE_JPG=ON
+else
+SDL3_IMAGE_CONF_OPTS += -DSDLIMAGE_BACKEND_STB=ON
+endif
+
+ifeq ($(BR2_PACKAGE_LIBAVIF),y)
+SDL3_IMAGE_DEPENDENCIES += libavif
+SDL3_IMAGE_CONF_OPTS += -DSDLIMAGE_AVIF=ON
+else
+SDL3_IMAGE_CONF_OPTS += -DSDLIMAGE_AVIF=OFF
+endif
+
+ifeq ($(BR2_PACKAGE_LIBPNG),y)
+SDL3_IMAGE_DEPENDENCIES += libpng
+SDL3_IMAGE_CONF_OPTS += -DSDLIMAGE_PNG=ON -DSDLIMAGE_PNG_LIBPNG=ON
+else
+SDL3_IMAGE_CONF_OPTS += -DSDLIMAGE_PNG=OFF -DSDLIMAGE_PNG_LIBPNG=OFF
+endif
+
+ifeq ($(BR2_PACKAGE_TIFF),y)
+SDL3_IMAGE_DEPENDENCIES += tiff
+SDL3_IMAGE_CONF_OPTS += -DSDLIMAGE_TIF=ON
+else
+SDL3_IMAGE_CONF_OPTS += -DSDLIMAGE_TIF=OFF
+endif
+
+ifeq ($(BR2_PACKAGE_WEBP_DEMUX)$(BR2_PACKAGE_WEBP_MUX),yy)
+SDL3_IMAGE_DEPENDENCIES += webp
+SDL3_IMAGE_CONF_OPTS += -DSDLIMAGE_WEBP=ON
+else
+SDL3_IMAGE_CONF_OPTS += -DSDLIMAGE_WEBP=OFF
+endif
+
+ifeq ($(BR2_PACKAGE_LIBJXL),y)
+SDL3_IMAGE_DEPENDENCIES += libjxl
+SDL3_IMAGE_CONF_OPTS += -DSDLIMAGE_JXL=ON
+else
+SDL3_IMAGE_CONF_OPTS += -DSDLIMAGE_JXL=OFF
+endif
+
+$(eval $(cmake-package))

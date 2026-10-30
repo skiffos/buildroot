@@ -4,9 +4,8 @@
 #
 ################################################################################
 
-BROTLI_VERSION = 1.1.0
-BROTLI_SOURCE = v$(BROTLI_VERSION).tar.gz
-BROTLI_SITE = https://github.com/google/brotli/archive
+BROTLI_VERSION = 1.2.1
+BROTLI_SITE = $(call github,google,brotli,v$(BROTLI_VERSION))
 BROTLI_LICENSE = MIT
 BROTLI_LICENSE_FILES = LICENSE
 BROTLI_CPE_ID_VENDOR = google

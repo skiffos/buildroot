@@ -1,0 +1,26 @@
+# wasi-libc emulation flags for wasm32-wasi targets.
+ifeq ($(BR2_wasm32),y)
+ARCH_TOOLCHAIN_WRAPPER_OPTS += \
+	-D_WASI_EMULATED_SIGNAL \
+	-D_WASI_EMULATED_MMAN \
+	-D_WASI_EMULATED_PROCESS_CLOCKS \
+	-D_WASI_EMULATED_GETPID \
+	-D__wasm_exception_handling__=1 \
+	-isystem $(STAGING_DIR)/usr/include
+
+# setjmp and longjmp are kernel imports, so setjmp.h needs no exception
+# handling; the define above passes its check.
+#
+# Export __errno_location so host runtimes can set errno in WASM memory.
+# Add usr/lib to search path (wasi-sdk sysroot only has lib/wasm32-wasi).
+# Leave undefined only the kernel's host functions, which become imports.
+TARGET_LDFLAGS += \
+	-Wl,--export=__errno_location \
+	-L$(STAGING_DIR)/usr/lib \
+	-Wl,--allow-undefined-file=$(STAGING_DIR)/lib/wasm32-wasi/wasivm.imports
+
+# wasi-libc accepts any locale name and implements only the C locale,
+# so gnulib treats its locales as fake ones without names.
+TARGET_CONFIGURE_ARGS += gt_cv_locale_fake=yes
+
+endif

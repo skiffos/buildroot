@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-XFSPROGS_VERSION = 6.11.0
+XFSPROGS_VERSION = 6.19.0
 XFSPROGS_SITE = $(BR2_KERNEL_MIRROR)/linux/utils/fs/xfs/xfsprogs
 XFSPROGS_SOURCE = xfsprogs-$(XFSPROGS_VERSION).tar.xz
 XFSPROGS_LICENSE = GPL-2.0, GPL-2.0+, LGPL-2.1 (libhandle, few headers)
@@ -18,6 +18,13 @@ XFSPROGS_CONF_OPTS = \
 	--enable-gettext=no \
 	INSTALL_USER=root \
 	INSTALL_GROUP=root \
+	--enable-static
+
+HOST_XFSPROGS_DEPENDENCIES = host-inih host-liburcu host-util-linux
+HOST_XFSPROGS_CONF_OPTS = \
+	--enable-gettext=no \
+	--enable-lib64=no \
+	--enable-libicu=no \
 	--enable-static
 
 ifeq ($(BR2_PACKAGE_ICU),y)
@@ -34,3 +41,4 @@ endif
 XFSPROGS_INSTALL_TARGET_OPTS = DIST_ROOT=$(TARGET_DIR) install
 
 $(eval $(autotools-package))
+$(eval $(host-autotools-package))
