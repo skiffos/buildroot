@@ -4,12 +4,12 @@
 #
 ################################################################################
 
-LIBGLIB2_VERSION_MAJOR = 2.86
+LIBGLIB2_VERSION_MAJOR = 2.90
 LIBGLIB2_VERSION = $(LIBGLIB2_VERSION_MAJOR).1
 LIBGLIB2_SOURCE = glib-$(LIBGLIB2_VERSION).tar.xz
 LIBGLIB2_SITE = https://download.gnome.org/sources/glib/$(LIBGLIB2_VERSION_MAJOR)
 LIBGLIB2_LICENSE = LGPL-2.1+
-LIBGLIB2_LICENSE_FILES = COPYING
+LIBGLIB2_LICENSE_FILES = LICENSES/LGPL-2.1-or-later.txt
 LIBGLIB2_CPE_ID_VENDOR = gnome
 LIBGLIB2_CPE_ID_PRODUCT = glib
 LIBGLIB2_INSTALL_STAGING = YES
@@ -30,7 +30,8 @@ HOST_LIBGLIB2_CONF_OPTS = \
 	-Dsystemtap=false \
 	-Dxattr=false \
 	-Dtests=false \
-	-Doss_fuzz=disabled
+	-Doss_fuzz=disabled \
+	-Dsysprof=disabled
 
 LIBGLIB2_DEPENDENCIES = \
 	host-pkgconf host-libglib2 \

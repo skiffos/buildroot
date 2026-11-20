@@ -1,5 +1,5 @@
 # md5, sha256 from https://pypi.org/pypi/asttokens/json
-md5  7d99c4c80190c3ba64839138ea827970  asttokens-3.0.0.tar.gz
-sha256  0dcd8baa8d62b0c1d118b399b2ddba3c4aff271d0d7a9e0d4c1681c79035bbc7  asttokens-3.0.0.tar.gz
+md5  63ce30cc87fd0d7e5dc1f1f48fd31164  asttokens-3.0.2.tar.gz
+sha256  3ecdbd8f2cc195f53ccada3a613538bb5f9ef6f6869129f13e03c30a677b8fe2  asttokens-3.0.2.tar.gz
 # Locally computed sha256 checksums
-sha256  b40930bbcf80744c86c46a12bc9da056641d722716c378f5659b9e555ef833e1  LICENSE
+sha256  62fb8a3a9621dc2388174caaabe9c2317b694bb9a1d46c98bcf5655b68f51be3  LICENSE

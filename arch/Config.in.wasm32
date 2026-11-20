@@ -1,0 +1,11 @@
+config BR2_ARCH
+	default "wasm32"
+
+config BR2_NORMALIZED_ARCH
+	default "wasm32"
+
+config BR2_ENDIAN
+	default "LITTLE"
+
+config BR2_READELF_ARCH_NAME
+	default "WebAssembly"

@@ -100,16 +100,13 @@ config BR2_PACKAGE_RPI_FIRMWARE_INSTALL_DTB_OVERLAYS
 	  overlays, to support HATs (Hardware Attached on Top, add-on
 	  modules).
 
-config BR2_PACKAGE_RPI_FIRMWARE_INSTALL_VCDBG
-	bool "vcdbg"
-	depends on BR2_arm # prebuilt arm binary, rpi-userland
-	depends on BR2_TOOLCHAIN_USES_GLIBC
-	depends on BR2_INSTALL_LIBSTDCPP # rpi-userland
+config BR2_PACKAGE_RPI_FIRMWARE_EXTRA_FILES
+	string "List of path(s) to additional file(s) in boot partition"
 	help
-	  Install vcdbg, to help debug communication with the GPU.
-
-comment "vcdbg needs a glibc toolchain w/ C++"
-	depends on BR2_arm
-	depends on !BR2_TOOLCHAIN_USES_GLIBC || !BR2_INSTALL_LIBSTDCPP
+	  Space-separated path(s) to file(s) that should be stored
+	  in the boot partition. They will be stored under their own
+	  name in rpi-firmware. They can override any of the other
+	  files. Use cases include autoboot configuration,
+	  alternative cmdline.txt files, additional DTB overlays.
 
 endif # BR2_PACKAGE_RPI_FIRMWARE

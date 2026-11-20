@@ -6,11 +6,13 @@
 
 LLVM_VERSION = $(LLVM_PROJECT_VERSION)
 LLVM_SITE = $(LLVM_PROJECT_SITE)
-LLVM_SOURCE = llvm-$(LLVM_VERSION).src.tar.xz
+LLVM_SOURCE = $(LLVM_PROJECT_SOURCE)
+LLVM_DL_SUBDIR = llvm-project
 LLVM_LICENSE = Apache-2.0 with exceptions
 LLVM_LICENSE_FILES = LICENSE.TXT
 LLVM_CPE_ID_VENDOR = llvm
 LLVM_SUPPORTS_IN_SOURCE_BUILD = NO
+LLVM_SUBDIR = llvm
 LLVM_INSTALL_STAGING = YES
 
 HOST_LLVM_DEPENDENCIES = host-python3 host-llvm-cmake
@@ -314,7 +316,9 @@ endif
 
 # By default llvm-tblgen is built and installed on the target but it is
 # not necessary. Also erase LLVMHello.so from /usr/lib
+# opt-viewer is not necessary either, remove that too
 define LLVM_DELETE_LLVM_TBLGEN_TARGET
+	rm -rf $(TARGET_DIR)/usr/share/opt-viewer
 	rm -f $(TARGET_DIR)/usr/bin/llvm-tblgen $(TARGET_DIR)/usr/lib/LLVMHello.so
 endef
 LLVM_POST_INSTALL_TARGET_HOOKS = LLVM_DELETE_LLVM_TBLGEN_TARGET

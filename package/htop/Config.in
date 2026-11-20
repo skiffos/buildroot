@@ -1,7 +1,7 @@
 config BR2_PACKAGE_HTOP
 	bool "htop"
 	depends on BR2_USE_MMU # fork()
-	depends on !BR2_STATIC_LIBS # dlopen()
+	depends on !BR2_STATIC_LIBS || BR2_wasm32 # dlopen()
 	select BR2_PACKAGE_NCURSES
 	help
 	  htop is an interactive text-mode process viewer for Linux.
@@ -11,4 +11,4 @@ config BR2_PACKAGE_HTOP
 
 comment "htop needs a toolchain w/ dynamic library"
 	depends on BR2_USE_MMU
-	depends on BR2_STATIC_LIBS
+	depends on BR2_STATIC_LIBS && !BR2_wasm32

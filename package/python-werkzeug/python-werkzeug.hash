@@ -1,5 +1,5 @@
 # md5, sha256 from https://pypi.org/pypi/werkzeug/json
-md5  b6005d403d01d08b9fe2330a0cfea05a  werkzeug-3.1.3.tar.gz
-sha256  60723ce945c19328679790e3282cc758aa4a6040e4bb330f53d30fa546d44746  werkzeug-3.1.3.tar.gz
+md5  786765fcf7f7c9fa43cfefdc8147eff0  werkzeug-3.1.9.tar.gz
+sha256  55ca7c70a75689be937aa27f8ff4b018f06ff4838fc73045560bf0f5a1291060  werkzeug-3.1.9.tar.gz
 # Locally computed sha256 checksums
 sha256  3b49dcee4105eb37bac10faf1be260408fe85d252b8e9df2e0979fc1e094437b  LICENSE.txt

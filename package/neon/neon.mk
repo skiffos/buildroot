@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-NEON_VERSION = 0.33.0
+NEON_VERSION = 0.37.1
 NEON_SITE = https://notroj.github.io/neon
 NEON_LICENSE = LGPL-2.0+ (library), GPL-2.0+ (manual and tests)
 NEON_LICENSE_FILES = src/COPYING.LIB test/COPYING README.md
@@ -16,7 +16,7 @@ NEON_DEPENDENCIES = host-pkgconf $(TARGET_NLS_DEPENDENCIES)
 NEON_CONF_ENV = ne_cv_libsfor_bindtextdomain=$(TARGET_NLS_LIBS)
 
 ifeq ($(BR2_PACKAGE_NEON_ZLIB),y)
-NEON_CONF_OPTS += --with-zlib=$(STAGING_DIR)
+NEON_CONF_OPTS += --with-zlib
 NEON_DEPENDENCIES += zlib
 else
 NEON_CONF_OPTS += --without-zlib

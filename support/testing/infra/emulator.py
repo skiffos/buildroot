@@ -98,6 +98,7 @@ class Emulator(object):
                                          "vexpress-v2p-ca9-5.10.202.dtb")
                     qemu_cmd += ["-dtb", dtb]
                     qemu_cmd += ["-M", "vexpress-a9"]
+                    qemu_cmd += ["-device", "virtio-rng-device"]
                 elif arch == "armv5":
                     kernel = infra.download(self.downloaddir,
                                             "kernel-versatile-5.10.202")
@@ -159,6 +160,7 @@ class Emulator(object):
 
     def connect_shell(self):
         extra_init_cmd = " && ".join([
+            'export NO_COLOR=1',
             'export PAGER=cat',
             'dmesg -n 1',
             # Prevent the shell from wrapping the commands at 80 columns.

@@ -78,11 +78,26 @@ ZSTD_BUILD_LIBS = \
 		$(addsuffix $(ZSTD_BUILD_LIBS_THREAD_SUFFIX), \
 			$(ZSTD_BUILD_LIBS_BASENAMES)))
 
+ifeq ($(BR2_PACKAGE_ZSTD_PZSTD),y)
+ZSTD_PZSTD_LDFLAGS = $(TARGET_LDFLAGS) $(if $(BR2_TOOLCHAIN_HAS_LIBATOMIC),-latomic)
+define ZSTD_BUILD_PZSTD
+	$(TARGET_MAKE_ENV) $(TARGET_CONFIGURE_OPTS) $(MAKE) $(ZSTD_OPTS) \
+		LDFLAGS="$(ZSTD_PZSTD_LDFLAGS)" \
+		HAVE_THREAD=1 -C $(@D)/contrib/pzstd
+endef
+define ZSTD_INSTALL_PZSTD
+	$(TARGET_MAKE_ENV) $(TARGET_CONFIGURE_OPTS) $(MAKE) $(ZSTD_OPTS) \
+		LDFLAGS="$(ZSTD_PZSTD_LDFLAGS)" \
+		DESTDIR=$(TARGET_DIR) -C $(@D)/contrib/pzstd install
+endef
+endif
+
 define ZSTD_BUILD_CMDS
 	$(TARGET_MAKE_ENV) $(TARGET_CONFIGURE_OPTS) $(MAKE) $(ZSTD_OPTS) \
 		-C $(@D)/lib $(ZSTD_BUILD_LIBS)
 	$(TARGET_MAKE_ENV) $(TARGET_CONFIGURE_OPTS) $(MAKE) $(ZSTD_OPTS) \
 		-C $(@D)/programs $(ZSTD_BUILD_PROG_TARGET)
+	$(ZSTD_BUILD_PZSTD)
 endef
 
 define ZSTD_INSTALL_STAGING_CMDS
@@ -96,9 +111,15 @@ define ZSTD_INSTALL_TARGET_CMDS
 		DESTDIR=$(TARGET_DIR) -C $(@D)/programs install
 	$(TARGET_MAKE_ENV) $(TARGET_CONFIGURE_OPTS) $(MAKE) $(ZSTD_OPTS) \
 		DESTDIR=$(TARGET_DIR) -C $(@D)/lib $(ZSTD_INSTALL_LIBS)
+	$(ZSTD_INSTALL_PZSTD)
 endef
 
-HOST_ZSTD_OPTS += PREFIX=$(HOST_DIR)
+# Disable auto-detection of optional compression libraries.
+HOST_ZSTD_OPTS += \
+	PREFIX=$(HOST_DIR) \
+	HAVE_ZLIB=0 \
+	HAVE_LZMA=0 \
+	HAVE_LZ4=0
 HOST_ZSTD_ENV = $(HOST_MAKE_ENV) $(HOST_CONFIGURE_OPTS)
 
 # We are a ccache dependency, so we can't use ccache
@@ -107,11 +128,15 @@ HOST_ZSTD_ENV += CC="$(HOSTCC_NOCCACHE)" CXX="$(HOSTCXX_NOCCACHE)"
 define HOST_ZSTD_BUILD_CMDS
 	$(HOST_ZSTD_ENV) $(MAKE) $(HOST_ZSTD_OPTS) \
 		-C $(@D) zstd-release lib-release
+	$(HOST_ZSTD_ENV) $(MAKE) $(HOST_ZSTD_OPTS) \
+		HAVE_THREAD=1 -C $(@D)/contrib/pzstd
 endef
 
 define HOST_ZSTD_INSTALL_CMDS
 	$(HOST_ZSTD_ENV) $(MAKE) $(HOST_ZSTD_OPTS) \
 		-C $(@D) install
+	$(HOST_ZSTD_ENV) $(MAKE) $(HOST_ZSTD_OPTS) \
+		-C $(@D)/contrib/pzstd install
 endef
 
 $(eval $(generic-package))

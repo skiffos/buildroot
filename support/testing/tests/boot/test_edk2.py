@@ -3,6 +3,7 @@ import os
 import infra.basetest
 
 
+# gitlab-runner: large
 class TestEdk2(infra.basetest.BRTest):
     config = \
         """
@@ -17,7 +18,7 @@ class TestEdk2(infra.basetest.BRTest):
         BR2_ROOTFS_POST_SCRIPT_ARGS="-c board/qemu/aarch64-sbsa/genimage.cfg"
         BR2_LINUX_KERNEL=y
         BR2_LINUX_KERNEL_CUSTOM_VERSION=y
-        BR2_LINUX_KERNEL_CUSTOM_VERSION_VALUE="6.6.58"
+        BR2_LINUX_KERNEL_CUSTOM_VERSION_VALUE="6.18.21"
         BR2_LINUX_KERNEL_USE_CUSTOM_CONFIG=y
         BR2_LINUX_KERNEL_CUSTOM_CONFIG_FILE="support/testing/tests/boot/test_edk2/linux.config"
         BR2_TARGET_EDK2=y
@@ -95,17 +96,6 @@ class TestEdk2BuildArmVirtQemuKernel(TestEdk2BuildBase):
 
     def test_run(self) -> None:
         self.assertBinariesExist("QEMU_EFI.fd", "QEMU_VARS.fd")
-
-
-class TestEdk2BuildArmSgi575(TestEdk2BuildBase):
-    config = TestEdk2BuildBase.base_config + \
-        """
-        BR2_aarch64=y
-        BR2_TARGET_EDK2_PLATFORM_ARM_SGI575=y
-        """
-
-    def test_run(self) -> None:
-        self.assertBinariesExist("BL33_AP_UEFI.fd")
 
 
 class TestEdk2BuildArmVexpressFvpAarch64(TestEdk2BuildBase):

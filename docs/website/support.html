@@ -1,22 +1,22 @@
 <!--#include file="header.html" -->
 
 <div class="container">
-<div class="row nh">
-<div class="col-lg-10 col-lg-offset-1 col-md-12 col-sm-12 col-xs-12">
+<div class="row my-4">
+<div class="col-lg-10 offset-lg-1 col-md-12 col-sm-12 col-12">
 
-  <div class="panel panel-primary">
-    <div class="panel-heading">Support</div>
-    <div class="panel-body">
+  <div class="card mb-4">
+    <div class="card-header text-bg-primary rounded-top">Support</div>
+    <div class="card-body">
       <p>You can get support for Buildroot through three main channels:</p>
 
       <div class="row">
 	<div class="col-sm-12">
-	  <div class="panel panel-primary">
-	    <div class="panel-heading">IRC</div>
-	    <div class="panel-body">
+	  <div class="card mb-4">
+	    <div class="card-header text-bg-primary rounded-top">IRC</div>
+	    <div class="card-body">
 	      <div class="row">
 		<div class="col-sm-1">
-		  <img class="img-responsive" src="images/irc.png" style="max-width:50px; margin-bottom:10px;">
+		  <img class="img-fluid" src="images/irc.png" style="max-width:50px; margin-bottom:10px;">
 		</div>
 		<div class="col-sm-11">
 		  <p>The Buildroot IRC channel is <a href="irc://irc.oftc.net/#buildroot">
@@ -39,12 +39,12 @@
 	</div>
 
 	<div class="col-sm-12">
-	  <div class="panel panel-primary">
-	    <div class="panel-heading">Mailing List Information</div>
-	    <div class="panel-body">
+	  <div class="card mb-4">
+	    <div class="card-header text-bg-primary rounded-top">Mailing List Information</div>
+	    <div class="card-body">
 	      <div class="row">
 		<div class="col-sm-1">
-		  <img class="img-responsive" src="images/email.png" style="max-width:50px; margin-bottom:10px;">
+		  <img class="img-fluid" src="images/email.png" style="max-width:50px; margin-bottom:10px;">
 		</div>
 		<div class="col-sm-11">
 		  <p>The mailing list is for discussion and
@@ -56,14 +56,14 @@
 		    from <a href="https://lists.buildroot.org/pipermail/buildroot/">Mailman</a>
 		    and <a href="https://lore.kernel.org/buildroot/">lore.kernel.org</a>.
 
-		  <h4>Search the List Archives</h4>
+		  <h4 class="text-body-secondary">Search the List Archives</h4>
 		  <p>Please search the mailing list archives before asking questions on the mailing
 		    list, since there is a good chance someone else has asked the same question
 		    before.</p>
 
 		  <form method="get" action="https://lore.kernel.org/buildroot/">
-		    <input type="text" name="q">
-		    <button type="submit" class="btn btn-default">Submit</button>
+		    <input class="form-control d-inline-block w-auto" type="text" name="q">
+		    <button type="submit" class="btn btn-secondary">Submit</button>
 		  </form>
 		</div>
 	      </div>
@@ -72,12 +72,12 @@
 	</div>
 
 	<div class="col-sm-12">
-	  <div class="panel panel-primary">
-	    <div class="panel-heading">Bug Tracker</div>
-	    <div class="panel-body">
+	  <div class="card mb-4">
+	    <div class="card-header text-bg-primary rounded-top">Bug Tracker</div>
+	    <div class="card-body">
 	      <div class="row">
 		<div class="col-sm-1">
-		  <img class="img-responsive" src="images/bug-buddy.png" style="max-width:50px; margin-bottom:10px;">
+		  <img class="img-fluid" src="images/bug-buddy.png" style="max-width:50px; margin-bottom:10px;">
 		</div>
 		<div class="col-sm-11">
 		  <p>If you think you found a bug in Buildroot, you can use the
@@ -94,55 +94,48 @@
     </div>
   </div>
 
-  <div class="panel panel-primary">
-    <div class="panel-heading">Buildroot LTS</div>
-    <div class="panel-body">
-      <p>Buildroot's Long Term Support (LTS) branch is maintained thanks to the
-	<a href="https://mind.be/buildroot-lts">LTS Sponsoring program</a>. Its
-	goal is	to provide three or more years of stable support for your
-	Buildroot deployments. The success of this venture depends on the
-	generosity of sponsors like you, willing to make a change and ensuring
-	the longevity of Buildroot's reliability.</p>
-      <p>Prior to this initiative, LTS maintenance was handled by volunteers.
-        As a result, it was limited to just one year. In addition, it diverted
-        maintainer time away from mainline development, slowing  down the overall
-        progress of the project.</p>
-      <p>Thanks to LTS sponsoring, the entire community gets access to a better
-        and longer maintained LTS branch. The sponsors get access to some
-        additional perks, such as selecting which packages to focus on, reports
-        with information that is relevant for you, and direct contact with the
-        LTS maintainers.</p>
-      <p style="text-align: center;"><a href="https://mind.be/buildroot-lts">Ready
-        to sponsor?</a></p>
-    </div>
-  </div>
-
-  <div class="panel panel-primary">
-    <div class="panel-heading">Commercial support</div>
-    <div class="panel-body">
+  <div class="card mb-4">
+    <div class="card-header text-bg-primary rounded-top">Commercial support</div>
+    <div class="card-body">
       <p>In addition, the following companies are able to provide commercial
 	 support. Only companies heavily involved in Buildroot maintenance and
 	 community are listed here.</p>
 
-      <div class="row">
-	<div class="col-sm-12">
-	  <center>
-	    <a href="https://bootlin.com/engineering/">
-	      <img src="images/bootlin-logo.png" style="max-width:200px; margin-right:40px;"/>
+      <div class="row justify-content-center g-4 py-3">
+	<div class="col-6 col-md-4">
+	  <div class="ratio ratio-21x9">
+	    <a class="d-flex align-items-center justify-content-center p-3" href="https://bootlin.com/engineering/">
+	      <img class="mw-100 mh-100" src="images/bootlin-logo.png" alt="Bootlin"/>
 	    </a>
-	    <a href="https://mind.be/about-us/#anchor-open-source">
-	      <img src="images/mind-logo.png" style="max-width:200px; margin-right:40px;"/>
+	  </div>
+	</div>
+	<div class="col-6 col-md-4">
+	  <div class="ratio ratio-21x9">
+	    <a class="d-flex align-items-center justify-content-center p-3" href="https://mind.be/about-us/#anchor-open-source">
+	      <img class="mw-100 mh-100" src="images/mind-logo.png" alt="Mind"/>
 	    </a>
-	    <a href="https://www.smile.eu/en/offers/embedded-iot">
-	      <img src="images/smile-logo.png" style="max-width:200px; margin-right:40px;"/>
+	  </div>
+	</div>
+	<div class="col-6 col-md-4">
+	  <div class="ratio ratio-21x9">
+	    <a class="d-flex align-items-center justify-content-center p-3" href="https://www.smile.eu/en/offers/embedded-iot">
+	      <img class="mw-100 mh-100" src="images/smile-logo.png" alt="Smile"/>
 	    </a>
-	    <a href="https://www.amarulasolutions.com/services/integrated-system/">
-	      <img src="images/amarula-solutions-logo.png" style="max-width:200px; margin-right:40px;"/>
+	  </div>
+	</div>
+	<div class="col-6 col-md-4">
+	  <div class="ratio ratio-21x9">
+	    <a class="d-flex align-items-center justify-content-center p-3" href="https://www.amarulasolutions.com/services/integrated-system/">
+	      <img class="mw-100 mh-100" src="images/amarula-solutions-logo.png" alt="Amarula Solutions"/>
 	    </a>
-	    <a href="https://www.linkedin.com/company/benetti-engineering">
-	      <img src="images/benetti-engineering-logo.png" style="max-width:260px; margin-right:40px;"/>
+	  </div>
+	</div>
+	<div class="col-6 col-md-4">
+	  <div class="ratio ratio-21x9">
+	    <a class="d-flex align-items-center justify-content-center p-3" href="https://www.linkedin.com/company/benetti-engineering">
+	      <img class="mw-100 mh-100" src="images/benetti-engineering-logo.png" alt="Benetti Engineering"/>
 	    </a>
-	  </center>
+	  </div>
 	</div>
       </div>
     </div>

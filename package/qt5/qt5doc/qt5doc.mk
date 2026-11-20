@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-QT5DOC_VERSION = bc4503b8b70f4cd435d6e64a9e6c623ca44b9fcd
+QT5DOC_VERSION = 385efd460ec13a465765fc30dd11217ae46d1846
 QT5DOC_SITE = $(QT5_SITE)/qtdoc/-/archive/$(QT5DOC_VERSION)
 QT5DOC_SOURCE = qtdoc-$(QT5DOC_VERSION).tar.bz2
 QT5DOC_DEPENDENCIES = qt5declarative

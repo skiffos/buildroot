@@ -18,14 +18,18 @@ define LIBBPF_BUILD_CMDS
 		-C $(@D)/src
 endef
 
-# bpf/bpf.h installed by libbpf uses bpf_iter_link_info that was added since
-# kernel 5.9, so we need to update some uapi headers in STAGING_DIR if the
-# toolchain is build with linux-headers < 5.9.
-# Otherwise bpf/bpf.h is broken due to out of date linux/bpf.h installed by the
-# toolchain.
-# https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/commit/?id=a5cbe05a6673b85bed2a63ffcfea6a96c6410cff
-ifeq ($(BR2_TOOLCHAIN_HEADERS_AT_LEAST_5_9),)
-LIBBPF_UPDATE_UAPI_HEADERS = install_uapi_headers
+# bpftrace uses BPF_TRACE_KPROBE_SESSION that was added since kernel 6.10
+# so we need to update some uapi headers in STAGING_DIR if the toolchain
+# is build with linux-headers < 6.1.0
+# Otherwise bpftrace is broken due to out of date linux/bpf.h installed
+# by the toolchain.
+ifeq ($(BR2_TOOLCHAIN_HEADERS_AT_LEAST_6_10),)
+LIBBPF_UPDATE_UAPI_HEADERS = install_uapi_headers UAPIDIR=/usr/include/bpf
+
+define LIBBPF_FIX_STAGING_PC
+	$(SED) 's/-I$${includedir}/-I$${includedir}\/bpf -I$${includedir}/' $(STAGING_DIR)/usr/lib/pkgconfig/libbpf.pc
+endef
+LIBBPF_POST_INSTALL_STAGING_HOOKS += LIBBPF_FIX_STAGING_PC
 endif
 
 define LIBBPF_INSTALL_STAGING_CMDS

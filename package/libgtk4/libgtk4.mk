@@ -4,8 +4,8 @@
 #
 ################################################################################
 
-LIBGTK4_VERSION_MAJOR = 4.21
-LIBGTK4_VERSION = $(LIBGTK4_VERSION_MAJOR).0
+LIBGTK4_VERSION_MAJOR = 4.24
+LIBGTK4_VERSION = $(LIBGTK4_VERSION_MAJOR).1
 LIBGTK4_SOURCE = gtk-$(LIBGTK4_VERSION).tar.xz
 LIBGTK4_SITE = https://download.gnome.org/sources/gtk/$(LIBGTK4_VERSION_MAJOR)
 LIBGTK4_LICENSE = LGPL-2.0+
@@ -17,12 +17,18 @@ LIBGTK4_INSTALL_STAGING = YES
 LIBGTK4_DEPENDENCIES = \
 	host-pkgconf \
 	host-libgtk4 \
+	cairo \
 	gdk-pixbuf \
 	graphene \
+	harfbuzz \
+	jpeg \
+	libdrm \
 	libepoxy \
+	libfribidi \
 	libglib2 \
-	librsvg \
+	libpng \
 	pango \
+	tiff \
 	$(TARGET_NLS_DEPENDENCIES)
 
 LIBGTK4_CONF_OPTS = \
@@ -34,13 +40,29 @@ LIBGTK4_CONF_OPTS = \
 	-Dsysprof=disabled \
 	-Dtracker=disabled \
 	-Dcolord=disabled \
-	-Dintrospection=disabled \
 	-Ddocumentation=false \
 	-Dscreenshots=false \
 	-Dman-pages=false
 
+ifeq ($(BR2_PACKAGE_GOBJECT_INTROSPECTION),y)
+LIBGTK4_CONF_OPTS += -Dintrospection=enabled
+LIBGTK4_DEPENDENCIES += gobject-introspection
+else
+LIBGTK4_CONF_OPTS += -Dintrospection=disabled
+endif
+
 ifeq ($(BR2_PACKAGE_LIBGTK4_X11),y)
-LIBGTK4_DEPENDENCIES += xlib_libXcursor xlib_libXi xlib_libXinerama
+LIBGTK4_DEPENDENCIES += \
+	fontconfig \
+	xlib_libX11 \
+	xlib_libXcursor \
+	xlib_libXdamage \
+	xlib_libXext \
+	xlib_libXfixes \
+	xlib_libXi \
+	xlib_libXinerama \
+	xlib_libXrandr \
+	xlib_libXrender
 LIBGTK4_CONF_OPTS += -Dx11-backend=true
 else
 LIBGTK4_CONF_OPTS += -Dx11-backend=false
@@ -79,12 +101,6 @@ LIBGTK4_DEPENDENCIES += hicolor-icon-theme shared-mime-info
 else
 LIBGTK4_CONF_OPTS += -Dbuild-demos=false -Dbuild-examples=false
 endif
-
-define LIBGTK4_COMPILE_GLIB_SCHEMAS
-	$(HOST_DIR)/bin/glib-compile-schemas \
-		$(TARGET_DIR)/usr/share/glib-2.0/schemas
-endef
-LIBGTK4_POST_INSTALL_TARGET_HOOKS += LIBGTK4_COMPILE_GLIB_SCHEMAS
 
 # here, we build a native gtk4-update-icon-cache as host-libgtk4
 

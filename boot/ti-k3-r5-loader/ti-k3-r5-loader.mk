@@ -26,7 +26,7 @@ TI_K3_R5_LOADER_SITE_METHOD = svn
 TI_K3_R5_LOADER_SOURCE = u-boot-$(TI_K3_R5_LOADER_VERSION).tar.gz
 else
 # Handle stable official U-Boot versions
-TI_K3_R5_LOADER_SITE = https://ftp.denx.de/pub/u-boot
+TI_K3_R5_LOADER_SITE = https://git.u-boot-project.org/u-boot/u-boot/-/releases/v$(TI_K3_R5_LOADER_VERSION)/downloads
 TI_K3_R5_LOADER_SOURCE = u-boot-$(TI_K3_R5_LOADER_VERSION).tar.bz2
 endif
 
@@ -77,6 +77,7 @@ TI_K3_R5_LOADER_MAKE_OPTS = \
 	HOSTLDFLAGS="$(HOST_LDFLAGS)" \
 	BINMAN_INDIRS=$(BINARIES_DIR)
 
+TI_K3_R5_LOADER_KCONFIG_FRAGMENT_FILES = $(call qstrip,$(BR2_TARGET_TI_K3_R5_LOADER_CONFIG_FRAGMENT_FILES))
 TI_K3_R5_LOADER_TIBOOT3_BIN = $(call qstrip,$(BR2_TARGET_TI_K3_R5_LOADER_TIBOOT3_BIN))
 
 define TI_K3_R5_LOADER_INSTALL_TIBOOT3_BIN

@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-QT5IMAGEFORMATS_VERSION = 4e4f5fc6bdac96f5281a3ebeb0fee78df7b1a498
+QT5IMAGEFORMATS_VERSION = 4076e38d68f05f5e1bcdedb79442d9008f18702c
 QT5IMAGEFORMATS_SITE = $(QT5_SITE)/qtimageformats/-/archive/$(QT5IMAGEFORMATS_VERSION)
 QT5IMAGEFORMATS_SOURCE = qtimageformats-$(QT5IMAGEFORMATS_VERSION).tar.bz2
 QT5IMAGEFORMATS_INSTALL_STAGING = YES

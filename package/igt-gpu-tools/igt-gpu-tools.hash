@@ -1,6 +1,6 @@
-# From https://lists.x.org/archives/xorg-announce/2025-September/003631.html
-sha256  88178558b352a5e8a287954cb2eef05d775aedfacf43b88251509ea014b6182d  igt-gpu-tools-2.2.tar.xz
-sha512  20032b90e397ca73f9f8f5b453034fffc09e28372adddebd1a71b1323235e3e379bf452d5a4dd76b895e4c47df67595051c16b8a1488249e5aae946f6a35258c  igt-gpu-tools-2.2.tar.xz
+# From https://lists.x.org/archives/xorg-announce/2026-September/003745.html
+sha256  5d5190debfec0ee1728430897f243d0afa271856c2cb5834a23b23f08be8d06e  igt-gpu-tools-2.6.tar.xz
+sha512  7b06f2aa9c1e4cc87092625d9b8eae946dcb7ac4b0a77534d4f49a880a071fba85fdb9e519e6a9d3cedeeb5181c8d6051a9a3ecd27c7b667d389008752102fe2  igt-gpu-tools-2.6.tar.xz
 
 # Hash for license file:
 sha256  1b7e266857b05808660f42369a4a797459d7b7bec7245e378aa28a8db2f213da  COPYING

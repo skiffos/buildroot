@@ -4,8 +4,8 @@
 #
 ################################################################################
 
-NEWT_VERSION = 0.52.23
-NEWT_SITE = https://pagure.io/releases/newt
+NEWT_VERSION = 0.52.25
+NEWT_SITE = https://gitlab.com/newt-ui/newt/-/releases/$(NEWT_VERSION)/downloads
 NEWT_INSTALL_STAGING = YES
 NEWT_DEPENDENCIES = popt slang $(TARGET_NLS_DEPENDENCIES)
 # Force to use libintl, otherwise it finds gettext functions in the C

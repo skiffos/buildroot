@@ -3,6 +3,7 @@ import os
 import infra.basetest
 
 
+# gitlab-runner: medium
 class TestLibCamera(infra.basetest.BRTest):
     # A specific configuration is needed for testing libcamera:
     # a kernel config fragment enables v4l2 vimc driver.
@@ -14,10 +15,11 @@ class TestLibCamera(infra.basetest.BRTest):
         f"""
         BR2_aarch64=y
         BR2_TOOLCHAIN_EXTERNAL=y
+        BR2_TOOLCHAIN_EXTERNAL_BOOTLIN=y
         BR2_TARGET_GENERIC_GETTY_PORT="ttyAMA0"
         BR2_LINUX_KERNEL=y
         BR2_LINUX_KERNEL_CUSTOM_VERSION=y
-        BR2_LINUX_KERNEL_CUSTOM_VERSION_VALUE="6.1.76"
+        BR2_LINUX_KERNEL_CUSTOM_VERSION_VALUE="6.18.21"
         BR2_LINUX_KERNEL_USE_CUSTOM_CONFIG=y
         BR2_LINUX_KERNEL_CUSTOM_CONFIG_FILE="board/qemu/aarch64-virt/linux.config"
         BR2_LINUX_KERNEL_CONFIG_FRAGMENT_FILES="{kernel_fragment}"
@@ -75,5 +77,5 @@ class TestLibCamera(infra.basetest.BRTest):
 
         # Capture few frames.
         cmd = f"cam --camera {cam_idx} --capture=5"
-        cmd += " --stream width=160,height=120,role=video,pixelformat=RGB888"
+        cmd += " --stream width=160,height=120,role=video,pixelformat=BGR888"
         self.assertRunOk(cmd)

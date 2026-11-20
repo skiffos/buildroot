@@ -1,0 +1,3 @@
+.br-lts-main .card {
+    scroll-margin-top: 80px; /* Offset for jump to anchor */
+}

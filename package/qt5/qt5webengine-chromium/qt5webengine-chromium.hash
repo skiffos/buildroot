@@ -1,5 +1,5 @@
 # Locally calculated
-sha256  fb0953b0cc7b980f128d5f66b8345eb4fbf2e05b70db3926958fb657953b64dc  qtwebengine-chromium-18c9261dc5b8aa57a0bdd5b62ce6f648cca1ef5e.tar.bz2
+sha256  a1a41e5bb70594081c475af697abc4121df5a504815b99da9bbe66dd99604271  qtwebengine-chromium-6d29e9cfcfffa7632cc3858ceaf8940677ba9c91.tar.bz2
 
 # Locally calculated with:
 # for i in $(find * -type f \( -iname 'license*' -o -iname 'copying*' -o -name 'APPLE_LICENSE' -o -name 'Copyright' -o -path '*/license_texts/*' -o -path '*/licenses/*' \) -a -not -name '*.cc' -not -name '*.py' -not -name '*.pyc' -not -name '*.h' -not -name 'LICENSE.sha1' -not -name 'licensecheck.pl*' -not -name 'license.after' -not -name 'license.before' -not -path 'chromium/third_party/catapult/*') ; do echo -n "sha256  " ; sha256sum $i ; done | sort --key=3
@@ -1055,7 +1055,7 @@ sha256  31346421254a3e6e12687cf17f19f6357ee73a617fa7b3d3ccefdcbabe49bdd3  chromi
 sha256  7e48e290b6bfccc2ec1b297023a1d77f2fd87417f71fbb9f50aabef40a851819  chromium/third_party/libxslt/src/Copyright
 sha256  2b2cc1180c7e6988328ad2033b04b80117419db9c4c584918bbb3cfec7e9364f  chromium/third_party/libyuv/LICENSE
 sha256  0d4077a7055ead389c4c5a9a6ac4bb8b784fc6e9e37be2caf544fcceed26cb16  chromium/third_party/lottie/LICENSE
-sha256  6e3e0a978f1e136cb3efb89702f4314671581a0c70c9a52447669e00f7b129e8  chromium/third_party/lzma_sdk/LICENSE
+sha256  7de6196d9c03ec05e626d4fe7ab86a9c900f11d73176a816423fc14e0a1ee0de  chromium/third_party/lzma_sdk/LICENSE
 sha256  c3b124673c93872156757a934c75b498d68eec09510e25e549d9dc2013776499  chromium/third_party/mako/LICENSE
 sha256  0bbe88228fd63d20ec097f64e58d5a0a465123ae139140a18d406c60b48824b5  chromium/third_party/markupsafe/LICENSE
 sha256  58d1e17ffe5109a7ae296caafcadfdbe6a7d176f0bc4ab01e12a689b0499d8bd  chromium/third_party/material_design_icons/LICENSE
@@ -1231,7 +1231,7 @@ sha256  0d542e0c8804e39aa7f37eb00da5a762149dc682d7829451287e11b938e94594  chromi
 sha256  c5ffbfeaa501071ceeb97b7de2c0d703fdaa35de01c0fb6cbac1c28453a3e9fd  chromium/third_party/xcbproto/src/COPYING
 sha256  b244f73c3d21edaf44ec253b9a7c389ec43313c417f52f8b71914b0c40d87325  chromium/third_party/xdg-utils/LICENSE
 sha256  1cf71700f3403ca26f002e2dc1d1861dcb3d2af9bb9d98d529a903be9d7f06fc  chromium/third_party/xstream/LICENSE
-sha256  942755efa272dbfbcd7afea7a38556801e36c16dcad002d572378367094a2593  chromium/third_party/zlib/LICENSE
+sha256  e1cfcc55c325b3f78cf55df9664abaa066e2271dffe8213347d9fccdfbac8f2c  chromium/third_party/zlib/LICENSE
 sha256  1744e977d24e20e77b1e97d745fe43779430a1b84247b6c0e89d16e116e7ff92  chromium/third_party/zxcvbn-cpp/LICENSE.txt
 sha256  a4c8c5abf82b36c22f8c9f8bd6229584f32eb9f7a2429dd9664dda43e63e9fda  chromium/tools/grit/third_party/six/LICENSE
 sha256  63f0c0039b477857e54708d9501ed91b7a46e828ac3c623bedbc318129ceb174  chromium/tools/origin_trials/third_party/ed25519/LICENSE

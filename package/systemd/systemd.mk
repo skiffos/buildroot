@@ -6,7 +6,9 @@
 
 # When updating systemd, take care of the following:
 # - Check if the requirements have changed (see README), in particular
-#   arch and headers
+#   arch and headers. Use the "recommended baseline" to choose
+#   BR2_TOOLCHAIN_HEADERS_AT_LEAST_..., upstream rejects issues about
+#   build failures with older versions.
 # - If yes, propagate the dependencies to BR2_INIT_SYSTEMD
 # - If the required kernel options have changed, update the Config.in
 #   help text and the list of KCONFIG_ENABLE_OPT.
@@ -19,7 +21,7 @@
 # - Diff sysusers.d with the previous version
 # - Diff factory/etc/nsswitch.conf with the previous version
 #   (details are often sprinkled around in README and manpages)
-SYSTEMD_VERSION = 257.10
+SYSTEMD_VERSION = 262.2
 SYSTEMD_SITE = $(call github,systemd,systemd,v$(SYSTEMD_VERSION))
 SYSTEMD_LICENSE = \
 	LGPL-2.1+, \
@@ -55,58 +57,72 @@ SYSTEMD_DEPENDENCIES = \
 	host-gperf \
 	host-python-jinja2 \
 	kmod \
-	libcap \
 	libxcrypt \
 	util-linux-libs \
 	$(TARGET_NLS_DEPENDENCIES)
 
 SYSTEMD_SELINUX_MODULES = systemd udev xdg
 
-SYSTEMD_PROVIDES = udev
+SYSTEMD_PROVIDES = libudev udev
 
-SYSTEMD_CONF_OPTS += \
+SYSTEMD_CONF_OPTS = \
+	-Dagetty-path=/usr/bin/agetty \
+	-Dbpf-framework=disabled \
+	-Dbuild-static=false \
+	-Dcompat-sysv-interfaces=false \
 	-Dcreate-log-dirs=false \
-	-Ddbus=disabled \
 	-Ddbus-interfaces-dir=no \
+	-Ddbus=disabled \
 	-Ddefault-compression='auto' \
 	-Ddefault-locale='C.UTF-8' \
 	-Ddefault-user-shell=/bin/sh \
+	-Ddlopen-tests=false \
+	-Dfallback-default-target=graphical.target \
 	-Dfirst-boot-full-preset=false \
+	-Dfuzz-tests=false \
+	-Dhostname-wordlist=false \
 	-Didn=true \
 	-Dima=false \
+	-Dimds=disabled \
+	-Dinstall-tests=false \
 	-Dipe=false \
+	-Djournal-storage-default=persistent \
 	-Dkexec-path=/usr/sbin/kexec \
 	-Dkmod-path=/usr/bin/kmod \
 	-Dldconfig=false \
+	-Dlibc=glibc \
+	-Dlibcrypt=enabled \
+	-Dlibfido2=disabled \
+	-Dlibmount=enabled \
 	-Dlink-boot-shared=true \
 	-Dloadkeys-path=/usr/bin/loadkeys \
+	-Dlog-message-verification=disabled \
 	-Dman=disabled \
-	-Dmount-path=/usr/bin/mount \
-	-Dvcs-tag=false \
 	-Dmode=release \
+	-Dmount-path=/usr/bin/mount \
 	-Dnspawn-locale='C.UTF-8' \
 	-Dnss-systemd=true \
 	-Dpasswdqc=disabled \
-	-Dlibfido2=disabled \
 	-Dquotacheck-path=/usr/sbin/quotacheck \
 	-Dquotaon-path=/usr/sbin/quotaon \
 	-Dsetfont-path=/usr/bin/setfont \
 	-Dsplit-bin=true \
+	-Dstandalone-binaries= \
 	-Dsulogin-path=/usr/sbin/sulogin \
+	-Dswapoff-path=/usr/sbin/swapoff \
+	-Dswapon-path=/usr/sbin/swapon \
+	-Dsysinstall=false \
 	-Dsystem-gid-max=999 \
 	-Dsystem-uid-max=999 \
-	-Dsysvinit-path= \
-	-Dsysvrcnd-path= \
-	-Dtests=false \
-	-Dfuzz-tests=false \
-	-Dinstall-tests=false \
-	-Dlog-message-verification=disabled \
+	-Dsystemd-multicall-binary=false \
 	-Dsysupdated=disabled \
+	-Dtests=false \
 	-Dtmpfiles=true \
 	-Dukify=disabled \
-	-Dbpf-framework=disabled \
-	-Dvmlinux-h=disabled \
 	-Dumount-path=/usr/bin/umount \
+	-Dvar-log-mode=0755 \
+	-Dvcs-tag=false \
+	-Dvmlinux-h=disabled \
 	-Dxenctrl=disabled
 
 SYSTEMD_CFLAGS = $(TARGET_CFLAGS)
@@ -173,22 +189,11 @@ else
 SYSTEMD_CONF_OPTS += -Delfutils=disabled
 endif
 
-ifeq ($(BR2_PACKAGE_IPTABLES),y)
-SYSTEMD_DEPENDENCIES += iptables
-SYSTEMD_CONF_OPTS += -Dlibiptc=enabled
-else
-SYSTEMD_CONF_OPTS += -Dlibiptc=disabled
-endif
-
-# Both options can't be selected at the same time so prefer libidn2
 ifeq ($(BR2_PACKAGE_LIBIDN2),y)
 SYSTEMD_DEPENDENCIES += libidn2
-SYSTEMD_CONF_OPTS += -Dlibidn2=enabled -Dlibidn=disabled
-else ifeq ($(BR2_PACKAGE_LIBIDN),y)
-SYSTEMD_DEPENDENCIES += libidn
-SYSTEMD_CONF_OPTS += -Dlibidn=enabled -Dlibidn2=disabled
+SYSTEMD_CONF_OPTS += -Dlibidn2=enabled
 else
-SYSTEMD_CONF_OPTS += -Dlibidn=disabled -Dlibidn2=disabled
+SYSTEMD_CONF_OPTS += -Dlibidn2=disabled
 endif
 
 ifeq ($(BR2_PACKAGE_LIBSECCOMP),y)
@@ -267,13 +272,6 @@ else
 SYSTEMD_CONF_OPTS += -Dlibcurl=disabled
 endif
 
-ifeq ($(BR2_PACKAGE_LIBGCRYPT),y)
-SYSTEMD_DEPENDENCIES += libgcrypt
-SYSTEMD_CONF_OPTS += -Dgcrypt=enabled
-else
-SYSTEMD_CONF_OPTS += -Dgcrypt=disabled
-endif
-
 ifeq ($(BR2_PACKAGE_P11_KIT),y)
 SYSTEMD_DEPENDENCIES += p11-kit
 SYSTEMD_CONF_OPTS += -Dp11kit=enabled
@@ -347,12 +345,6 @@ SYSTEMD_DEPENDENCIES += libselinux
 SYSTEMD_CONF_OPTS += -Dselinux=enabled
 else
 SYSTEMD_CONF_OPTS += -Dselinux=disabled
-endif
-
-ifneq ($(BR2_PACKAGE_LIBGCRYPT)$(BR2_PACKAGE_LIBOPENSSL),)
-SYSTEMD_CONF_OPTS += -Ddefault-dnssec=allow-downgrade
-else
-SYSTEMD_CONF_OPTS += -Ddefault-dnssec=no
 endif
 
 ifeq ($(BR2_PACKAGE_SYSTEMD_HWDB),y)
@@ -454,7 +446,9 @@ SYSTEMD_CONF_OPTS += -Dmachined=false -Dnss-mymachines=disabled
 endif
 
 ifeq ($(BR2_PACKAGE_SYSTEMD_IMPORTD),y)
-SYSTEMD_CONF_OPTS += -Dimportd=enabled
+SYSTEMD_CONF_OPTS += \
+	-Dimportd=enabled \
+	-Ddefault-oci-registry=docker.io
 else
 SYSTEMD_CONF_OPTS += -Dimportd=disabled
 endif
@@ -545,6 +539,7 @@ endif
 ifeq ($(BR2_PACKAGE_SYSTEMD_POLKIT),y)
 SYSTEMD_CONF_OPTS += -Dpolkit=enabled
 SYSTEMD_DEPENDENCIES += polkit
+SYSTEMD_POLKIT_USER = - - empower -1 * - - - Privileged access to polkit actions
 else
 SYSTEMD_CONF_OPTS += -Dpolkit=disabled
 endif
@@ -565,6 +560,12 @@ ifeq ($(BR2_PACKAGE_SYSTEMD_SYSUPDATE),y)
 SYSTEMD_CONF_OPTS += -Dsysupdate=enabled
 else
 SYSTEMD_CONF_OPTS += -Dsysupdate=disabled
+endif
+
+ifeq ($(BR2_PACKAGE_SYSTEMD_NSPAWN),y)
+SYSTEMD_CONF_OPTS += -Dnspawn=enabled
+else
+SYSTEMD_CONF_OPTS += -Dnspawn=disabled
 endif
 
 ifeq ($(BR2_PACKAGE_SYSTEMD_NETWORKD),y)
@@ -595,24 +596,17 @@ endif
 
 ifeq ($(BR2_PACKAGE_LIBOPENSSL),y)
 SYSTEMD_CONF_OPTS += \
-	-Dgnutls=disabled \
 	-Dopenssl=enabled \
 	-Ddns-over-tls=openssl \
-	-Ddefault-dns-over-tls=opportunistic
+	-Ddefault-dns-over-tls=opportunistic \
+	-Ddefault-dnssec=allow-downgrade
 SYSTEMD_DEPENDENCIES += openssl
-else ifeq ($(BR2_PACKAGE_GNUTLS),y)
-SYSTEMD_CONF_OPTS += \
-	-Dgnutls=enabled \
-	-Dopenssl=disabled \
-	-Ddns-over-tls=gnutls \
-	-Ddefault-dns-over-tls=opportunistic
-SYSTEMD_DEPENDENCIES += gnutls
 else
 SYSTEMD_CONF_OPTS += \
-	-Dgnutls=disabled \
 	-Dopenssl=disabled \
 	-Ddns-over-tls=false \
-	-Ddefault-dns-over-tls=no
+	-Ddefault-dns-over-tls=no \
+	-Ddefault-dnssec=no
 endif
 
 ifeq ($(BR2_PACKAGE_SYSTEMD_TIMESYNCD),y)
@@ -710,7 +704,7 @@ endef
 
 define SYSTEMD_USERS
 	# udev user groups
-	- - render -1 * - - - DRI rendering nodes
+	- - clock -1 * - - - PTP and RTC device group
 	# systemd user groups
 	- - systemd-journal -1 * - - - Journal
 	$(SYSTEMD_REMOTE_USER)
@@ -720,6 +714,7 @@ define SYSTEMD_USERS
 	$(SYSTEMD_NETWORKD_USER)
 	$(SYSTEMD_RESOLVED_USER)
 	$(SYSTEMD_TIMESYNCD_USER)
+	$(SYSTEMD_POLKIT_USER)
 endef
 
 define SYSTEMD_INSTALL_NSSCONFIG_HOOK
@@ -903,128 +898,150 @@ endef
 
 # We need a very minimal host variant, so we disable as much as possible.
 HOST_SYSTEMD_CONF_OPTS = \
-	-Dsplit-bin=true \
 	--prefix=/usr \
 	--libdir=lib \
 	--sysconfdir=/etc \
 	--localstatedir=/var \
-	-Dcreate-log-dirs=false \
-	-Dvcs-tag=false \
-	-Dmode=release \
-	-Dutmp=false \
-	-Dhibernate=false \
-	-Dtpm2=disabled \
-	-Dldconfig=false \
-	-Dresolve=false \
-	-Dbootloader=disabled \
-	-Defi=false \
-	-Dtpm=false \
-	-Denvironment-d=false \
+	-Dacl=disabled \
+	-Dadm-group=false \
+	-Danalyze=false \
+	-Dapparmor=disabled \
+	-Daudit=disabled \
+	-Dbacklight=false \
 	-Dbinfmt=false \
-	-Drepart=disabled \
+	-Dbootloader=disabled \
+	-Dbpf-framework=disabled \
+	-Dbuild-static=false \
+	-Dbzip2=disabled \
+	-Dcompat-sysv-interfaces=false \
 	-Dcoredump=false \
-	-Ddbus=disabled \
-	-Ddbus-interfaces-dir=no \
-	-Dpstore=false \
-	-Doomd=false \
-	-Dlogind=false \
-	-Dhostnamed=false \
-	-Dlocaled=false \
-	-Dmachined=false \
-	-Dpasswdqc=disabled \
-	-Dportabled=false \
-	-Dsysext=false \
-	-Dsysupdate=disabled \
-	-Dmountfsd=false \
-	-Duserdb=false \
-	-Dhomed=disabled \
-	-Dnetworkd=false \
-	-Dtimedated=false \
-	-Dtimesyncd=false \
-	-Dremote=disabled \
 	-Dcreate-log-dirs=false \
+	-Dcreate-log-dirs=false \
+	-Ddbus-interfaces-dir=no \
+	-Ddbus=disabled \
+	-Ddlopen-tests=false \
+	-Defi=false \
+	-Delfutils=disabled \
+	-Denvironment-d=false \
+	-Dfallback-default-target=graphical.target \
+	-Dfdisk=disabled \
+	-Dfirstboot=false \
+	-Dfuzz-tests=false \
+	-Dgcrypt=disabled \
+	-Dglib=disabled \
+	-Dgnutls=disabled \
+	-Dgshadow=false \
+	-Dhibernate=false \
+	-Dhomed=disabled \
+	-Dhostname-wordlist=false \
+	-Dhostnamed=false \
+	-Dhtml=disabled \
+	-Dhwdb=true \
+	-Didn=false \
+	-Dima=false \
+	-Dimds=disabled \
+	-Dimportd=disabled \
+	-Dinitrd=false \
+	-Dinstall-tests=false \
+	-Dkernel-install=false \
+	-Dkmod=disabled \
+	-Dldconfig=false \
+	-Dlibarchive=disabled \
+	-Dlibc=glibc \
+	-Dlibcrypt=enabled \
+	-Dlibcryptsetup-plugins=disabled \
+	-Dlibcryptsetup=disabled \
+	-Dlibcurl=disabled \
+	-Dlibfido2=disabled \
+	-Dlibidn2=disabled \
+	-Dlibmount=enabled \
+	-Dlocaled=false \
+	-Dlog-message-verification=disabled \
+	-Dlogind=false \
+	-Dlz4=disabled \
+	-Dmachined=false \
+	-Dman=disabled \
+	-Dmicrohttpd=disabled \
+	-Dmode=release \
+	-Dmountfsd=false \
+	-Dnetworkd=false \
+	-Dnspawn=disabled \
 	-Dnsresourced=false \
 	-Dnss-myhostname=false \
 	-Dnss-mymachines=disabled \
 	-Dnss-resolve=disabled \
 	-Dnss-systemd=false \
-	-Dfirstboot=false \
-	-Drandomseed=false \
-	-Dbacklight=false \
-	-Dvconsole=false \
-	-Dvmspawn=disabled \
-	-Dquotacheck=false \
-	-Dsysusers=false \
-	-Dstoragetm=false \
-	-Dtmpfiles=true \
-	-Dimportd=disabled \
-	-Dhwdb=true \
-	-Drfkill=false \
-	-Dman=disabled \
-	-Dhtml=disabled \
-	-Dsmack=false \
-	-Dpolkit=disabled \
-	-Dblkid=disabled \
-	-Didn=false \
-	-Dadm-group=false \
-	-Dwheel-group=false \
-	-Dzlib=disabled \
-	-Dgshadow=false \
-	-Dima=false \
-	-Dtests=false \
-	-Dfuzz-tests=false \
-	-Dinstall-tests=false \
-	-Dlog-message-verification=disabled \
-	-Dglib=disabled \
-	-Dlibarchive=disabled \
-	-Dacl=disabled \
-	-Dsysvinit-path='' \
-	-Dinitrd=false \
-	-Dxdg-autostart=false \
-	-Dkernel-install=false \
-	-Dukify=disabled \
-	-Danalyze=false \
-	-Dbpf-framework=disabled \
-	-Dvmlinux-h=disabled \
-	-Dpwquality=disabled \
-	-Dmicrohttpd=disabled \
-	-Dqrencode=disabled \
-	-Dselinux=disabled \
-	-Dlibcryptsetup=disabled \
-	-Dlibcryptsetup-plugins=disabled \
-	-Delfutils=disabled \
-	-Dlibiptc=disabled \
-	-Dapparmor=disabled \
-	-Daudit=disabled \
-	-Dxenctrl=disabled \
-	-Dlibidn2=disabled \
-	-Dlibidn=disabled \
-	-Dseccomp=disabled \
-	-Dxkbcommon=disabled \
-	-Dbzip2=disabled \
-	-Dzstd=disabled \
-	-Dlz4=disabled \
-	-Dpam=disabled \
-	-Dfdisk=disabled \
-	-Dkmod=disabled \
-	-Dxz=disabled \
-	-Dlibcurl=disabled \
-	-Dgcrypt=disabled \
-	-Dgnutls=disabled \
-	-Dopenssl=disabled \
+	-Doomd=false \
 	-Dp11kit=disabled \
-	-Dlibfido2=disabled \
+	-Dpam=disabled \
+	-Dpasswdqc=disabled \
 	-Dpcre2=disabled \
-	-Dsysupdated=disabled
+	-Dpolkit=disabled \
+	-Dportabled=false \
+	-Dpstore=false \
+	-Dpwquality=disabled \
+	-Dqrencode=disabled \
+	-Dquotacheck=false \
+	-Drandomseed=false \
+	-Dremote=disabled \
+	-Drepart=disabled \
+	-Dresolve=false \
+	-Drfkill=false \
+	-Dseccomp=disabled \
+	-Dselinux=disabled \
+	-Dsmack=false \
+	-Dsplit-bin=true \
+	-Dstandalone-binaries= \
+	-Dstoragetm=false \
+	-Dsysext=false \
+	-Dsysinstall=false \
+	-Dsystemd-multicall-binary=false \
+	-Dsysupdate=disabled \
+	-Dsysupdated=disabled \
+	-Dsysusers=false \
+	-Dtests=false \
+	-Dtimedated=false \
+	-Dtimesyncd=false \
+	-Dtmpfiles=true \
+	-Dtpm=false \
+	-Dukify=enabled \
+	-Duserdb=false \
+	-Dutmp=false \
+	-Dvar-log-mode=0755 \
+	-Dvconsole=false \
+	-Dvcs-tag=false \
+	-Dvmlinux-h=disabled \
+	-Dvmspawn=disabled \
+	-Dwheel-group=false \
+	-Dxdg-autostart=false \
+	-Dxenctrl=disabled \
+	-Dxkbcommon=disabled \
+	-Dxz=disabled \
+	-Dzlib=disabled \
+	-Dzstd=disabled
 
 HOST_SYSTEMD_DEPENDENCIES = \
 	$(BR2_COREUTILS_HOST_DEPENDENCY) \
 	host-util-linux \
 	host-patchelf \
-	host-libcap \
 	host-libxcrypt \
 	host-gperf \
-	host-python-jinja2
+	host-python-jinja2 \
+	host-python-pefile
+
+ifeq ($(BR2_PACKAGE_HOST_SYSTEMD_MEASURE),y)
+# host-util-linux (for blkid) is an unconditional dependency
+HOST_SYSTEMD_CONF_OPTS += \
+	-Dtpm2=enabled \
+	-Dblkid=enabled \
+	-Dopenssl=enabled
+HOST_SYSTEMD_DEPENDENCIES += host-openssl host-tpm2-tss
+else
+HOST_SYSTEMD_CONF_OPTS += \
+	-Dtpm2=disabled \
+	-Dblkid=disabled \
+	-Dopenssl=disabled
+endif
 
 HOST_SYSTEMD_NINJA_ENV = DESTDIR=$(HOST_DIR)
 

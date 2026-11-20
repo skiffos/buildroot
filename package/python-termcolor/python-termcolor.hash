@@ -1,5 +1,5 @@
 # md5, sha256 from https://pypi.org/pypi/termcolor/json
-md5  26f496075070852b5d39762bbd14ec46  termcolor-2.5.0.tar.gz
-sha256  998d8d27da6d48442e8e1f016119076b690d962507531df4890fcd2db2ef8a6f  termcolor-2.5.0.tar.gz
+md5  30b9a5ef79026a6073009f045e17f04c  termcolor-3.3.0.tar.gz
+sha256  348871ca648ec6a9a983a13ab626c0acce02f515b9e1983332b17af7979521c5  termcolor-3.3.0.tar.gz
 # Locally computed sha256 checksums
 sha256  e79b6bd82962c1330caaa7c42278567b08667777673f8e2371a624d5715d4c0e  COPYING.txt

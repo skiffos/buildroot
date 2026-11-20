@@ -4,9 +4,8 @@
 #
 ################################################################################
 
-DILLO_VERSION = 3.2.0
-DILLO_SOURCE = dillo-$(DILLO_VERSION).tar.bz2
-DILLO_SITE = https://github.com/dillo-browser/dillo/releases/download/v$(DILLO_VERSION)
+DILLO_VERSION = 3.3.0
+DILLO_SITE = https://dillo-browser.org/release/$(DILLO_VERSION)
 DILLO_LICENSE = GPL-3.0+
 DILLO_LICENSE_FILES = COPYING
 DILLO_DEPENDENCIES = fltk zlib \

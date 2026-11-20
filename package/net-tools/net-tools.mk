@@ -32,7 +32,17 @@ define NET_TOOLS_ENABLE_IPV6
 	$(SED) 's:_AFINET6 0:_AFINET6 1:' $(@D)/config.h
 endef
 
-NET_TOOLS_POST_CONFIGURE_HOOKS += NET_TOOLS_ENABLE_I18N NET_TOOLS_ENABLE_IPV6
+ifeq ($(BR2_TOOLCHAIN_HEADERS_AT_LEAST_7_1),y)
+define NET_TOOLS_DISABLE_ROSE
+	$(SED) 's:HAVE_AFROSE 1:HAVE_AFROSE 0:' \
+	-e 's:HAVE_HWROSE 1:HAVE_HWROSE 0:' $(@D)/config.h
+endef
+endif
+
+NET_TOOLS_POST_CONFIGURE_HOOKS += \
+	NET_TOOLS_DISABLE_ROSE \
+	NET_TOOLS_ENABLE_I18N \
+	NET_TOOLS_ENABLE_IPV6
 
 define NET_TOOLS_BUILD_CMDS
 	$(TARGET_CONFIGURE_OPTS) \
@@ -42,10 +52,16 @@ endef
 
 # ifconfig & route reside in /sbin for busybox, so ensure we don't end
 # up with two versions of those.
-define NET_TOOLS_INSTALL_TARGET_CMDS
-	$(TARGET_MAKE_ENV) $(MAKE) -C $(@D) DESTDIR=$(TARGET_DIR) install
+ifeq ($(BR2_ROOTFS_MERGED_BIN),)
+define NET_TOOLS_INSTALL_MV_BINS
 	mv -f $(TARGET_DIR)/bin/ifconfig $(TARGET_DIR)/sbin/ifconfig
 	mv -f $(TARGET_DIR)/bin/route $(TARGET_DIR)/sbin/route
+endef
+endif
+
+define NET_TOOLS_INSTALL_TARGET_CMDS
+	$(TARGET_MAKE_ENV) $(MAKE) -C $(@D) DESTDIR=$(TARGET_DIR) install
+	$(NET_TOOLS_INSTALL_MV_BINS)
 endef
 
 $(eval $(generic-package))

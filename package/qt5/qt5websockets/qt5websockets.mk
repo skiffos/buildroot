@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-QT5WEBSOCKETS_VERSION = dbbdc64b804f7c4d0ed92198aaab49b07fa15e7f
+QT5WEBSOCKETS_VERSION = 10eb706b24aa05f4ee69c2f2fec99b21994dfe2b
 QT5WEBSOCKETS_SITE = $(QT5_SITE)/qtwebsockets/-/archive/$(QT5WEBSOCKETS_VERSION)
 QT5WEBSOCKETS_SOURCE = qtwebsockets-$(QT5WEBSOCKETS_VERSION).tar.bz2
 QT5WEBSOCKETS_INSTALL_STAGING = YES

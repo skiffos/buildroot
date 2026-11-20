@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-QT5WEBVIEW_VERSION = bbb1891595aba23ff3c6d137aa74442f9e54479b
+QT5WEBVIEW_VERSION = 043cb7c0eaf8d1bcee56a62d6a102f727a22fcbc
 QT5WEBVIEW_SITE = $(QT5_SITE)/qtwebview/-/archive/$(QT5WEBVIEW_VERSION)
 QT5WEBVIEW_SOURCE = qtwebview-$(QT5WEBVIEW_VERSION).tar.bz2
 QT5WEBVIEW_DEPENDENCIES = qt5webengine

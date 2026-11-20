@@ -1,0 +1,19 @@
+config BR2_TARGET_CLOVER_BIN
+	bool "clover-bin"
+	depends on BR2_x86_64
+	help
+	  Clover is a graphical UEFI boot manager.
+
+	  This is the pre-compiled binary variant.
+
+	  https://github.com/CloverHackyColor/CloverBootloader
+
+if BR2_TARGET_CLOVER_BIN
+
+config BR2_TARGET_CLOVER_BIN_INSTALL_FALLBACK
+	bool "install Clover as the fallback bootloader"
+	help
+	  Install Clover as EFI/BOOT/BOOTX64.efi. Do not enable this
+	  when another package, such as GRUB, supplies that path.
+
+endif

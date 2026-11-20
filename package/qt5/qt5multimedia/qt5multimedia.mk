@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-QT5MULTIMEDIA_VERSION = 53069c9c6eb52b744333812f42aed36c3db6e752
+QT5MULTIMEDIA_VERSION = 8ddc44103baf166525d6650c842d7f08f651e7bb
 QT5MULTIMEDIA_SITE = $(QT5_SITE)/qtmultimedia/-/archive/$(QT5MULTIMEDIA_VERSION)
 QT5MULTIMEDIA_SOURCE = qtmultimedia-$(QT5MULTIMEDIA_VERSION).tar.bz2
 QT5MULTIMEDIA_INSTALL_STAGING = YES

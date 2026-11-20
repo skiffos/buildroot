@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-JIMTCL_VERSION = 0.83
+JIMTCL_VERSION = 0.84
 JIMTCL_SITE = $(call github,msteveb,jimtcl,$(JIMTCL_VERSION))
 JIMTCL_INSTALL_STAGING = YES
 JIMTCL_LICENSE = BSD-2-Clause
@@ -22,6 +22,20 @@ ifeq ($(BR2_PACKAGE_TCL),)
 define JIMTCL_LINK_TCLSH
 	ln -sf jimsh $(TARGET_DIR)/usr/bin/tclsh
 endef
+endif
+
+# jimtcl automatically enables ssl support in the aio extension and
+# the zlib extension when the libraries are found
+ifeq ($(BR2_PACKAGE_OPENSSL),y)
+JIMTCL_DEPENDENCIES += host-pkgconf openssl
+else
+JIMTCL_CONF_OPTS += --disable-ssl
+endif
+
+ifeq ($(BR2_PACKAGE_ZLIB),y)
+JIMTCL_DEPENDENCIES += host-pkgconf zlib
+else
+JIMTCL_CONF_OPTS += --without-ext=zlib
 endif
 
 ifeq ($(BR2_STATIC_LIBS),y)
@@ -55,6 +69,7 @@ define JIMTCL_CONFIGURE_CMDS
 		--host=$(GNU_TARGET_NAME) \
 		--build=$(GNU_HOST_NAME) \
 		$(JIMTCL_SHARED) \
+		$(JIMTCL_CONF_OPTS) \
 	)
 endef
 
@@ -71,6 +86,8 @@ define JIMTCL_INSTALL_STAGING_CMDS
 		cp -a $(@D)/$$i $(STAGING_DIR)/usr/include/ || exit 1 ; \
 	done; \
 	$(call JIMTCL_INSTALL_LIB,$(STAGING_DIR))
+	$(INSTALL) -m 0644 -D $(@D)/jimtcl.pc \
+		$(STAGING_DIR)/usr/lib/pkgconfig/jimtcl.pc
 endef
 
 define JIMTCL_INSTALL_TARGET_CMDS

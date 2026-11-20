@@ -1,0 +1,36 @@
+From: Christian Stewart <christian@aperture.us>
+Subject: free, uptime: include sys/sysinfo.h on WASI
+
+free and uptime include sys/sysinfo.h only on Linux. A WASI libc that
+provides sysinfo needs it too.
+
+Signed-off-by: Christian Stewart <christian@aperture.us>
+---
+ procps/free.c   | 2 +-
+ procps/uptime.c | 2 +-
+ 2 files changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/procps/free.c b/procps/free.c
+--- a/procps/free.c
++++ b/procps/free.c
+@@ -52,7 +52,7 @@
+ //NB: if we implement -s or -c, need to stop being NOFORK!
+ 
+ #include "libbb.h"
+-#ifdef __linux__
++#if defined(__linux__) || defined(__wasi__)
+ # include <sys/sysinfo.h>
+ #endif
+ 
+diff --git a/procps/uptime.c b/procps/uptime.c
+--- a/procps/uptime.c
++++ b/procps/uptime.c
+@@ -40,7 +40,7 @@
+ //usage:       "  1:55pm  up  2:30, load average: 0.09, 0.04, 0.00\n"
+ 
+ #include "libbb.h"
+-#ifdef __linux__
++#if defined(__linux__) || defined(__wasi__)
+ # include <sys/sysinfo.h>
+ #endif
+ 

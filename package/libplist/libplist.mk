@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-LIBPLIST_VERSION = 2.4.0
+LIBPLIST_VERSION = 2.7.0
 LIBPLIST_SOURCE = libplist-$(LIBPLIST_VERSION).tar.bz2
 LIBPLIST_SITE = https://github.com/libimobiledevice/libplist/releases/download/$(LIBPLIST_VERSION)
 LIBPLIST_INSTALL_STAGING = YES
@@ -15,5 +15,7 @@ LIBPLIST_CPE_ID_VENDOR = libimobiledevice
 # Disable building Python bindings, because it requires host-cython, which
 # is not packaged in Buildroot at all.
 LIBPLIST_CONF_OPTS = --without-cython
+HOST_LIBPLIST_CONF_OPTS = --without-cython
 
 $(eval $(autotools-package))
+$(eval $(host-autotools-package))

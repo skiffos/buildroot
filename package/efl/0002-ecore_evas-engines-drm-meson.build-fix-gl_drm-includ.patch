@@ -11,10 +11,11 @@ The Evas_Engine_GL_Drm.h file is in "gl_drm" directory, not "drm".
       |           ^~~~~~~~~~~~~~~~~~~~~~
 compilation terminated.
 
-Upstream status:
-https://sourceforge.net/p/enlightenment/mailman/message/37075004/
+Upstream: https://sourceforge.net/p/enlightenment/mailman/message/37075004/
 
 Signed-off-by: Romain Naour <romain.naour@gmail.com>
+[Bernd: added Upstream: tag]
+Signed-off-by: Bernd Kuhls <bernd@kuhls.net>
 ---
  src/modules/ecore_evas/engines/drm/meson.build | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)

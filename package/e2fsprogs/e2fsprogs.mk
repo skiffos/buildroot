@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-E2FSPROGS_VERSION = 1.47.2
+E2FSPROGS_VERSION = 1.47.4
 E2FSPROGS_SOURCE = e2fsprogs-$(E2FSPROGS_VERSION).tar.xz
 E2FSPROGS_SITE = $(BR2_KERNEL_MIRROR)/linux/kernel/people/tytso/e2fsprogs/v$(E2FSPROGS_VERSION)
 E2FSPROGS_LICENSE = GPL-2.0, MIT-like with advertising clause (libss and libet)
@@ -16,7 +16,7 @@ E2FSPROGS_INSTALL_STAGING = YES
 # This prevents overriding them with e2fsprogs' ones, which may cause
 # problems for other packages.
 E2FSPROGS_DEPENDENCIES = host-pkgconf util-linux
-HOST_E2FSPROGS_DEPENDENCIES = host-pkgconf host-util-linux
+HOST_E2FSPROGS_DEPENDENCIES = host-libarchive host-pkgconf host-util-linux
 
 E2FSPROGS_SELINUX_MODULES = fstools
 
@@ -34,6 +34,7 @@ HOST_E2FSPROGS_CONF_OPTS = \
 	--enable-symlink-install \
 	--enable-elf-shlibs \
 	--with-crond-dir=no \
+	--with-libarchive=yes \
 	--with-udev-rules-dir=no \
 	--with-systemd-unit-dir=no
 

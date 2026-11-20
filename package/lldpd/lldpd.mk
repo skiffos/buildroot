@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-LLDPD_VERSION = 1.0.18
+LLDPD_VERSION = 1.0.22
 LLDPD_SITE = https://media.luffy.cx/files/lldpd
 LLDPD_DEPENDENCIES = \
 	$(if $(BR2_PACKAGE_CHECK),check) \
@@ -59,6 +59,13 @@ LLDPD_CONF_OPTS += --with-readline
 LLDPD_DEPENDENCIES += readline
 else
 LLDPD_CONF_OPTS += --without-readline
+endif
+
+ifeq ($(BR2_TOOLCHAIN_HEADERS_AT_LEAST_4_19),y)
+define LLDPD_DROP_UAPI_FILES
+	rm -rf $(@D)/include/linux
+endef
+LLDPD_POST_PATCH_HOOKS += LLDPD_DROP_UAPI_FILES
 endif
 
 define LLDPD_INSTALL_INIT_SYSV

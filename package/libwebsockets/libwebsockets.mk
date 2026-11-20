@@ -4,29 +4,32 @@
 #
 ################################################################################
 
-LIBWEBSOCKETS_VERSION = 4.4.1
+LIBWEBSOCKETS_VERSION = 5.1.0
 LIBWEBSOCKETS_SITE = $(call github,warmcat,libwebsockets,v$(LIBWEBSOCKETS_VERSION))
 LIBWEBSOCKETS_LICENSE = MIT with exceptions
 LIBWEBSOCKETS_LICENSE_FILES = LICENSE
 LIBWEBSOCKETS_DEPENDENCIES = zlib
 LIBWEBSOCKETS_INSTALL_STAGING = YES
+# HTTP/3 (QUIC) is enabled by default, but needs GnuTLS when OpenSSL
+# is used, and an mbedtls with the libwebsockets QUIC patches.
 LIBWEBSOCKETS_CONF_OPTS = \
 	-DDISABLE_WERROR=ON \
+	-DLWS_WITH_HTTP3=OFF \
+	-DLWS_ROLE_QUIC=OFF \
 	-DLWS_WITHOUT_TESTAPPS=ON \
 	-DLWS_IPV6=ON \
 	-DLWS_UNIX_SOCK=ON \
 	-DLWS_WITHOUT_EXTENSIONS=OFF
 
 # If LWS_MAX_SMP=1, then there is no code related to pthreads compiled
-# in the library. If unset, LWS_MAX_SMP defaults to 32 and a small
-# amount of pthread mutex code is built into the library.
+# in the library. If unset, LWS_MAX_SMP defaults to 1.
 ifeq ($(BR2_TOOLCHAIN_HAS_THREADS),)
 LIBWEBSOCKETS_CONF_OPTS += \
 	-DLWS_MAX_SMP=1 \
 	-DLWS_WITH_SYS_SMD=OFF
 else
 LIBWEBSOCKETS_CONF_OPTS += \
-	-DLWS_MAX_SMP= \
+	-DLWS_MAX_SMP=32 \
 	-DLWS_WITH_SYS_SMD=ON
 endif
 

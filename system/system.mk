@@ -32,23 +32,35 @@
 #   set inittab to remount root read-write or read-only
 #
 
-# This function handles the merged or non-merged /usr cases
+# This function handles the merged or non-merged /usr, and merged or
+# non-merged /usr/bin cases
 ifeq ($(BR2_ROOTFS_MERGED_USR),y)
+ifeq ($(BR2_ROOTFS_MERGED_BIN),y)
+define SYSTEM_SBIN_SYMLINKS_OR_DIRS
+	ln -snf bin $(1)/usr/sbin
+endef
+else
+define SYSTEM_SBIN_SYMLINKS_OR_DIRS
+	$(INSTALL) -d -m 0755 $(1)/usr/sbin
+endef
+endif
 define SYSTEM_USR_SYMLINKS_OR_DIRS
 	ln -snf usr/bin $(1)/bin
 	ln -snf usr/sbin $(1)/sbin
 	ln -snf usr/lib $(1)/lib
+	$(SYSTEM_SBIN_SYMLINKS_OR_DIRS)
 endef
 else
 define SYSTEM_USR_SYMLINKS_OR_DIRS
 	$(INSTALL) -d -m 0755 $(1)/bin
 	$(INSTALL) -d -m 0755 $(1)/sbin
 	$(INSTALL) -d -m 0755 $(1)/lib
+	$(INSTALL) -d -m 0755 $(1)/usr/sbin
 endef
 endif
 
 # This function rsyncs the skeleton directory in $(1) to the destination
-# in $(2), which should be either $(TARTGET_DIR) or $(STAGING_DIR)
+# in $(2), which should be either $(TARGET_DIR) or $(STAGING_DIR)
 define SYSTEM_RSYNC
 	rsync -a --ignore-times $(RSYNC_VCS_EXCLUSIONS) \
 		--chmod=u=rwX,go=rX --exclude .empty --exclude '*~' \

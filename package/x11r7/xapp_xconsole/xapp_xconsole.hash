@@ -1,5 +1,5 @@
-# From https://lists.x.org/archives/xorg-announce/2022-July/003173.html
-sha256  7b4a6af068e40e2e6a4521d6f35c9253ec152c287d025fff9cc4c99f2586bba4  xconsole-1.0.8.tar.xz
-sha512  93fd8527abed4faaf0f6a3804ab08dbcb926b0aaf67fd814c003b6b1102e2f643be5362a020c7028ae928925ffd423df6eb456d4ed48cf30a4c5f00a7ce648fa  xconsole-1.0.8.tar.xz
+# From https://lists.x.org/archives/xorg-announce/2026-April/003689.html
+sha256  d412abbea2423f2930443c43db1c83d7d0cf2b677419b86ed54aa5d47f072322  xconsole-1.1.1.tar.xz
+sha512  8024ae0dc1bc3512234ee0a2bf66dcc665daa2af67056f680af3e7f330952eb5fa6dab0442a4b4ad54df3d35ef4ec0442e7c0c6cb9fe6d9b70b2038102ae8bef  xconsole-1.1.1.tar.xz
 # Locally computed
 sha256  a29ea5dbcde7ba1695c95949be6303d1ca1de0b7786a38b60f33eccf03506f9d  COPYING

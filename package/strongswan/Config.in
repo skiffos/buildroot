@@ -35,12 +35,12 @@ config BR2_PACKAGE_STRONGSWAN_BOTAN
 	bool "botan"
 	depends on BR2_PACKAGE_BOTAN_ARCH_SUPPORTS
 	depends on BR2_INSTALL_LIBSTDCPP
-	depends on BR2_TOOLCHAIN_GCC_AT_LEAST_10 # botan
+	depends on BR2_TOOLCHAIN_GCC_AT_LEAST_11 # botan
 	select BR2_PACKAGE_BOTAN
 
-comment "botan backend needs a toolchain w/ C++, gcc >= 10"
+comment "botan backend needs a toolchain w/ C++, gcc >= 11"
 	depends on !BR2_INSTALL_LIBSTDCPP \
-		|| !BR2_TOOLCHAIN_GCC_AT_LEAST_10
+		|| !BR2_TOOLCHAIN_GCC_AT_LEAST_11
 	depends on BR2_PACKAGE_BOTAN_ARCH_SUPPORTS
 
 config BR2_PACKAGE_STRONGSWAN_OPENSSL
@@ -134,6 +134,10 @@ comment "EAP-SIM smart backend needs a toolchain w/ dynamic library, gcc >= 4.9"
 config BR2_PACKAGE_STRONGSWAN_EAP_AKA
 	bool "Enable EAP-AKA"
 	default y if BR2_PACKAGE_STRONGSWAN_EAP # legacy
+
+config BR2_PACKAGE_STRONGSWAN_EAP_AKA_3GPP
+	bool "Enable EAP AKA backend plugin implementing 3GPP MILENAGE algorithms"
+	select BR2_PACKAGE_STRONGSWAN_EAP_AKA
 
 config BR2_PACKAGE_STRONGSWAN_EAP_AKA_3GPP2
 	bool "Enable EAP-AKA 3GPP2 algorithms"

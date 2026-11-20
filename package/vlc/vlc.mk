@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-VLC_VERSION = 3.0.21
+VLC_VERSION = 3.0.24
 VLC_SITE = https://get.videolan.org/vlc/$(VLC_VERSION)
 VLC_SOURCE = vlc-$(VLC_VERSION).tar.xz
 VLC_LICENSE = GPL-2.0+, LGPL-2.1+
@@ -66,13 +66,13 @@ VLC_CONF_OPTS += \
 	--disable-kva \
 	--disable-libplacebo \
 	--disable-linsys \
-	--disable-mfx \
 	--disable-microdns \
 	--disable-mmal \
 	--disable-mtp \
+	--disable-mpc \
 	--disable-notify \
+	--disable-opencv \
 	--disable-projectm \
-	--disable-schroedinger \
 	--disable-shine \
 	--disable-shout \
 	--disable-sndio \
@@ -208,13 +208,6 @@ VLC_CONF_OPTS += --enable-gles2
 VLC_DEPENDENCIES += libgles
 else
 VLC_CONF_OPTS += --disable-gles2
-endif
-
-ifeq ($(BR2_PACKAGE_OPENCV3),y)
-VLC_CONF_OPTS += --enable-opencv
-VLC_DEPENDENCIES += opencv3
-else
-VLC_CONF_OPTS += --disable-opencv
 endif
 
 ifeq ($(BR2_PACKAGE_OPUS),y)
@@ -406,6 +399,13 @@ else
 VLC_CONF_OPTS += --disable-vorbis
 endif
 
+ifeq ($(BR2_PACKAGE_LIBVPL),y)
+VLC_CONF_OPTS += --enable-vpl
+VLC_DEPENDENCIES += libvpl
+else
+VLC_CONF_OPTS += --disable-vpl
+endif
+
 ifeq ($(BR2_PACKAGE_LIBV4L),y)
 VLC_CONF_OPTS += --enable-v4l2
 VLC_DEPENDENCIES += libv4l
@@ -460,13 +460,6 @@ VLC_CONF_OPTS += --enable-mpg123
 VLC_DEPENDENCIES += mpg123
 else
 VLC_CONF_OPTS += --disable-mpg123
-endif
-
-ifeq ($(BR2_PACKAGE_MUSEPACK),y)
-VLC_CONF_OPTS += --enable-mpc
-VLC_DEPENDENCIES += musepack
-else
-VLC_CONF_OPTS += --disable-mpc
 endif
 
 ifeq ($(BR2_PACKAGE_NCURSES_WCHAR),y)
@@ -539,6 +532,7 @@ VLC_CONF_OPTS += --disable-udev
 endif
 
 ifeq ($(BR2_PACKAGE_WAYLAND)$(BR2_PACKAGE_WAYLAND_PROTOCOLS),yy)
+VLC_CONF_ENV += WAYLAND_SCANNER=$(HOST_DIR)/bin/wayland-scanner
 VLC_CONF_OPTS += --enable-wayland
 VLC_DEPENDENCIES += wayland wayland-protocols
 else

@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-PIXMAN_VERSION = 0.44.2
+PIXMAN_VERSION = 0.46.4
 PIXMAN_SOURCE = pixman-$(PIXMAN_VERSION).tar.xz
 PIXMAN_SITE = https://xorg.freedesktop.org/releases/individual/lib
 PIXMAN_LICENSE = MIT
@@ -25,13 +25,6 @@ PIXMAN_CONF_OPTS = \
 	-Dgtk=disabled \
 	-Dlibpng=disabled \
 	-Dtests=disabled
-
-# Affects only tests, and we don't build tests (see
-# 0001-Disable-tests.patch). See
-# https://gitlab.freedesktop.org/pixman/pixman/-/issues/76, which says
-# "not sure why NVD keeps assigning CVEs like this. This is just a
-# test executable".
-PIXMAN_IGNORE_CVES += CVE-2023-37769
 
 ifeq ($(BR2_X86_CPU_HAS_MMX),y)
 PIXMAN_CONF_OPTS += -Dmmx=enabled
@@ -68,7 +61,7 @@ else
 PIXMAN_CONF_OPTS += -Dneon=disabled
 endif
 
-ifeq ($(BR2_aarch64)$(BR2_ARM_CPU_HAS_NEON),yy)
+ifeq ($(BR2_aarch64),y)
 PIXMAN_CONF_OPTS += -Da64-neon=enabled
 else
 PIXMAN_CONF_OPTS += -Da64-neon=disabled

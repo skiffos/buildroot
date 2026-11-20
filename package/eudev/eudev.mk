@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-EUDEV_VERSION = 3.2.14
+EUDEV_VERSION = 3.2.15
 EUDEV_SITE = https://github.com/eudev-project/eudev/releases/download/v$(EUDEV_VERSION)
 EUDEV_LICENSE = GPL-2.0+ (programs), LGPL-2.1+ (libraries)
 EUDEV_LICENSE_FILES = COPYING
@@ -12,17 +12,22 @@ EUDEV_INSTALL_STAGING = YES
 
 EUDEV_CONF_OPTS = \
 	--disable-manpages \
-	--sbindir=/sbin \
 	--libexecdir=/lib \
 	--enable-kmod \
 	--enable-blkid
 
 # eudev requires only the util-linux libraries at build time
 EUDEV_DEPENDENCIES = host-gperf host-pkgconf util-linux-libs
-EUDEV_PROVIDES = udev
+EUDEV_PROVIDES = libudev udev
 
-ifeq ($(BR2_ROOTFS_MERGED_USR),)
-EUDEV_CONF_OPTS += --with-rootlibdir=/lib --enable-split-usr
+ifeq ($(BR2_ROOTFS_MERGED_USR),y)
+ifeq ($(BR2_ROOTFS_MERGED_BIN),y)
+EUDEV_CONF_OPTS += --sbindir=/usr/bin
+else
+EUDEV_CONF_OPTS += --sbindir=/usr/sbin
+endif
+else
+EUDEV_CONF_OPTS += --sbindir=/sbin --with-rootlibdir=/lib --enable-split-usr
 endif
 
 ifeq ($(BR2_PACKAGE_EUDEV_MODULE_LOADING),y)

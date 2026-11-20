@@ -26,6 +26,12 @@ BASH_CONF_ENV = \
 	bash_cv_func_sigsetjmp=present \
 	bash_cv_printf_a_format=yes
 
+# WASI start code calls main with argc and argv only, so a main that also
+# takes the environment never links.
+ifeq ($(BR2_wasm32),y)
+BASH_CONF_ENV += CPPFLAGS="$(TARGET_CPPFLAGS) -DNO_MAIN_ENV_ARG"
+endif
+
 # Can be dropped when bash is bumped to 5.3 or newer.
 ifeq ($(BR2_TOOLCHAIN_GCC_AT_LEAST_15),y)
 BASH_CONF_ENV += CFLAGS="$(TARGET_CFLAGS) -std=gnu17"
